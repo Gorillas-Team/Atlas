@@ -1,3 +1,8 @@
+.env
+config.json
+.editorconfig
+package-lock.json
+
 # Logs
 logs
 *.log
