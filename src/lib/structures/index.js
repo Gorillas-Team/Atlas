@@ -1,5 +1,5 @@
 module.exports = {
-    AtlasCommand: require("./AtlasCommand"),
-    
-    BaseEvent: require("./base/BaseEvent")
-}
+	Command: require("./Command"),
+	Listener: require("./Listener"),
+	Loader: require("./Loader")
+};

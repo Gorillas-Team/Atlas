@@ -1,3 +1,3 @@
 module.exports = {
-    requireDir: require("./FileUtils").requireDir
-}
+	FileUtils: require("./FileUtils")
+};

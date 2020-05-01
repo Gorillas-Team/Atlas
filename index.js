@@ -1,19 +1,20 @@
 const AtlasClient = require("./src/AtlasClient");
-const config = require("./config");
-
-console.log(config)
+const { owners, prefixes, presence, environment, token } = require("./config");
 
 const Atlas = new AtlasClient({
-    token: process.env.TOKEN,
-    owners: config.owners,
-    prefixes: config.prefixes,
-    environment: config.prod ? "prod" : "dev",
-    presence: {
-        activity: {
-            name: config.presence.activity.name || "",
-            type: config.presence.activity.type || ""
-        }
-    }
+	presence: {
+		activity: {
+			name: presence.activity.name || "",
+			type: presence.activity.type || ""
+		}
+	},
+
+	token,
+	owners,
+	prefixes,
+	environment,
 });
 
-Atlas.start();
+Atlas
+	.initLoaders()
+	.start();

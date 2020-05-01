@@ -1,28 +1,30 @@
 {
-  "name": "atlas",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -r dotenv/config index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gorillas-Team/Atlas.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Gorillas-Team/Atlas/issues"
-  },
-  "homepage": "https://github.com/Gorillas-Team/Atlas#readme",
-  "devDependencies": {
-    "nodemon": "^2.0.3",
-    "dotenv": "^8.2.0"
-  },
-  "dependencies": {
-    "discord.js": "^12.2.0"
-  }
+	"name": "atlas",
+	"version": "0.0.1",
+	"main": "index.js",
+	"scripts": {
+		"start": "eslint . && node -r dotenv/config .",
+		"dev": "eslint . && nodemon",
+		"fix": "eslint --fix ."
+	},
+	"engines": {
+		"node": ">=12.x"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Gorillas-Team/Atlas.git"
+	},
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Gorillas-Team/Atlas/issues"
+	},
+	"homepage": "https://github.com/Gorillas-Team/Atlas#readme",
+	"devDependencies": {
+		"dotenv": "^8.2.0",
+		"eslint": "^6.8.0",
+		"nodemon": "^2.0.3"
+	},
+	"dependencies": {
+		"discord.js": "^12.2.0"
+	}
 }

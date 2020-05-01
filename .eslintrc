@@ -1,0 +1,14 @@
+{
+    "rules": {
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "indent": ["warn", "tab"]
+    },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    }
+}
