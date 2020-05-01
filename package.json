@@ -4,12 +4,11 @@
 	"description": "Discord music bot focused on high sound quality",
 	"main": "index.js",
 	"scripts": {
-		"start": "eslint . && node -r dotenv/config .",
+		"start": "node -r dotenv/config .",
 		"dev": "eslint . && nodemon",
 		"fix": "eslint --fix .",
 		"test": "jest",
-		"test:watch": "jest --watch",
-		"test:coveralls": "jest --coverage && coveralls < coverage/lcov.info"
+		"test:watch": "jest --watch"
 	},
 	"engines": {
 		"node": "13.x"
@@ -24,7 +23,6 @@
 	},
 	"homepage": "https://github.com/Gorillas-Team/Atlas#readme",
 	"devDependencies": {
-		"coveralls": "^3.1.0",
 		"dotenv": "^8.2.0",
 		"eslint": "^6.8.0",
 		"jest": "^25.5.3",
