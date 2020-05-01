@@ -12,7 +12,7 @@
 		"test:coveralls": "jest --coverage && coveralls < coverage/lcov.info"
 	},
 	"engines": {
-		"node": "12.x"
+		"node": "13.x"
 	},
 	"repository": {
 		"type": "git",
