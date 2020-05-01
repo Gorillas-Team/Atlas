@@ -8,13 +8,10 @@ const Atlas = new AtlasClient({
 			type: presence.activity.type || ""
 		}
 	},
-
 	token,
 	owners,
 	prefixes,
 	environment,
 });
 
-Atlas
-	.initLoaders()
-	.start();
+Atlas.start();

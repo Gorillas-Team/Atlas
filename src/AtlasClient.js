@@ -29,6 +29,7 @@ module.exports = class AtlasClient extends Client {
 	}
 
 	start() {
+		this.initLoaders();
 		this.login(this.token);
 		return this;
 	}
