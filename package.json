@@ -1,6 +1,7 @@
 {
 	"name": "atlas",
 	"version": "0.0.1",
+	"description": "Discord music bot focused on high sound quality",
 	"main": "index.js",
 	"scripts": {
 		"start": "eslint . && node -r dotenv/config .",
