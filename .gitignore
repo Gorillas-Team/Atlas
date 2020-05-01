@@ -1,7 +1,6 @@
 .env
 config.js
 .editorconfig
-package-lock.json
 yarn.lock
 
 # Logs
