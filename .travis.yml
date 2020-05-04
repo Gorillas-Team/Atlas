@@ -10,5 +10,12 @@ script:
   - yarn lint:fix
   - yarn test
 
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app:
+    master: atlas-discord-bot
+    dev: atlas-discord-bot-canary
+
 notifications:
   email: false

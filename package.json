@@ -4,7 +4,7 @@
 	"description": "Discord music bot focused on high sound quality",
 	"main": "index.js",
 	"scripts": {
-		"start": "node -r dotenv/config .",
+		"start": "node .",
 		"dev": "eslint test/ src/ && nodemon",
 		"lint:fix": "eslint --fix .",
 		"lint": "eslint test/ src/",
