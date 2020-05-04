@@ -1,5 +1,4 @@
 .env
-config.js
 .editorconfig
 nodemon.json
 
