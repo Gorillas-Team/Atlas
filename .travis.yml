@@ -7,7 +7,7 @@ install:
   - yarn install --frozen-lockfile
 
 script:
-  - yarn fix
+  - yarn lint:fix
   - yarn test
 
 notifications:
