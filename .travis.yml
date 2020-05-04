@@ -15,7 +15,8 @@ deploy:
   api_key: $HEROKU_API_KEY
   app:
     master: atlas-discord-bot
-    dev: atlas-discord-bot-canary
+    staging: atlas-discord-bot-canary
+    dev: atlas-discord-bot-preto
 
 notifications:
   email: false
