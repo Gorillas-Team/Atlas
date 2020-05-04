@@ -5,9 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node -r dotenv/config .",
-		"dev": "eslint . && nodemon",
+		"dev": "eslint test/ src/ && nodemon",
 		"lint:fix": "eslint --fix .",
-		"lint": "eslint",
+		"lint": "eslint test/ src/",
 		"test": "jest",
 		"test:watch": "jest --watch"
 	},
