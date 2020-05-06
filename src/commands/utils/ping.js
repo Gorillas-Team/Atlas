@@ -9,6 +9,6 @@ module.exports = class Ping extends Command {
   }
 
   run({ channel }) {
-    channel.send(`Pong! 🏓 ${this.client.ws.ping}`)
+    channel.send(`Pong! 🏓 \`${this.client.ws.ping}ms\``)
   }
 }
