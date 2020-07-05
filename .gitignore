@@ -1,6 +1,4 @@
 .env
-.editorconfig
-nodemon.json
 
 # Logs
 logs

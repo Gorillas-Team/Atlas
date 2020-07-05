@@ -1,35 +1,35 @@
 {
-	"name": "atlas",
-	"version": "0.0.1",
-	"description": "Discord music bot focused on high sound quality",
-	"main": "index.js",
-	"scripts": {
-		"start": "node .",
-		"dev": "eslint test/ src/ && nodemon",
-		"lint:fix": "eslint --fix .",
-		"lint": "eslint test/ src/",
-		"test": "jest",
-		"test:watch": "jest --watch"
-	},
-	"engines": {
-		"node": ">=13.x"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/Gorillas-Team/Atlas.git"
-	},
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/Gorillas-Team/Atlas/issues"
-	},
-	"homepage": "https://github.com/Gorillas-Team/Atlas#readme",
-	"devDependencies": {
-		"dotenv": "^8.2.0",
-		"eslint": "^6.8.0",
-		"jest": "^25.5.3",
-		"nodemon": "^2.0.3"
-	},
-	"dependencies": {
-		"discord.js": "^12.2.0"
-	}
+  "name": "atlas",
+  "version": "0.0.1",
+  "description": "Discord music bot focused on high sound quality",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon .",
+    "lint:fix": "eslint --fix .",
+    "lint": "eslint test/ src/",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "engines": {
+    "node": ">=13.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gorillas-Team/Atlas.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gorillas-Team/Atlas/issues"
+  },
+  "homepage": "https://github.com/Gorillas-Team/Atlas#readme",
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.5.3",
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "discord.js": "^12.2.0"
+  }
 }
