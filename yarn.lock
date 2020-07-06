@@ -1840,6 +1840,15 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
+gorilink@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/gorilink/-/gorilink-1.1.6.tgz#019c6076a5e844af710b4e9a8fd3c7eff7203749"
+  integrity sha512-6MMDx3zFxv+WdVTPhA3SU5NTG6A7acr+UCPCTRztG65QLZszCrS6F3HWL4JXgUmuBVYG8Rg7tP2pIo0oD1+3xA==
+  dependencies:
+    "@discordjs/collection" "^0.1.5"
+    node-fetch "^2.6.0"
+    ws "^7.2.5"
+
 got@^9.6.0:
   version "9.6.0"
   resolved "https://registry.yarnpkg.com/got/-/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
@@ -4337,7 +4346,7 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@^7.2.1, ws@^7.2.3:
+ws@^7.2.1, ws@^7.2.3, ws@^7.2.5:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
   integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==

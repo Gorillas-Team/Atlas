@@ -1,9 +1,9 @@
 const { Loader } = require('../lib/structures')
 const { FileUtils } = require('../lib/utils')
 
-module.exports = class CommandLoader extends Loader {
+module.exports = class DiscordListenerLoader extends Loader {
   constructor (client) {
-    super(client, 'commands')
+    super(client, 'listeners')
     this.critical = true
   }
 
@@ -20,16 +20,16 @@ module.exports = class CommandLoader extends Loader {
 
   init () {
     this.log('Carregando...')
-    return FileUtils.requireDir({ dir: 'src/commands' }, (error, Command) => {
+    return FileUtils.requireDir({ dir: 'src/listeners/discord' }, async (error, Listener) => {
       if (error) {
         this.logError('    Erro: ' + error.stack)
         return this.failed++
       }
 
-      const cmd = new Command(this.client)
-      this.client.commands.set(cmd.name, cmd)
-      console.info('    L[' + cmd.category + '] - ' + cmd.name + ' carregado')
-      this.success++
+      const listener = new Listener()
+      listener.listen(this.client)
+
+      console.info('    L[' + listener.name + '] carregado')
     })
   }
 }

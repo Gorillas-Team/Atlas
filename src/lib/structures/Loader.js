@@ -1,9 +1,9 @@
 module.exports = class Loader {
   constructor(client, name) {
     this.client = client
-    this.critical = false
+    this.critical = true
     this.success = 0
-    	this.failed = 0
+    this.failed = 0
     this.name = name || null
   }
 

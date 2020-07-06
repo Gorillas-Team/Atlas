@@ -8,6 +8,7 @@ module.exports = class AtlasClient extends Client {
     this.config = {
       owners: options.owners instanceof Array ? options.owners : [options.owners],
       prefixes: options.prefixes instanceof Array ? options.prefixes : [options.prefixes],
+      nodes: options.nodes,
       environment: options.environment,
       presence: options.presence
     }
@@ -19,7 +20,7 @@ module.exports = class AtlasClient extends Client {
     for(const Loader of Object.values(Loaders)) {
       try {
         const loader = new Loader(this)
-        loader.init()
+        if(loader.critical) loader.init()
       } catch(ex) {
         throw new Error(ex)
       }

@@ -1,4 +1,4 @@
-const { Listener } = require('../lib/structures')
+const { Listener } = require('../../lib/structures')
 
 module.exports = class extends Listener {
   constructor() {

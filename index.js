@@ -5,7 +5,7 @@ const Atlas = new AtlasClient({
   environment: process.env.ENVIRONMENT,
   owners: process.env.OWNERS.split(','),
   prefixes: process.env.PREFIXES.split(','),
-  lavalink: JSON.parse(process.env.LAVALINK),
+  nodes: JSON.parse(process.env.LAVALINK),
   presence: JSON.parse(process.env.PRESENCE || '{}')
 })
 
