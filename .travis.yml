@@ -21,4 +21,5 @@ deploy:
 notifications:
   email: false
   webhooks:
-    urls: $DISCORD_WEBHOOK
+    urls:
+    - $DISCORD_WEBHOOK
