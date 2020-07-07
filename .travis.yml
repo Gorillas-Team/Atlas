@@ -1,7 +1,12 @@
-sudo: false
 language: node_js
+
 node_js:
   - 13
+
+os:
+  - linux
+
+dist: xenial
 
 install:
   - yarn install --frozen-lockfile
@@ -13,6 +18,7 @@ script:
 deploy:
   provider: heroku
   api_key: $HEROKU_API_KEY
+  strategy: api
   app:
     master: atlas-discord-bot
     staging: atlas-discord-bot-canary
