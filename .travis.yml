@@ -21,11 +21,18 @@ deploy:
 notifications:
   email: false
 
+
 after_success:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $DISCORD_WEBHOOK
+  - wget https://raw.githubusercontent.com/Psykka/travis-ci-discord-webhook/master/build.sh
+  - chmod +x build.sh
+  - ./build.sh success $DISCORD_WEBHOOK
+
 after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $DISCORD_WEBHOOK
+  - wget https://raw.githubusercontent.com/Psykka/travis-ci-discord-webhook/master/build.sh
+  - chmod +x build.sh
+  - ./build.sh failure $DISCORD_WEBHOOK
+
+after_deploy:
+  - wget https://raw.githubusercontent.com/Psykka/travis-ci-discord-webhook/master/deploy.sh
+  - chmod +x deploy.sh
+  - ./deploy.sh $DISCORD_WEBHOOK
