@@ -8,7 +8,7 @@ module.exports = class extends Listener {
     })
   }
 
-  run(node) {
-    console.error(`Connection to node ${node.tag || node.host} has been lost, trying to reconnect`)
+  run(event, node) {
+    console.error(`Connection to node ${node.tag || node.host} has been lost, reason: ${event}`)
   }
 }

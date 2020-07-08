@@ -3,7 +3,7 @@ const { Listener } = require('../../../lib/structures')
 module.exports = class extends Listener {
   constructor() {
     super({
-      name: 'nodeClose',
+      name: 'nodeReconnect',
       type: 'lavalink'
     })
   }
