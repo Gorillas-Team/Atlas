@@ -28,7 +28,6 @@ module.exports = class Eval extends Command {
     } catch (e) { channel.send(e, { code: 'js' }) }
 
     function exec(code) {
-      if (!['616410427794128909', '332581129704177664'].includes(author.id)) return
       return new Promise(function (res, rej) {
         require('child_process').exec(code, function (err, stdout) { err ? rej(err) : res(stdout) })
       })

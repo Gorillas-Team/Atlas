@@ -21,9 +21,13 @@ module.exports = class Pllay extends Command {
 
     const { tracks } = await this.client.music.fetchTracks(args.join(' '))
 
-    tracks[0].requester = member
-    player.queue.add(tracks[0])
+    const track = tracks[0]
+    track.requester = member
 
+    if(player.queue.length !== 0) channel.send(`A musica \`${track.info.title}\` foi adiconado a playlist por **${member.user.username}**`)
+      .then(m => m.delete({ timeout: 10000 }))
+
+    player.queue.add(track)
     if(!player.playing) return player.play()
   }
 }

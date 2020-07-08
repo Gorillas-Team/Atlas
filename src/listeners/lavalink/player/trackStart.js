@@ -9,6 +9,8 @@ module.exports = class extends Listener {
   }
 
   run(player, track) {
+    if(player.lastMessage) player.lastMessage.delete()
     player.textChannel.send(`Tocando agora \`${track.info.title}\``)
+      .then(m => player.lastMessage = m)
   }
 }
