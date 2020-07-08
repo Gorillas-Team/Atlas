@@ -6,7 +6,8 @@ const Atlas = new AtlasClient({
   owners: process.env.OWNERS.split(','),
   prefixes: process.env.PREFIXES.split(','),
   nodes: JSON.parse(process.env.LAVALINK),
-  presence: JSON.parse(process.env.PRESENCE || '{}')
+  presence: JSON.parse(process.env.PRESENCE || '{}'),
+  logChannel: process.env.LOGCHANNEL
 })
 
 Atlas.start()

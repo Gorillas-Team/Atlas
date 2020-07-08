@@ -10,7 +10,8 @@ module.exports = class AtlasClient extends Client {
       prefixes: options.prefixes instanceof Array ? options.prefixes : [options.prefixes],
       nodes: options.nodes,
       environment: options.environment,
-      presence: options.presence
+      presence: options.presence,
+      logChannel: options.logChannel
     }
 
     this.commands = new Collection()

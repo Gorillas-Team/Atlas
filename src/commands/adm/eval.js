@@ -1,7 +1,7 @@
 const Command = require('../../lib/structures/Command')
 const { inspect } = require('util')
 
-module.exports = class Ping extends Command {
+module.exports = class Eval extends Command {
   constructor(client) {
     super(client)
     this.name = 'eval'
