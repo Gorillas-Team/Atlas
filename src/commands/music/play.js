@@ -24,7 +24,7 @@ module.exports = class Pllay extends Command {
     const track = tracks[0]
     track.requester = member
 
-    if(player.queue.length !== 0) channel.send(`A musica \`${track.info.title}\` foi adiconado a playlist por **${member.user.username}**`)
+    if(player.queue.length !== 0) channel.send(`A musica \`${track.info.title}\` foi adicionado a playlist por **${member.user.username}**`)
       .then(m => m.delete({ timeout: 10000 }))
 
     player.queue.add(track)
