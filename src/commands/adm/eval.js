@@ -1,4 +1,5 @@
 const Command = require('../../lib/structures/Command')
+const fetch = require('node-fetch')
 const { inspect } = require('util')
 
 module.exports = class Eval extends Command {
