@@ -6,6 +6,7 @@ module.exports = class Eval extends Command {
   constructor(client) {
     super(client)
     this.name = 'eval'
+    this.hidden = true
     this.aliases = ['ev', 'e']
     this.category = 'adm'
   }

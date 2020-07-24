@@ -12,6 +12,7 @@ module.exports = class Pllay extends Command {
     const voiceChannel = member.voice.channel
 
     if(!voiceChannel) return channel.send('Você não esta em nenhum canal de voz')
+    if(!args[0]) return channel.send('Você precisa me dizer uma musica ou uma URL')
 
     const player = this.client.music.join({
       guild,
