@@ -1,8 +1,8 @@
 #!/bin/bash
 
 eval "$(ssh-agent -s)"
-chmod 600 .deploy/deploy_rsa
-ssh-add .deploy/deploy_rsa
+chmod 600 ./.deploy/deploy_rsa
+ssh-add ./.deploy/deploy_rsa
 
 ssh atlas@$SSH_IP <<EOF
   docker stop {$TRAVIS_BRANCH}
