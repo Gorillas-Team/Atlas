@@ -1,4 +1,5 @@
 module.exports = {
   CommandLoader: require('./CommandLoader'),
-  ListenerLoader: require('./ListenerLoader')
+  DiscordListenerLoader: require('./DiscordListenerLoader'),
+  LavalinkListenerLoader: require('./LavalinkListenerLoader')
 }
