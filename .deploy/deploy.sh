@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 eval "$(ssh-agent -s)"
 chmod 600 .deploy/deploy_rsa
@@ -14,12 +15,4 @@ ssh -i .deploy/deploy_rsa atlas@$SSH_IP << EOF
   docker system prune -a -f
 EOF
 
-result=$?
-
-if [ $result -ne 0 ]; then
-  echo "Deployment failed"
-  exit 1
-fi
-
-echo "Successfully deployed"
 exit 0
