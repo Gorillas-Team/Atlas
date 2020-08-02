@@ -7,25 +7,17 @@ dist: xenial
 env:
   - DOCKER_TAG=$TRAVIS_BRANCH
 before_install:
-  - openssl aes-256-cbc -K $encrypted_4a0767079a26_key -iv $encrypted_4a0767079a26_iv -in .deploy/deploy_rsa.enc -out .deploy/deploy_rsa -d
+  - openssl aes-256-cbc -K $encrypted_4a0767079a26_key -iv $encrypted_4a0767079a26_iv -in .deploy/deploy_rsa.enc -out deploy_rsa -d
   - if [ "$TRAVIS_BRANCH" == "master" ]; then DOCKER_TAG="latest"; fi
 install:
-  - echo MTU4LjEwMS4xMDMuMTI1IHNzaC1yc2EgQUFBQUIzTnphQzF5YzJFQUFBQURBUUFCQUFBQ0FRRGprMnM0S0QxY1FlbTJVR3ZmNlVtQVlYWmJHczh1K0g1dW5tcnZCd2dORzNXNUltSHZDUXl3RE1ZR20zdGxxYkJ1dVI3RDZaRlI2K3lmRGp0MUt2V1N5S1hERUFhYy9mZ29jb2ZtWmJtZU9LRlczUVM4YWxXemM4U2ZrT3JnUTVUSlU3TWE1eUI2aTZWSjFUZUhSUVVEeStrTTdyM25HY3pJTFpNL0ErQVFVZzBXVlljNEpwaEgzeG91T24xTHE5Y2NUVzBRUmtVNW1JUjVQUUY3dndBR3JzdkJBUEU4ckNzNlpoT3FFVUJEL2QxMXdJMnd3T1ZQMFlnZWdvL05hOHdNS0plbi9mY1JHNTR6VjhqeE5KMlZPbWsyU2ZxUEYwRVJPN2w4SC9pMDFPQklLQ25DTFdJSlJxby93UDliRmlOd0UrL1dZZHl6SVhnS2g2RWdpQnpPMTRHSTYvTGt2UjE0T1pnNW5tM2o0cCs0YzVKVHp1RHhoU3lBYnU4U01mQVZUZVFJWURxRCtGUHhzQUdaRDNoWDNEWC8yRnpIa2dlMUcyOW8wTXNhSWxqazM5RXZWSVRNcXFycVlzRjd2eHBsQWt3Mjh5elNMYkRGUXprWXJuRXhDbzF2UmZ5bXhaVGg5SG14VTBqUmtmcWwweFFET3IwQVNLZFF6WnI1MGlkVkVvN1BpYW5ROE8vZEtsN05RVnp5dWROb3RUWWxDZG9yM2xwak1va0dIbGhENHBMd0g0OTQxeUkycWsxRHdXQ1lSZFFZSkxNNzJwbi9vRWJFbC9tZE4rL1IzYVFzUmp5eDZJeVduMW1rRGpFVlVwaXFYeWdmUm9MRUMrb25FMkx1cjRuS3VPWnNsNmlnK3lGbVJMTlVrN2ZKT2pyNDR2ZjgvcEtOdUl3QTd3PT0gYnVpbGRAdHJhdmlzLWNpLm9yZwo= | base64 -d >> $HOME/.ssh/known_hosts
   - yarn install --frozen-lockfile
-jobs:
-  include:
-    - stage: Tests
-      name: ESLint
-      script: yarn lint
-    - script: yarn test
-      name: Unit tests
-    - stage: Build
-      name: Docker build & deploy
-      script:
-        - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
-        - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$DOCKER_TAG
-        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        - docker push $DOCKER_IMAGE:$DOCKER_TAG
+script:
+  - yarn lint
+  - yarn test
+  - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+  - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$DOCKER_TAG
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker push $DOCKER_IMAGE:$DOCKER_TAG
 deploy:
   - provider: script
     script: bash .deploy/deploy.sh
