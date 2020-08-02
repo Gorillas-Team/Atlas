@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /usr/local/atlas
+WORKDIR /usr/app
 
 COPY package.json .
 COPY yarn.lock .

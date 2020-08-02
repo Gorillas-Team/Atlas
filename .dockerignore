@@ -1,6 +1,7 @@
 .github/
 .vscode/
 .git/
+.deploy/
 node_modules/
 test/
 
