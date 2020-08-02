@@ -14,7 +14,7 @@ EOF
 
 result=$?
 
-if [ $resolt -ne 0 ]; then
+if [ $result -ne 0 ]; then
   echo "Deployment failed"
   exit 1
 fi
