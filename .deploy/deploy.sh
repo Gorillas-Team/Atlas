@@ -1,9 +1,9 @@
 #!/bin/bash
 
 eval "$(ssh-agent -s)"
-chmod 600 ./deploy_rsa
+chmod 600 .deploy/deploy_rsa
 echo -e "Host $SSH_IP\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-ssh-add ./deploy_rsa
+ssh-add .deploy/deploy_rsa
 
 ssh atlas@$SSH_IP <<EOF
   docker stop {$TRAVIS_BRANCH}
