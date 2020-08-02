@@ -12,4 +12,12 @@ ssh atlas@$SSH_IP <<EOF
   docker system prune -a -f
 EOF
 
+result=$?
+
+if [ $resolt -ne 0 ]; then
+  echo "Deployment failed"
+  exit 1
+fi
+
+echo "Successfully deployed"
 exit 0
