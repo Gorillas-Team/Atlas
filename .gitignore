@@ -1,5 +1,6 @@
 .env
 .vscode/
+.deploy/deploy_rsa
 
 # Logs
 logs
