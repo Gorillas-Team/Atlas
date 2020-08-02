@@ -4,7 +4,7 @@ chmod 600 .deploy/deploy_rsa
 echo -e "Host $SSH_IP\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 ssh-add .deploy/deploy_rsa
 
-ssh atlas@$SSH_IP <<EOF
+ssh -i .deploy/deploy_rsa atlas@$SSH_IP << EOF
   docker stop {$TRAVIS_BRANCH}
   docker rm {$TRAVIS_BRANCH}
   docker login -u {$DOCKER_USERNAME} -p {$DOCKER_PASSWORD}
