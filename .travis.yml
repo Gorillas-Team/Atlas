@@ -21,12 +21,12 @@ script:
 deploy:
   - provider: script
     script: bash .deploy/deploy.sh
-    skip_cleanup: true
+    cleanup: false
     on:
       branch: master
   - provider: script
     script: bash .deploy/deploy.sh
-    skip_cleanup: true
+    cleanup: false
     on:
       branch: staging
 notifications:
