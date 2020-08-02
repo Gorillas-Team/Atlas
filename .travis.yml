@@ -4,6 +4,8 @@ node_js:
 os:
 - linux
 dist: xenial
+addons:
+  ssh_known_hosts: $SSH_IP
 env:
 - DOCKER_TAG=$TRAVIS_BRANCH
 before_install:
