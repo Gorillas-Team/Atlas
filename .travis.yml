@@ -36,4 +36,4 @@ deploy:
     branch: staging
 notifications:
   email: false
-  webhooks: "$GORILLAS_HOOK"
+  webhooks: $GORILLAS_HOOK
