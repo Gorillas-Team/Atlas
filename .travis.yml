@@ -7,7 +7,7 @@ dist: xenial
 env:
 - DOCKER_TAG=$TRAVIS_BRANCH
 before_install:
-- openssl aes-256-cbc -K $encrypted_4a0767079a26_key -iv $encrypted_4a0767079a26_iv -in deploy_rsa.enc -out .deploy/deploy_rsa -d
+- openssl aes-256-cbc -K $encrypted_4a0767079a26_key -iv $encrypted_4a0767079a26_iv -in .deploy/deploy_rsa.enc -out .deploy/deploy_rsa -d
 - if [ "$TRAVIS_BRANCH" == "master" ]; then DOCKER_TAG="latest"; fi
 install:
 - yarn install --frozen-lockfile
@@ -19,15 +19,12 @@ jobs:
   - script: yarn test
     name: Unit tests
   - stage: Build
-    name: Docker build
-    script: docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
-  - script: docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$DOCKER_TAG
-    name: Docker Tagging
-  - stage: Docker push
-    name: Docker login
-    script: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - script: docker push $DOCKER_IMAGE:$DOCKER_TAG
-    name: Docker push
+    name: Docker build & deploy
+    script:
+      - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+      - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$DOCKER_TAG
+      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+      - docker push $DOCKER_IMAGE:$DOCKER_TAG
 deploy:
 - provider: script
   script: bash .deploy/deploy.sh
