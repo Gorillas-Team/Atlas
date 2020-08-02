@@ -1,4 +1,5 @@
 #!/bin/bash
+
 eval "$(ssh-agent -s)"
 chmod 600 .deploy/deploy_rsa
 echo -e "Host $SSH_IP\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
