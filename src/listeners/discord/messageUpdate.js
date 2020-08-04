@@ -8,7 +8,7 @@ module.exports = class extends Listener {
   }
 
   async run(oldM, newM) {
-      if(oldM.content === newM.content) return
-      this.emit('message', newM)
+    if (oldM.content === newM.content) return
+    this.emit('message', newM)
   }
 }
