@@ -4,8 +4,7 @@ const { inspect } = require('util')
 module.exports = class extends Listener {
   constructor() {
     super({
-      name: 'error',
-      once: true
+      name: 'error'
     })
   }
 
