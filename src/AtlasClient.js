@@ -11,7 +11,8 @@ module.exports = class AtlasClient extends Client {
       nodes: options.nodes,
       environment: options.environment,
       presence: options.presence,
-      logChannel: options.logChannel
+      logChannel: options.logChannel,
+      leaveTimeout: options.leaveTimeout
     }
 
     this.commands = new Collection()
