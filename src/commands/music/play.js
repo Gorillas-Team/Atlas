@@ -1,4 +1,4 @@
-const Command = require('../../lib/structures/Command')
+const Command = require('../../lib/structures/music/MusicCommand')
 
 module.exports = class Play extends Command {
   constructor(client) {
@@ -6,17 +6,16 @@ module.exports = class Play extends Command {
     this.name = 'play'
     this.aliases = ['p']
     this.category = 'music'
+    this.checkVoiceMember = true
+    this.checkSameChannel = true
   }
 
-  async run({ channel, member, guild, args }) {
-    const voiceChannel = member.voice.channel
-
-    if(!voiceChannel) return channel.send('Você não esta em nenhum canal de voz')
+  async musicRun({ channel, member, guild, args }) {
     if(!args[0]) return channel.send('Você precisa me dizer uma musica ou uma URL')
 
     const player = this.client.music.join({
       guild,
-      voiceChannel,
+      voiceChannel: this.memberChannel,
       textChannel: channel
     })
 

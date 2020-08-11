@@ -10,7 +10,7 @@ module.exports = class extends Listener {
 
   run(player) {
     if(player.lastMessage && !player.lastMessage.deleted) player.lastMessage.delete()
-    player.textChannel.send('A playlist acabou')
+    player.textChannel.send('A playlist acabou 😔')
 
     player._leaveTimeout = setTimeout(() => {
       player.destroy()
