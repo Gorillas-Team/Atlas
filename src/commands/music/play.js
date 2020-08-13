@@ -29,7 +29,7 @@ module.exports = class Play extends Command {
     const track = tracks[0]
     track.requester = member
 
-    await msg.edit(`A musica \`${track.info.title}\` foi adicionado a playlist por **${member.user.username}**`)
+    msg.edit(`A musica \`${track.info.title}\` foi adicionado a playlist por **${member.user.username}**`)
       .then(m => m.delete({ timeout: 10000 }))
 
     player.queue.add(track)
