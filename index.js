@@ -1,4 +1,7 @@
 const AtlasClient = require('./src/AtlasClient')
+const banner = require('fs').readFileSync('./banner.txt').toString()
+
+console.log(banner)
 
 const Atlas = new AtlasClient({
   token: process.env.TOKEN,
