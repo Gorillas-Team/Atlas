@@ -1,6 +1,6 @@
 const { Listener } = require('../../lib/structures')
 const { LavalinkListenerLoader } = require('../../loaders')
-const AtlasMusicManager = require('../../lib/structures/music/AtlasMusicManager')
+const { AtlasMusicManager, AtlasPlayer } = require('../../lib/structures/music')
 
 module.exports = class extends Listener {
   constructor() {
@@ -11,7 +11,9 @@ module.exports = class extends Listener {
   }
 
   run() {
-    this.music = new AtlasMusicManager(this, this.config.nodes)
+    this.music = new AtlasMusicManager(this, this.config.nodes, {
+      Player: AtlasPlayer
+    })
 
     new LavalinkListenerLoader(this).load()
     console.log('Online on client', this.user.username)

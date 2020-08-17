@@ -21,19 +21,12 @@ module.exports = class Play extends Command {
 
     const query = args.join(' ')
 
-    const msg = await channel.send(`Procurando pelo video \`${query}\``)
+    let msg = await channel.send(`Procurando pelo video \`${query}\``)
 
-    const { tracks } = await this.client.music.fetchTracks(query)
     if(player.textChannel !== channel) player.textChannel = channel
 
-    const track = tracks[0]
-    track.requester = member
-
-    msg.edit(`A musica \`${track.info.title}\` foi adicionado a playlist por **${member.user.username}**`)
+    msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
       .then(m => m.delete({ timeout: 10000 }))
-
-    player.queue.add(track)
-    player.leaveTimeout = this.client.config.leaveTimeout || 180000
 
     if(!player.playing) return player.play()
   }

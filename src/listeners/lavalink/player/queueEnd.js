@@ -12,9 +12,6 @@ module.exports = class extends Listener {
     if(player.lastMessage && !player.lastMessage.deleted) player.lastMessage.delete()
     player.textChannel.send('A playlist acabou 😔')
 
-    player._leaveTimeout = setTimeout(() => {
-      player.destroy()
-      player.textChannel.send('😴 Saindo do canal por inatividade')
-    }, player.leaveTimeout)
+    player.execTimeout()
   }
 }

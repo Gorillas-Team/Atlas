@@ -10,7 +10,10 @@ module.exports = class Skip extends Command {
     this.checkPlaying = true
   }
 
-  async musicRun({ message }) {
+  async musicRun({ message, member, channel }) {
+    if(this.player.track.requester.id !== member.id)
+      return channel.send('Apenas o DJ e o requester tem permissão de pular a musica')
+
     this.player.stop()
     return message.react('👍')
   }

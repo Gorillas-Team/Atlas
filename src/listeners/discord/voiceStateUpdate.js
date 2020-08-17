@@ -11,13 +11,13 @@ module.exports = class extends Listener {
     const channel = VSnew.channel
     if(!channel) return
 
-    if (channel.guild.me.voice.channel && channel.members.size < 2) {
-      const player = this.music.players.get(channel.guild.id)
+    const player = this.music.players.get(channel.guild.id)
 
-      player._leaveTimeout = setTimeout(() => {
-        player.destroy()
-        player.textChannel.send('😴 Saindo do canal por inatividade')
-      }, player.leaveTimeout)
-    }
+    if (channel.guild.me.voice.channel && channel.members.size < 2) {
+      if(!player) return
+
+      player.channelEmpty = true
+      player.execTimeout()
+    } else player ? player.channelEmpty = false : null
   }
 }
