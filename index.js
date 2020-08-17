@@ -9,9 +9,9 @@ const Atlas = new AtlasClient({
   owners: JSON.parse(process.env.OWNERS),
   prefixes: JSON.parse(process.env.PREFIXES),
   nodes: JSON.parse(process.env.LAVALINK),
-  presence: JSON.parse(process.env.PRESENCE || '{}'),
-  logChannel: process.env.LOGCHANNEL,
-  leaveTimeout: process.env.LEAVETIMEOUT || null
+  clientOptions: JSON.parse(process.env.CLIENT_OPTIONS || '{}'),
+  logChannel: process.env.LOG_CHANNEL,
+  leaveTimeout: process.env.LEAVE_TIMEOUT || null
 })
 
 Atlas.start()
