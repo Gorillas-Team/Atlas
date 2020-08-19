@@ -60,3 +60,4 @@ jobs:
           docker pull psykka/atlas:${{ steps.extract.outputs.branch }}
           docker run --name ${{ steps.extract.outputs.branch }} --env-file ~/.env/${{ steps.extract.outputs.branch }}.env --restart unless-stopped -d psykka/atlas:${{ steps.extract.outputs.branch }}
           docker system prune -a -f
+
