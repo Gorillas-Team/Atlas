@@ -25,7 +25,7 @@ module.exports = class Play extends Command {
 
     if(player.textChannel !== channel) player.textChannel = channel
 
-    msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
+    await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
       .then(m => m.delete({ timeout: 10000 }))
 
     if(!player.playing) return player.play()

@@ -45,7 +45,7 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
         })
 
         return coll.on('collect', async m => {
-          player.queue.push(tracks[m.content - 1])
+          player.queue.push(Object.assign({ requester }, tracks[m.content - 1]))
           await msg.edit(`A musica \`${tracks[m.content].info.title}\` foi adicionado a playlist por **${requester.user.username}**`, { embed: null })
         })
       }
