@@ -13,9 +13,6 @@ module.exports = class extends Listener {
     player.textChannel.send(`Tocando agora \`${track.info.title}\``)
       .then(m => player.lastMessage = m)
 
-    if(player._leaveTimeout){
-      clearTimeout(player._leaveTimeout)
-      delete player._leaveTimeout
-    }
+    if(player._leaveTimeout) player.execClearTimeout()
   }
 }

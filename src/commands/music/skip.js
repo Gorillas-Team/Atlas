@@ -1,4 +1,4 @@
-const Command = require('../../lib/structures/music/MusicCommand')
+const { Command } = require('../../lib/structures')
 
 module.exports = class Skip extends Command {
   constructor(client) {
@@ -6,11 +6,10 @@ module.exports = class Skip extends Command {
     this.name = 'skip'
     this.aliases = ['s', 'n']
     this.category = 'music'
-    this.checkSameChannel = true
-    this.checkPlaying = true
+    this.checks = ['playing', 'sameChannel', 'dj']
   }
 
-  async musicRun({ message }) {
+  async run({ message }) {
     this.player.stop()
     return message.react('👍')
   }
