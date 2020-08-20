@@ -1,4 +1,4 @@
-const Command = require('../../lib/structures/Command')
+const { Command } = require('../../lib/structures')
 
 module.exports = class Ping extends Command {
   constructor(client) {
