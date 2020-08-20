@@ -43,10 +43,10 @@ module.exports = class Command {
 
     if (checks.includes('dj')
     && this.player.track.requester.id !== ctx.member.id
-    && (!ctx.member.roles.cache.map(r => r.id).some(r => this.player.dj.includes(r)) && !this.player.dj.includes(ctx.member.id))
-    && !ctx.member.permissions.has(8)) {
+    && !(ctx.member.roles.cache.map(r => r.id).some(r => this.player.dj.includes(r)) && this.player.dj.includes(ctx.member.id))
+    && !ctx.member.permissions.has(8))
       return ctx.channel.send('Apenas o DJ e o requester tem permissão de pular a musica')
-    }
+
 
     this.run(ctx)
   }
