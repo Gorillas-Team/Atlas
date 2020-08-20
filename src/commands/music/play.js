@@ -19,7 +19,7 @@ module.exports = class Play extends Command {
     })
 
     const query = args.join(' ')
-    let msg = await channel.send(`Procurando pelo video \`${query}\``)
+    const msg = await channel.send(`Procurando pelo video \`${query}\``)
 
     if(player.textChannel !== channel) player.textChannel = channel
 
