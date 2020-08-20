@@ -11,9 +11,9 @@ module.exports = class Command {
 
   init(ctx) {
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
-    if (this.checks.length >= 1) return this._checks(ctx, this.checks)
 
     try {
+      if (this.checks.length >= 1) return this._checks(ctx, this.checks)
       this.run(ctx)
     } catch (err) {
       ctx.channel.send(`Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando \`suport\` \`\`\`js\n${err}\`\`\``)
