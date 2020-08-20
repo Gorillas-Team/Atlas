@@ -6,13 +6,10 @@ module.exports = class Skip extends Command {
     this.name = 'skip'
     this.aliases = ['s', 'n']
     this.category = 'music'
-    this.checks = ['playing', 'sameChannel']
+    this.checks = ['playing', 'sameChannel', 'dj']
   }
 
-  async run({ message, member, channel }) {
-    if(this.player.track.requester.id !== member.id)
-      return channel.send('Apenas o DJ e o requester tem permissão de pular a musica')
-
+  async run({ message }) {
     this.player.stop()
     return message.react('👍')
   }
