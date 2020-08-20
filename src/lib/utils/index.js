@@ -1,3 +1,4 @@
 module.exports = {
-  FileUtils: require('./FileUtils')
+  FileUtils: require('./FileUtils'),
+  TimeUtils: require('./TimeUtils')
 }

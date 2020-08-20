@@ -7,17 +7,19 @@ module.exports = class extends Listener {
     })
   }
 
-  run(VSOld, VSnew) {
-    const channel = VSnew.channel
-    if(!channel) return
+  run(VSOld, VSNew) {
+    const player = this.music.players.get(VSOld.guild.id || VSNew.guild.id)
 
-    const player = this.music.players.get(channel.guild.id)
+    if(!player) return
+    const channel = this.channels.cache.get(player.voiceChannel)
 
-    if (channel.guild.me.voice.channel && channel.members.size < 2) {
-      if(!player) return
-
+    if(channel.members.size < 2){
       player.channelEmpty = true
       player.execTimeout()
-    } else player ? player.channelEmpty = false : null
+    } else {
+      player.channelEmpty = false
+      if(!player.playing) return player.execTimeout()
+      player.execClearTimeout()
+    }
   }
 }

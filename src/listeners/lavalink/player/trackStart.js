@@ -13,7 +13,7 @@ module.exports = class extends Listener {
     player.textChannel.send(`Tocando agora \`${track.info.title}\``)
       .then(m => player.lastMessage = m)
 
-    player.updateDj(this.client.guilds.get(player.get(guild.id).guild))
+    player.updateDj(this.client.guilds.cache.get(player.guild))
 
     if(player._leaveTimeout) player.execClearTimeout()
   }

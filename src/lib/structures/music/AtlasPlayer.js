@@ -6,6 +6,7 @@ module.exports = class AtlasPlayer extends GorilinkPlayer {
     this.channelEmpty = false
     this.dj = []
     this.leaveTimeout = this.manager.client.config.leaveTimeout || 180000
+    this.previousTrack = null
   }
 
   updateDj(guild) {
@@ -17,11 +18,16 @@ module.exports = class AtlasPlayer extends GorilinkPlayer {
     return this.dj = perms.filter((index, p) => perms.indexOf(index) === p)
   }
 
+  updateChannel(newChannel) {
+    return this.voiceChannel = newChannel.id
+  }
+
   execTimeout() {
+    if(this._leaveTimeout) this.execClearTimeout()
     this._leaveTimeout = setTimeout(() => {
       if (this.playing && !this.channelEmpty) return
-      this.destroy()
       this.textChannel.send('😴 Saindo do canal por inatividade')
+      this.destroy()
     }, this.leaveTimeout)
   }
 
