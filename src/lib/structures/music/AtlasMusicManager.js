@@ -26,7 +26,10 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
     if (loadType === 'PLAYLIST_LOADED') {
       if (tracks.length > 30) tracks.splice(30, tracks.length)
 
-      player.queue.push(...tracks.map(t => Object.assign({ requester }, t)))
+      const limitedPlaylist = tracks.map(t => Object.assign({ requester }, t))
+
+      player.queue.push(...limitedPlaylist)
+      player.previousTrack = limitedPlaylist[0]
 
       return msg.edit(`Foram adicionadas \`${tracks.length}\` musicas da playlist \`${playlistInfo.name}\``)
     }
@@ -45,12 +48,19 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
         })
 
         return coll.on('collect', async m => {
-          player.queue.push(tracks[m.content - 1])
+          const track = Object.assign({ requester }, tracks[m.content - 1])
+          player.queue.push(track)
+          player.previousTrack = track
           await msg.edit(`A musica \`${tracks[m.content].info.title}\` foi adicionado a playlist por **${requester.user.username}**`, { embed: null })
         })
       }
 
-      if (type === 'track') player.queue.push(Object.assign({ requester }, tracks[0]))
+      if (type === 'track') {
+        const track = Object.assign({ requester }, tracks[0])
+        player.queue.push(track)
+        player.previousTrack = track
+      }
+      
       return msg.edit(`A musica \`${tracks[0].info.title}\` foi adicionado a playlist por **${requester.user.username}**`)
     }
   }

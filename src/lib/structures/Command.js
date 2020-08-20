@@ -25,28 +25,34 @@ module.exports = class Command {
   _checks(ctx, checks) {
     this.memberChannel = ctx.member.voice.channel
     this.player = this.client.music.players.get(ctx.guild.id)
-    this.voiceChannel = !this.player ? null : ctx.guild.channels.cache.get(this.player.voiceChannel) || this.player.voiceChannel
-
-    if (!this.player) return this.run(ctx)
+    this.voiceChannel = ctx.me.voice.channel
 
     if (checks.includes('voiceChannel') && !this.memberChannel)
-      return ctx.channel.send('Você não esta em nenhum canal de voz')
+      return ctx.channel.send('Você está em nenhum canal de voz')
+
+    if (checks.includes('connected') && !this.voiceChannel)
+      return ctx.channel.send('Não estou conectado há nenhum canal')
+
+    if (!this.player) return this.run(ctx)
+    const track = this.player.track ? this.player.track : null
+
+    if(checks.includes('playing') && !this.player.playing)
+      return ctx.channel.send('Não estou tocando nada no momento')
+
+    if (checks.includes('sameChannel') && this.memberChannel !== this.voiceChannel)
+      return this.player.playing ?
+        ctx.channel.send(`Já estou tocando musica em \`${this.voiceChannel.name}\``) :
+        ctx.channel.send(`Estou conectado em \`${this.voiceChannel.name}\``)
 
     if (checks.includes('permission') && !this.voiceChannel.permissionsFor(ctx.me).has(3145728))
       return ctx.channel.send('Não tenho permissão para me conectar ou falar nesse canal')
 
-    if (checks.includes('playing') && !this.voiceChannel)
-      return ctx.channel.send('Não estou tocando nada')
-
-    if (checks.includes('sameChannel') && this.memberChannel !== this.voiceChannel)
-      return this.player.playing ? ctx.channel.send(`Já estou tocando musica em \`${ctx.me.voice.channel.name}\``) : this.musicRun(ctx)
-
     if (checks.includes('dj')
-    && this.player.track.requester.id !== ctx.member.id
-    && (!ctx.member.roles.cache.map(r => r.id).some(r => this.player.dj.includes(r)) && !this.player.dj.includes(ctx.member.id))
-    && !ctx.member.permissions.has(8)) {
-      return ctx.channel.send('Apenas o DJ e o requester tem permissão de pular a musica')
-    }
+      && track.requester ? track.requester.id !== ctx.member.id : true
+      && !(ctx.member.roles.cache.map(r => r.id).some(r => this.player.dj.includes(r)) && this.player.dj.includes(ctx.member.id))
+      && !ctx.member.permissions.has(32))
+      return ctx.channel.send('Apenas o DJ e o requester tem permissão de fazer isso')
+
 
     this.run(ctx)
   }

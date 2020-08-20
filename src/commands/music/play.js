@@ -18,15 +18,13 @@ module.exports = class Play extends Command {
       textChannel: channel
     })
 
-    player.updateDj(guild)
-
     const query = args.join(' ')
     let msg = await channel.send(`Procurando pelo video \`${query}\``)
 
     if(player.textChannel !== channel) player.textChannel = channel
 
     msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
-      .then(m => m.delete({ timeout: 10000 }))
+    msg.delete({ timeout: 10000 })
 
     if(!player.playing) return player.play()
   }

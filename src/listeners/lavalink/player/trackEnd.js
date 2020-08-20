@@ -3,12 +3,12 @@ const { Listener } = require('../../../lib/structures')
 module.exports = class extends Listener {
   constructor() {
     super({
-      name: 'queueEnd',
+      name: 'trackEnd',
       type: 'lavalink'
     })
   }
 
-  run(player) {
-    player.execTimeout()
+  run(player, track) {
+    player.previousTrack = track || null
   }
 }
