@@ -6,10 +6,12 @@ module.exports = class Command {
     this.description = null
     this.aliases = []
     this.hidden = false
+    this.checks = []
   }
 
   init(ctx) {
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
+    if (this.checks.length >= 1) return this._checks(ctx, this.checks)
 
     try {
       this.run(ctx)
@@ -19,4 +21,26 @@ module.exports = class Command {
   }
 
   run() { }
+
+  _checks(ctx, checks) {
+    this.memberChannel = ctx.member.voice.channel
+    this.player = this.client.music.players.get(ctx.guild.id)
+    this.voiceChannel = !this.player ? null : ctx.guild.channels.cache.get(this.player.voiceChannel) || this.player.voiceChannel
+
+    if (!this.player) return this.run(ctx)
+
+    if (checks.includes('voiceChannel') && !this.memberChannel)
+      return ctx.channel.send('Você não esta em nenhum canal de voz')
+
+    if (checks.includes('permission') && !this.voiceChannel.permissionsFor(ctx.me).has(3145728))
+      return ctx.channel.send('Não tenho permissão para me conectar ou falar nesse canal')
+
+    if (checks.includes('playing') && !this.voiceChannel)
+      return ctx.channel.send('Não estou tocando nada')
+
+    if (checks.includes('sameChannel') && this.memberChannel !== this.voiceChannel)
+      return this.player.playing ? ctx.channel.send(`Já estou tocando musica em \`${ctx.me.voice.channel.name}\``) : this.musicRun(ctx)
+
+    this.run(ctx)
+  }
 }
