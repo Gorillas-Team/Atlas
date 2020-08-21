@@ -48,7 +48,7 @@ module.exports = class Command {
       return ctx.channel.send('Não tenho permissão para me conectar ou falar nesse canal')
 
     if (checks.includes('dj')
-      && track.requester ? track.requester.id !== ctx.member.id : true
+      && track.requester ? track.requester.id !== ctx.member.id : false
       && !(ctx.member.roles.cache.map(r => r.id).some(r => this.player.dj.includes(r)) && this.player.dj.includes(ctx.member.id))
       && !ctx.member.permissions.has(32))
       return ctx.channel.send('Apenas o DJ e o requester tem permissão de fazer isso')
