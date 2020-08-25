@@ -5,7 +5,13 @@ module.exports = class Pause extends Command {
     super(client)
     this.name = 'pause'
     this.category = 'music'
-    this.checks = ['connected', 'playing', 'sameChannel', 'dj']
+    
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true,
+      playingOnly: true
+    }
   }
 
   run({ message }) {

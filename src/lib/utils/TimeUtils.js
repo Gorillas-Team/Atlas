@@ -7,7 +7,7 @@ module.exports = {
     const mins = s % 60
     const hrs = (s - mins) / 60
 
-    return this.pad(hrs) + ':' + this.pad(mins) + ':' + this.pad(secs)
+    return hrs > 0 ? (this.pad(hrs) + ':') : '' + this.pad(mins) + ':' + this.pad(secs)
   },
 
   pad(n, z) {

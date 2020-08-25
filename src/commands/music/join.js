@@ -6,7 +6,11 @@ module.exports = class Join extends Command {
     this.name = 'join'
     this.aliases = ['connect', 'j']
     this.category = 'music'
-    this.checks = ['voiceChannel', 'sameChannel']
+
+    this.conf = {
+      voiceChannelOnly: true,
+      checkPermissions: true
+    }
   }
 
   run({ message, guild, channel }) {

@@ -6,7 +6,12 @@ module.exports = class Leave extends Command {
     this.name = 'leave'
     this.aliases = ['l', 'disconnect']
     this.category = 'music'
-    this.checks = ['voiceChannel', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true
+    }
   }
 
   run({ message }) {

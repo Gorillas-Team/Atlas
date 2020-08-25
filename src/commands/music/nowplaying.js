@@ -8,7 +8,10 @@ module.exports = class NowPlaying extends Command {
     this.name = 'nowplaying'
     this.aliases = ['np', 'playing']
     this.category = 'music'
-    this.checks = ['connected', 'playing']
+    this.conf = {
+      needsPlayer: true,
+      playingOnly: true
+    }
   }
 
   run({ channel }) {

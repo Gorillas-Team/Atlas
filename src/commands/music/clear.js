@@ -7,7 +7,12 @@ module.exports = class Clean extends Command {
     this.name = 'clear'
     this.aliases = ['clean', 'prune']
     this.category = 'music'
-    this.checks = ['voiceChannel', 'connected', 'playing', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true
+    }
   }
 
   run({ message }) {

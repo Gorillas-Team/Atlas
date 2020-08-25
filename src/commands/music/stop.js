@@ -6,7 +6,13 @@ module.exports = class Stop extends Command {
     super(client)
     this.name = 'stop'
     this.category = 'music'
-    this.checks = ['playing', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true,
+      playingOnly: true
+    }
   }
 
   run({ message }) {
