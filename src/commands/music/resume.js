@@ -6,7 +6,13 @@ module.exports = class Resume extends Command {
     this.name = 'resume'
     this.aliases ['unpause']
     this.category = 'music'
-    this.checks = ['connected', 'playing', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true,
+      playingOnly: true
+    }
   }
 
   run({ message }) {

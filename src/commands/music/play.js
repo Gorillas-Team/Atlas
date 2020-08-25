@@ -6,7 +6,11 @@ module.exports = class Play extends Command {
     this.name = 'play'
     this.aliases = ['p']
     this.category = 'music'
-    this.checks = ['voiceChannel', 'permission', 'sameChannel']
+
+    this.conf = {
+      voiceChannelOnly: true,
+      checkPermissions: true
+    }
   }
 
   async run({ channel, member, guild, args }) {
@@ -26,6 +30,9 @@ module.exports = class Play extends Command {
     msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
     msg.delete({ timeout: 10000 })
 
-    if(!player.playing) return player.play()
+    if(!player.playing) {
+      player.updateDj(guild)
+      return player.play()
+    }
   }
 }

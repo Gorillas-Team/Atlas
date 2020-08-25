@@ -6,7 +6,14 @@ module.exports = class Skip extends Command {
     this.name = 'skip'
     this.aliases = ['s', 'n']
     this.category = 'music'
-    this.checks = ['playing', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true,
+      memberTack: true,
+      playingOnly: true
+    }
   }
 
   run({ message }) {

@@ -5,7 +5,13 @@ module.exports = class Loop extends Command {
     super(client)
     this.name = 'loop'
     this.category = 'music'
-    this.checks = ['connected', 'voiceChannel', 'playing', 'sameChannel', 'dj']
+
+    this.conf = {
+      needsPlayer: true,
+      voiceChannelOnly: true,
+      djOnly: true,
+      playingOnly: true
+    }
   }
 
   run({ message, args, channel }) {
