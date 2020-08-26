@@ -9,7 +9,7 @@ module.exports = function musicContext(options) {
   if (this.conf.needsPlayer && !player) return channel.send(':x: | Não estou tocando nada no momento')
 
   if (this.conf.voiceChannelOnly && this.player && (!this.memberChannel || this.memberChannel !== this.voiceChannel)) {
-    return channel.send(`:x: | Já estou conectado em \`${client.channels.cache.get(this.voiceChannel.id || this.voiceChannel).name}\``)
+    return channel.send(`:x: | Estou conectado em \`${client.channels.cache.get(this.voiceChannel.id || this.voiceChannel).name}\``)
   }
 
   if (this.conf.djOnly) {
