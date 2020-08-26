@@ -48,6 +48,10 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract
+    - name: Extract docker tag
+      shell: bash
+      run: echo "##[set-output name=docker;]$(if [ "${{ steps.extract.outputs.branch }}" == "master" ]; then echo "latest"; else echo ${{ steps.extract.outputs.branch }}; fi)"
+      id: tag
     - name: Run docker build
       uses: appleboy/ssh-action@master
       with:
@@ -58,6 +62,6 @@ jobs:
           docker stop ${{ steps.extract.outputs.branch }}
           docker rm ${{ steps.extract.outputs.branch }}
           docker pull psykka/atlas:${{ steps.extract.outputs.branch }}
-          docker run --name ${{ steps.extract.outputs.branch }} --env-file ~/.env/${{ steps.extract.outputs.branch }}.env --restart unless-stopped -d psykka/atlas:${{ steps.extract.outputs.branch }}
+          docker run --name ${{ steps.extract.outputs.branch }} --env-file ~/.env/${{ steps.extract.outputs.branch }}.env --restart unless-stopped -d psykka/atlas:${{ steps.tag.outputs.docker }}
           docker system prune -a -f
 
