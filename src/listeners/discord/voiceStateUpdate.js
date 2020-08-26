@@ -10,15 +10,20 @@ module.exports = class extends Listener {
   run(VSOld, VSNew) {
     const player = this.music.players.get(VSOld.guild.id || VSNew.guild.id)
 
-    if(!player) return
-    const channel = this.channels.cache.get(player.voiceChannel)
+    if (!player) return
+    let channel = this.channels.cache.get(player.voiceChannel.id || player.voiceChannel)
 
-    if(channel.members.size < 2){
+    if (VSNew.channelID !== channel.id && this.user.id === VSNew.id) {
+      player.updateChannel(VSNew.channelID)
+      channel = this.channels.cache.get(VSNew.channelID)
+    }
+
+    if (channel.members.size < 2) {
       player.channelEmpty = true
       player.execTimeout()
     } else {
       player.channelEmpty = false
-      if(!player.playing) return player.execTimeout()
+      if (!player.playing) return player.execTimeout()
       player.execClearTimeout()
     }
   }
