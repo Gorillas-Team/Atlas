@@ -3,14 +3,14 @@ const { FileUtils } = require('../src/lib/utils/index')
 const commands = []
 
 FileUtils.requireDir({ dir: 'src/commands' }, (err, Command) => {
-  if (err) console.err(err)
-  commands.push(Command)
+  if (err) console.error(err)
+  commands.push(new Command())
 })
 
 describe('Commands', () => {
   it('should have no duplicate names or aliases', (done) => {
-    const aliases = commands.reduce((arr, Command) => {
-      const { name, aliases } = new Command()
+    const aliases = commands.reduce((arr, cmd) => {
+      const { name, aliases } = cmd
       return [...arr, name, ...(aliases || [])]
     }, [])
 
@@ -24,8 +24,7 @@ describe('Commands', () => {
   })
 
   it('should have no duplicate class names', async (done) => {
-    const cmds = commands.map(Command => {
-      const cmd = new Command()
+    const cmds = commands.map(cmd => {
       return cmd.constructor.name
     })
 
