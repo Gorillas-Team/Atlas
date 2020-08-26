@@ -26,7 +26,8 @@ module.exports = class AtlasPlayer extends GorilinkPlayer {
   }
 
   updateChannel(newChannel) {
-    return this.voiceChannel = newChannel.id
+    if(!newChannel) return
+    return this.voiceChannel = newChannel
   }
 
   execTimeout() {
