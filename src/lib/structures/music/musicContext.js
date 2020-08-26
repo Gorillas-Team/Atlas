@@ -23,6 +23,7 @@ module.exports = function musicContext(options) {
   if (this.conf.playingOnly && !this.player.playing) return channel.send(':x: | Não estou tocando nada no momento')
 
   if (this.conf.checkPermissions) {
+    if (!this.memberChannel) return channel.send(':x: | Você precisa estar conectado a um canal de voz para executar esse comando')
     if (!this.memberChannel.permissionsFor(me).has(1048576)) return channel.send(':x: | Não tenho permissão para me conectar ao canal')
     if (!this.memberChannel.permissionsFor(me).has(2097152)) return channel.send(':x: | Não tenho permissão para falar no canal')
   }
