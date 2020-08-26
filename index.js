@@ -11,7 +11,8 @@ const Atlas = new AtlasClient({
   nodes: JSON.parse(process.env.LAVALINK),
   clientOptions: JSON.parse(process.env.CLIENT_OPTIONS || '{}'),
   logChannel: process.env.LOG_CHANNEL,
-  leaveTimeout: process.env.LEAVE_TIMEOUT || null
+  leaveTimeout: process.env.LEAVE_TIMEOUT || null,
+  color: process.env.COLOR || 0xFFFFFF
 })
 
 Atlas.start()
