@@ -24,6 +24,7 @@ module.exports = class NowPlaying extends Command {
       .setURL(uri)
       .setDescription(`\`\`\`▶ [${TimeUtils.progress({ total: length, current: time, length: 24 })}] - [${ TimeUtils.msToTime(time) }]\`\`\``)
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)
+      .setColor(this.client.config.color)
     )
   }
 }
