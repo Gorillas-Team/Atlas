@@ -50,7 +50,7 @@ jobs:
       id: extract
     - name: Extract docker tag
       shell: bash
-      run: echo "##[set-output name=docker;]$(if [ "${{ steps.extract.outputs.branch }}" == "master" ]; then echo "latest"; fi)"
+      run: echo "##[set-output name=docker;]$(if [ "${{ steps.extract.outputs.branch }}" == "master" ]; then echo "latest"; else echo ${{ steps.extract.outputs.branch }}; fi)"
       id: tag
     - name: Run docker build
       uses: appleboy/ssh-action@master

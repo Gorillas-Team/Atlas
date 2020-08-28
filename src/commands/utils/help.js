@@ -24,6 +24,7 @@ module.exports = class Help extends Command {
         name: `🛠️ | Utilitários [${commandPerCategory('utils').size}]`,
         value: commandPerCategory('utils').map(mapCommand).join(', ')
       })
+      .setColor(this.client.config.color)
 
     channel.send(embed)
   }

@@ -11,7 +11,7 @@ module.exports = class Skip extends Command {
       needsPlayer: true,
       voiceChannelOnly: true,
       djOnly: true,
-      memberTack: true,
+      memberTrack: true,
       playingOnly: true
     }
   }
