@@ -61,7 +61,7 @@ jobs:
         script: |
           docker stop ${{ steps.extract.outputs.branch }}
           docker rm ${{ steps.extract.outputs.branch }}
-          docker pull psykka/atlas:${{ steps.extract.outputs.branch }}
+          docker pull psykka/atlas:${{ steps.tag.outputs.docker }}
           docker run --name ${{ steps.extract.outputs.branch }} --env-file ~/.env/${{ steps.extract.outputs.branch }}.env --restart unless-stopped -d psykka/atlas:${{ steps.tag.outputs.docker }}
           docker system prune -a -f
 
