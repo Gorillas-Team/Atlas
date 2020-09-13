@@ -32,6 +32,6 @@
   "dependencies": {
     "discord.js": "^12.2.0",
     "gorilink": "^1.2.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
