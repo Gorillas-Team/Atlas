@@ -17,7 +17,7 @@ module.exports = class Back extends Command {
   async run({ message, channel }) {
     if(!this.player || !this.player.previousTrack) return channel.send('Não toquei nada recentemente')
     this.player.queue.unshift(this.player.previousTrack)
-    this.player.stop()
+    this.player.play()
     return message.react('⏪')
   }
 }
