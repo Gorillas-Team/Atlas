@@ -1,3 +1,5 @@
+require('./src/lib/structures/discord')
+
 const AtlasClient = require('./src/AtlasClient')
 const banner = require('fs').readFileSync('./banner.txt').toString()
 

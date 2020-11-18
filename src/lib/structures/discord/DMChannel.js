@@ -14,15 +14,13 @@ Structures.extend('DMChannel', function (DMChannel) {
       switch (typeof messageContent) {
       case 'string':
         messageContent = replaceToken(this.client, messageContent)
-        super.send(messageContent, ...opts.slice(1))
-
-        break
+        
+        return super.send(messageContent, ...opts.slice(1))
       case 'object':
         const { content } = messageContent
         messageContent = { content: replaceToken(this.client, content), ...messageContent }
 
-        super.send(messageContent)
-        break
+        return super.send(messageContent)
       }
     }
   }
