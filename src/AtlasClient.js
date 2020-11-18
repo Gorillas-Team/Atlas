@@ -44,7 +44,6 @@ module.exports = class AtlasClient extends Client {
   }
 
   start() {
-    require('./lib/structures/discord')
     this.initLoaders()
     this.login(this.token)
     return this

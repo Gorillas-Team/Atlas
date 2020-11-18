@@ -27,7 +27,7 @@ module.exports = class Eval extends Command {
 
       if (flags && flags.some(x => x.toLowerCase() === '--s' || x === '--silent')) return
       channel.send(result.replace(new RegExp(this.client.token, 'g'), '👍').replace(/require('child_process')/g, ''), { code: 'js' })
-    } catch (e) { channel.send(e, { code: 'js' }) }
+    } catch (e) { channel.send(e.message, { code: 'js' }) }
 
     function exec(code) {
       return new Promise(function (res, rej) {
