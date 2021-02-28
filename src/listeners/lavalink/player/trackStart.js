@@ -10,7 +10,7 @@ module.exports = class extends Listener {
 
   run(player, track) {
     if(player.lastMessage && !player.lastMessage.deleted) player.lastMessage.delete()
-    player.textChannel.send(`Tocando agora \`${track.info.title}\``)
+    player.textChannel.send(`Tocando agora \`${track.title}\``)
       .then(m => player.lastMessage = m)
 
     if(player._leaveTimeout) player.execClearTimeout()

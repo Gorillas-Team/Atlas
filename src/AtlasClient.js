@@ -1,4 +1,5 @@
 const { Client, Collection } = require('discord.js')
+const { AtlasMusicManager, AtlasPlayer } = require('./lib/structures/music')
 const Loaders = require('./loaders')
 
 module.exports = class AtlasClient extends Client {
@@ -17,6 +18,16 @@ module.exports = class AtlasClient extends Client {
     }
 
     this.commands = new Collection()
+
+    this.music = new AtlasMusicManager(this, this.config.nodes, {
+      Player: AtlasPlayer,
+      sendWS: (data) => {
+        const guild = this.guilds.cache.get(data.d.guild_id)
+        if (!guild) return
+
+        return guild.shard.send(data)
+      }
+    })
   }
 
   initLoaders() {

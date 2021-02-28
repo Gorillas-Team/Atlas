@@ -15,7 +15,7 @@ module.exports = class NowPlaying extends Command {
   }
 
   run({ channel }) {
-    const { title, author, uri, identifier, length } = this.player.queue[0].info
+    const { title, author, uri, identifier, length } = this.player.queue[0]
     const time = this.player.state.position
 
     return channel.send(new MessageEmbed()

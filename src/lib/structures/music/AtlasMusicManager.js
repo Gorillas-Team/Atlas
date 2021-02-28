@@ -39,7 +39,7 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
         tracks.splice(5, tracks.length)
         await msg.edit(new MessageEmbed()
           .setTitle('Seleção de musicas')
-          .setDescription(tracks.map(track => `${tracks.indexOf(track) + 1}. [${track.info.title}](${track.info.uri})`))
+          .setDescription(tracks.map(track => `${tracks.indexOf(track) + 1}. [${track.title}](${track.uri})`))
           .setFooter('Tempo de resposta é de 15 segundos')
         )
 
@@ -51,7 +51,7 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
           const track = Object.assign({ requester }, tracks[m.content - 1])
           player.queue.push(track)
           player.previousTrack = track
-          await msg.edit(`A musica \`${tracks[m.content].info.title}\` foi adicionado a playlist por **${requester.user.username}**`, { embed: null })
+          await msg.edit(`A musica \`${tracks[m.content].title}\` foi adicionado a playlist por **${requester.user.username}**`, { embed: null })
         })
       }
 
@@ -60,8 +60,8 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
         player.queue.push(track)
         player.previousTrack = track
       }
-      
-      return msg.edit(`A musica \`${tracks[0].info.title}\` foi adicionado a playlist por **${requester.user.username}**`)
+
+      return msg.edit(`A musica \`${tracks[0].title}\` foi adicionado a playlist por **${requester.user.username}**`)
     }
   }
 }

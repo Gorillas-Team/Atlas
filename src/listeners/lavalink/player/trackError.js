@@ -9,7 +9,7 @@ module.exports = class extends Listener {
   }
 
   run(player, track, data) {
-    player.textChannel.send(`Algo deu errado ao tocar a musica: \`${track.info.title}\``)
+    player.textChannel.send(`Algo deu errado ao tocar a musica: \`${track.title}\``)
     console.log('An unexpected error happened on', player.guild.id, track, data)
   }
 }
