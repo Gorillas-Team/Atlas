@@ -1,6 +1,7 @@
-const { Structures } = require('discord.js')
+const { Structures, MessageEmbed } = require('discord.js')
 
 const replaceToken = (client, string) => string.replace(new RegExp(client.token, 'g'), '👍')
+const replaceTokenObj = (client, obj) => JSON.parse(replaceToken(client, JSON.stringify(obj)))
 
 Structures.extend('TextChannel', function (TextChannel) {
   return class extends TextChannel {
@@ -17,8 +18,9 @@ Structures.extend('TextChannel', function (TextChannel) {
 
         return super.send(messageContent, ...opts.slice(1))
       case 'object':
-        const { content } = messageContent
-        messageContent = { content: replaceToken(this.client, content), ...messageContent }
+        if(messageContent instanceof MessageEmbed) return super.send({ embed: replaceTokenObj(this.client, messageContent)})
+
+        messageContent = replaceTokenObj(this.client, messageContent)
 
         return super.send(messageContent)
       }

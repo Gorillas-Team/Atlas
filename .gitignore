@@ -2,6 +2,8 @@
 .vscode/
 .deploy/deploy_rsa
 
+/.idea
+
 # Logs
 logs
 *.log
