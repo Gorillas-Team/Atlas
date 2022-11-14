@@ -1,18 +1,18 @@
 import Listener from '../../lib/structures/Listener.js'
 
 export default class extends Listener {
-  constructor() {
+  constructor () {
     super({
       name: 'voiceStateUpdate'
     })
   }
 
-  async run(VSOld, VSNew) {
+  async run (VSOld, VSNew) {
     const player = this.music.players.get(VSOld.guild.id || VSNew.guild.id)
 
     if (!player) return
 
-    let channel = await VSNew.guild.members.fetch(VSNew.id).voice.channel
+    const channel = await VSNew.guild.members.fetch(VSNew.id).voice.channel
 
     if (VSNew.channelID !== channel.id && this.user.id === VSNew.id) {
       player.updateChannel(VSNew.channelID)

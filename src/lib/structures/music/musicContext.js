@@ -1,6 +1,6 @@
 // TODO: pls Psykka from future, refactor this file
 
-export default function musicContext(options) {
+export default function musicContext (options) {
   const player = options.player || null
   const memberChannel = options.memberChannel
   const voiceChannel = options.voiceChannel

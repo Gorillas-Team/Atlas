@@ -1,13 +1,13 @@
 import Listener from '../../lib/structures/Listener.js'
 
 export default class extends Listener {
-  constructor() {
+  constructor () {
     super({
-      name: 'messageCreate',
+      name: 'messageCreate'
     })
   }
 
-  run(msg) {
+  run (msg) {
     if (msg.channel.type === 'dm' || msg.author.bot) return
 
     const prefix = this.config.prefixes.find(x => msg.content.toLowerCase().startsWith(x))
@@ -28,10 +28,9 @@ export default class extends Listener {
   }
 }
 
-function ctx({ client, message, args, me }) {
+function ctx ({ client, message, args, me }) {
   return {
     guild: message.guild,
-    me: message.guild.me,
     member: message.member,
     author: message.author,
     channel: message.channel,

@@ -3,7 +3,7 @@ import gorilink from 'gorilink'
 const { Queue } = gorilink
 
 export default class Clean extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'clear'
     this.aliases = ['clean', 'prune']
@@ -16,7 +16,7 @@ export default class Clean extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.queue = new Queue()
     return message.react('🗑️')
   }

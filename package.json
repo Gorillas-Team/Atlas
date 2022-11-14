@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node .",
     "dev": "nodemon",
-    "lint:fix": "eslint --fix .",
-    "lint": "eslint test/ src/",
+    "lint:fix": "eslint --fix src/",
+    "lint": "eslint src/",
     "test": "mocha",
     "test:watch": "mocha --watch"
   },
@@ -26,7 +26,11 @@
   "homepage": "https://github.com/Gorillas-Team/Atlas#readme",
   "devDependencies": {
     "dotenv": "^16.0.3",
-    "eslint": "^8.27.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20"
   },

@@ -1,7 +1,7 @@
 import Command from '../../lib/structures/Command.js'
 
 export default class Leave extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'leave'
     this.aliases = ['l', 'disconnect']
@@ -14,7 +14,7 @@ export default class Leave extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.destroy()
     this.player.execClearTimeout()
     return message.react('👋')

@@ -1,7 +1,7 @@
 import musicContext from './music/musicContext.js'
 
 export default class Command {
-  constructor(client) {
+  constructor (client) {
     this.client = client
     this.name = null
     this.category = null
@@ -19,7 +19,7 @@ export default class Command {
     }
   }
 
-  async init(ctx) {
+  async init (ctx) {
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
 
     try {
@@ -45,5 +45,5 @@ export default class Command {
     }
   }
 
-  run() { }
+  run () { }
 }

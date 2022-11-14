@@ -2,14 +2,14 @@ import Listener from '../../lib/structures/Listener.js'
 import LavalinkListenerLoader from '../../loaders/LavalinkListenerLoader.js'
 
 export default class extends Listener {
-  constructor() {
+  constructor () {
     super({
       name: 'ready',
       once: true
     })
   }
 
-  run() {
+  run () {
     this.music.start(this.user.id)
 
     new LavalinkListenerLoader(this).load()

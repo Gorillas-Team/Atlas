@@ -38,7 +38,7 @@ describe('Commands', () => {
   })
 })
 
-function arrayDuplicates(arr) {
+function arrayDuplicates (arr) {
   return arr.filter((value, index) => {
     return arr.indexOf(value) !== index
   })

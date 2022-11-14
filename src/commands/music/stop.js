@@ -3,7 +3,7 @@ import gorilink from 'gorilink'
 const { Queue } = gorilink
 
 export default class Stop extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'stop'
     this.category = 'music'
@@ -16,7 +16,7 @@ export default class Stop extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.queue = new Queue()
     this.player.stop()
     return message.react('🛑')

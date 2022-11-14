@@ -2,14 +2,14 @@ import Command from '../../lib/structures/Command.js'
 import { EmbedBuilder } from 'discord.js'
 
 export default class Help extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'help'
     this.aliases = ['ajuda']
     this.category = 'utils'
   }
 
-  run({ channel, guild }) {
+  run ({ channel, guild }) {
     const commands = this.client.commands.filter(({ hide, dev }) => !hide && !dev)
     const commandPerCategory = (category) => commands.filter(cmd => cmd.category === category)
     const mapCommand = (command) => `\`${command.name}\``

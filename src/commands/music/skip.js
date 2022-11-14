@@ -1,7 +1,7 @@
 import Command from '../../lib/structures/Command.js'
 
 export default class Skip extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'skip'
     this.aliases = ['s', 'n']
@@ -16,7 +16,7 @@ export default class Skip extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.stop()
     return message.react('👍')
   }

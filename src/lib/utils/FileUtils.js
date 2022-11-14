@@ -2,8 +2,8 @@ import { readdirSync, statSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
 export default class FileUtils {
-  static async requireDir({ dir, filesOnly = ['js'], recursive = true }, callback) {
-    if(!existsSync(dir)) return false
+  static async requireDir ({ dir, filesOnly = ['js'], recursive = true }, callback) {
+    if (!existsSync(dir)) return false
 
     const files = readdirSync(dir)
 

@@ -1,5 +1,5 @@
 export default class Loader {
-  constructor(client, name) {
+  constructor (client, name) {
     this.client = client
     this.critical = true
     this.success = 0
@@ -7,15 +7,15 @@ export default class Loader {
     this.name = name || null
   }
 
-  load() {
+  load () {
     return true
   }
 
-  log(message) {
+  log (message) {
     return console.log(`${this.name ? '[' + this.name.toUpperCase() + '] ' : ''}${message}`)
   }
 
-  logError(message) {
+  logError (message) {
     return console.error(`${this.name ? '[' + this.name.toUpperCase() + '] ' : ''}${message}`)
   }
 }

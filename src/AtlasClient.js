@@ -4,7 +4,7 @@ import AtlasPlayer from './lib/structures/music/AtlasPlayer.js'
 import Loaders from './loaders/Loaders.js'
 
 export default class AtlasClient extends Client {
-  constructor(options = {}) {
+  constructor (options = {}) {
     super({
       ...options.clientOptions,
       intents: options.intents
@@ -36,12 +36,12 @@ export default class AtlasClient extends Client {
     })
   }
 
-  initLoaders() {
-    for(const Loader of Loaders) {
+  initLoaders () {
+    for (const Loader of Loaders) {
       try {
         const loader = new Loader(this)
-        if(loader.critical) loader.init()
-      } catch(ex) {
+        if (loader.critical) loader.init()
+      } catch (ex) {
         throw new Error(ex)
       }
     }
@@ -49,7 +49,7 @@ export default class AtlasClient extends Client {
     return this
   }
 
-  start() {
+  start () {
     this.initLoaders()
     this.login(this.token)
     return this
