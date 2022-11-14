@@ -16,7 +16,7 @@ const Atlas = new AtlasClient({
   logChannel: process.env.LOG_CHANNEL,
   leaveTimeout: process.env.LEAVE_TIMEOUT || null,
   color: process.env.COLOR || 0xFFFFFF,
-  intents: process.env.INTENTS || 33411
+  intents: process.env.INTENTS || 37507
 })
 
 Atlas.start()

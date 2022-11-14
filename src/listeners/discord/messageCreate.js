@@ -20,14 +20,15 @@ export default class extends Listener {
 
     if (!args[0]) return
 
-    const cmd = args.shift().toLowerCase(),
-      handler = this.commands.find(c => c.name === cmd || c.aliases.includes(cmd))
+    const cmd = args.shift().toLowerCase()
+    const handler = this.commands.find(c => c.name === cmd || c.aliases.includes(cmd))
+    const me = msg.guild.members.cache.get(this.user.id)
 
-    if (handler) return handler.init(ctx({ client: this, message: msg, args }))
+    if (handler) return handler.init(ctx({ client: this, message: msg, args, me }))
   }
 }
 
-function ctx({ client, message, args }) {
+function ctx({ client, message, args, me }) {
   return {
     guild: message.guild,
     me: message.guild.me,
@@ -39,5 +40,6 @@ function ctx({ client, message, args }) {
     message,
     client,
     args,
+    me
   }
 }

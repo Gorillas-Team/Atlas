@@ -19,14 +19,14 @@ export default class Command {
     }
   }
 
-  init(ctx) {
+  async init(ctx) {
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
 
     try {
       if (Object.values(this.conf).includes(true)) {
-        this.memberChannel = ctx.member.voice.channel
+        this.memberChannel = await ctx.guild.channels.fetch(ctx.member.voice.channelId)
         this.player = this.client.music.players.get(ctx.guild.id)
-        this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channel
+        this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
         return musicContext({
           player: this.player,
