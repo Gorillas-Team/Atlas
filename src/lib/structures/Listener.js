@@ -1,4 +1,4 @@
-module.exports = class Listener {
+export default class Listener {
   constructor(options = {}) {
     this.name = options.name || null
     this.once = options.once || null

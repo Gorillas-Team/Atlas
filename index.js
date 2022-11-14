@@ -1,7 +1,8 @@
 // require('./src/lib/structures/discord')
 
-const AtlasClient = require('./src/AtlasClient')
-const banner = require('fs').readFileSync('assets/banner.txt').toString()
+import AtlasClient from './src/AtlasClient.js'
+import { readFileSync } from 'fs'
+const banner = readFileSync('assets/banner.txt').toString()
 
 console.log(banner)
 
@@ -15,7 +16,7 @@ const Atlas = new AtlasClient({
   logChannel: process.env.LOG_CHANNEL,
   leaveTimeout: process.env.LEAVE_TIMEOUT || null,
   color: process.env.COLOR || 0xFFFFFF,
-  intents: process.env.INTENTS || 643
+  intents: process.env.INTENTS || 33411
 })
 
 Atlas.start()

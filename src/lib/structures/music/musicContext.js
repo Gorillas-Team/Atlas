@@ -1,4 +1,6 @@
-module.exports = function musicContext(options) {
+// TODO: pls Psykka from future, refactor this file
+
+export default function musicContext(options) {
   this.player = options.player
   this.memberChannel = options.memberChannel
   this.voiceChannel = options.voiceChannel

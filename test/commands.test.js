@@ -1,4 +1,4 @@
-const { FileUtils } = require('../src/lib/utils/index')
+import FileUtils from '../src/lib/utils/FileUtils.js'
 
 const commands = []
 

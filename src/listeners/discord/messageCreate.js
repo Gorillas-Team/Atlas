@@ -1,16 +1,16 @@
-const { Listener } = require('../../lib/structures')
+import Listener from '../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
+export default class extends Listener {
   constructor() {
     super({
-      name: 'message',
+      name: 'messageCreate',
     })
   }
 
   run(msg) {
     if (msg.channel.type === 'dm' || msg.author.bot) return
 
-    const prefix = this.config.prefixes.find(x => msg.content.toLowerCase().startsWith(x)) || msg.guild.me.toString().toLowerCase()
+    const prefix = this.config.prefixes.find(x => msg.content.toLowerCase().startsWith(x))
 
     if (!msg.content.toLowerCase().startsWith(prefix)) return
 

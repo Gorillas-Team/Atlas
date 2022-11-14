@@ -1,7 +1,7 @@
-const { Loader } = require('../lib/structures')
-const { FileUtils } = require('../lib/utils')
+import Loader from '../lib/structures/Loader.js'
+import FileUtils from '../lib/utils/FileUtils.js'
 
-module.exports = class LavalinkListenerLoader extends Loader {
+export default class LavalinkListenerLoader extends Loader {
   constructor (client) {
     super(client, 'listeners')
     this.critical = false
@@ -19,17 +19,17 @@ module.exports = class LavalinkListenerLoader extends Loader {
   }
 
   init () {
-    this.log('Carregando...')
+    this.log('Carregando Lavalink Listeners')
     return FileUtils.requireDir({ dir: 'src/listeners/lavalink' }, async (error, Listener) => {
       if (error) {
-        this.logError('    Erro: ' + error.stack)
+        this.logError('    Stack: ' + error.stack)
         return this.failed++
       }
 
       const listener = new Listener()
       listener.listen(this.client)
 
-      console.info('    L[' + listener.name + '] carregado')
+      console.info('[LAVALINK LISTENER] [' + listener.name + '] carregado')
     })
   }
 }

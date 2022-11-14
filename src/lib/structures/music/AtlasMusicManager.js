@@ -1,7 +1,10 @@
-const { GorilinkManager } = require('gorilink')
-const { MessageEmbed } = require('discord.js')
+// TODO: update gorilink to ES Modules
+import gorilink from 'gorilink'
+const { GorilinkManager } = gorilink
 
-module.exports = class AtlasMusicManager extends GorilinkManager {
+import { EmbedBuilder } from 'discord.js'
+
+export default class AtlasMusicManager extends GorilinkManager {
   constructor(client, nodes, options) {
     const nodesResumable = nodes.map(n => Object.assign({ resumeKey: Math.random().toString(36).slice(2) }, n))
 
@@ -37,7 +40,7 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
     if (loadType === 'TRACK_LOADED' || 'SEARCH_RESULT') {
       if (type === 'search' && loadType === 'SEARCH_RESULT') {
         tracks.splice(5, tracks.length)
-        await msg.edit(new MessageEmbed()
+        await msg.edit(new EmbedBuilder()
           .setTitle('Seleção de musicas')
           .setDescription(tracks.map(track => `${tracks.indexOf(track) + 1}. [${track.title}](${track.uri})`))
           .setFooter('Tempo de resposta é de 15 segundos')

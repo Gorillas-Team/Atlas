@@ -1,6 +1,6 @@
-const musicContext = require('./music/musicContext')
+import musicContext from './music/musicContext.js'
 
-module.exports = class Command {
+export default class Command {
   constructor(client) {
     this.client = client
     this.name = null

@@ -1,7 +1,7 @@
-const { Command } = require('../../lib/structures')
-const { MessageEmbed } = require('discord.js')
+import Command from '../../lib/structures/Command.js'
+import { EmbedBuilder } from 'discord.js'
 
-module.exports = class Help extends Command {
+export default class Help extends Command {
   constructor(client) {
     super(client)
     this.name = 'help'
@@ -14,7 +14,7 @@ module.exports = class Help extends Command {
     const commandPerCategory = (category) => commands.filter(cmd => cmd.category === category)
     const mapCommand = (command) => `\`${command.name}\``
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle('🌐 | Central de comandos')
       .setColor(guild.me.displayHexColor)
       .addFields({

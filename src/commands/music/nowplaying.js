@@ -1,8 +1,8 @@
-const { Command } = require('../../lib/structures')
-const { TimeUtils } = require('../../lib/utils')
-const { MessageEmbed } = require('discord.js')
+import Command from '../../lib/structures/Command.js'
+import TimeUtils from '../../lib/utils/TimeUtils.js'
+import { EmbedBuilder } from 'discord.js'
 
-module.exports = class NowPlaying extends Command {
+export default class NowPlaying extends Command {
   constructor(client) {
     super(client)
     this.name = 'nowplaying'
@@ -18,7 +18,7 @@ module.exports = class NowPlaying extends Command {
     const { title, author, uri, identifier, length } = this.player.queue[0]
     const time = this.player.state.position
 
-    return channel.send(new MessageEmbed()
+    return channel.send(new EmbedBuilder()
       .setAuthor(author)
       .setTitle('Tocando agora ' + title)
       .setURL(uri)

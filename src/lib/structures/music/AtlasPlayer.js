@@ -1,6 +1,8 @@
-const { GorilinkPlayer } = require('gorilink')
+// TODO: update gorilink to ES Modules
+import gorilink from 'gorilink'
+const { GorilinkPlayer } = gorilink
 
-module.exports = class AtlasPlayer extends GorilinkPlayer {
+export default class AtlasPlayer extends GorilinkPlayer {
   constructor(node, options, manager) {
     super(node, options, manager)
     this.channelEmpty = false

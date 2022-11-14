@@ -1,6 +1,6 @@
-const { Listener } = require('../../lib/structures')
+import Listener from '../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
+export default class extends Listener {
   constructor() {
     super({
       name: 'voiceStateUpdate'

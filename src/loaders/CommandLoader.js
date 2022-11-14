@@ -1,7 +1,7 @@
-const { Loader } = require('../lib/structures')
-const { FileUtils } = require('../lib/utils')
+import Loader from '../lib/structures/Loader.js'
+import FileUtils from '../lib/utils/FileUtils.js'
 
-module.exports = class CommandLoader extends Loader {
+export default class CommandLoader extends Loader {
   constructor (client) {
     super(client, 'commands')
     this.critical = true
@@ -19,16 +19,17 @@ module.exports = class CommandLoader extends Loader {
   }
 
   init () {
-    this.log('Carregando...')
+    this.log('Carregando Comandos')
     return FileUtils.requireDir({ dir: 'src/commands' }, (error, Command) => {
       if (error) {
-        this.logError('    Erro: ' + error.stack)
+        this.logError('    Stack: ' + error.stack)
         return this.failed++
       }
 
       const cmd = new Command(this.client)
       this.client.commands.set(cmd.name, cmd)
-      console.info('    L[' + cmd.category + '] - ' + cmd.name + ' carregado')
+
+      console.info('[COMMAND LISTENER] [' + cmd.category + '] ' + cmd.name + ' carregado')
       this.success++
     })
   }

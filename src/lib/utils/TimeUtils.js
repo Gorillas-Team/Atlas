@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   msToTime(s) {
     const ms = s % 1000
     s = (s - ms) / 1000

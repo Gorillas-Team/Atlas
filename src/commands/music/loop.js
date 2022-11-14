@@ -1,6 +1,6 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Loop extends Command {
+export default class Loop extends Command {
   constructor(client) {
     super(client)
     this.name = 'loop'

@@ -1,8 +1,8 @@
-const { Command } = require('../../lib/structures')
-const fetch = require('node-fetch')
-const { inspect } = require('util')
+import Command from '../../lib/structures/Command.js'
+import fetch from 'node-fetch'
+import { inspect } from 'util'
 
-module.exports = class Eval extends Command {
+export default class Eval extends Command {
   constructor(client) {
     super(client)
     this.name = 'eval'

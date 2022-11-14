@@ -1,7 +1,7 @@
-const { Listener } = require('../../lib/structures')
-const { inspect } = require('util')
+import Listener from '../../lib/structures/Listener.js'
+import { inspect } from 'util'
 
-module.exports = class extends Listener {
+export default class extends Listener {
   constructor() {
     super({
       name: 'error'

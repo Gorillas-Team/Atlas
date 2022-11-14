@@ -1,7 +1,6 @@
-const { Listener } = require('../../lib/structures')
-const { inspect } = require('util')
+import Listener from '../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
+export default class extends Listener {
   constructor() {
     super({
       name: 'raw'
@@ -9,6 +8,10 @@ module.exports = class extends Listener {
   }
 
   async run(packet) {
+    // if (packet.t === 'MESSAGE_CREATE') {
+    //   const message = packet.d
+    //   console.log('content:', message.content)
+    // }
     this.music.packetUpdate(packet)
   }
 }

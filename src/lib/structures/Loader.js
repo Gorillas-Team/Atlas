@@ -1,4 +1,4 @@
-module.exports = class Loader {
+export default class Loader {
   constructor(client, name) {
     this.client = client
     this.critical = true

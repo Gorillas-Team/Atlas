@@ -1,6 +1,6 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Play extends Command {
+export default class Play extends Command {
   constructor(client) {
     super(client)
     this.name = 'play'

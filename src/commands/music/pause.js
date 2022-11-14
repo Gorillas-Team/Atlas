@@ -1,11 +1,11 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Pause extends Command {
+export default class Pause extends Command {
   constructor(client) {
     super(client)
     this.name = 'pause'
     this.category = 'music'
-    
+
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Discord music bot focused on high sound quality",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node .",
     "dev": "nodemon",
@@ -12,7 +13,7 @@
     "test:watch": "mocha --watch"
   },
   "engines": {
-    "node": ">=13.x"
+    "node": ">=18.x"
   },
   "repository": {
     "type": "git",
