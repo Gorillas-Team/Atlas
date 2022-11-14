@@ -4,7 +4,10 @@ const Loaders = require('./loaders')
 
 module.exports = class AtlasClient extends Client {
   constructor(options = {}) {
-    super(options.clientOptions)
+    super({
+      ...options.clientOptions,
+      intents: options.intents
+    })
     this.token = options.token
     this.config = {
       owners: options.owners instanceof Array ? options.owners : [options.owners],

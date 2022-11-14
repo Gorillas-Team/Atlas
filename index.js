@@ -14,7 +14,8 @@ const Atlas = new AtlasClient({
   clientOptions: JSON.parse(process.env.CLIENT_OPTIONS || '{}'),
   logChannel: process.env.LOG_CHANNEL,
   leaveTimeout: process.env.LEAVE_TIMEOUT || null,
-  color: process.env.COLOR || 0xFFFFFF
+  color: process.env.COLOR || 0xFFFFFF,
+  intents: process.env.INTENTS || 643
 })
 
 Atlas.start()
