@@ -1,6 +1,7 @@
 import Command from '../../lib/structures/Command.js'
 import fetch from 'node-fetch'
 import { inspect } from 'util'
+import { codeBlock } from 'discord.js'
 
 export default class Eval extends Command {
   constructor(client) {
@@ -20,14 +21,19 @@ export default class Eval extends Command {
       result = typeof result !== 'string' ? inspect(result, { depth }) : result
       if (result.length > 1700){
         channel.send('Vou mandar na dm.')
-        member.send('https://speedbin.xyz/' + (await fetch('https://speedbin.xyz/documents/', { method: 'POST', body: result })
+        member.send('https://speedbin-new.glitch.me/' + (await fetch('https://speedbin-new.glitch.me/documents/', { method: 'POST', body: result })
           .then(r => r.json())
           .then(r => { return r.key })))
       }
 
       if (flags && flags.some(x => x.toLowerCase() === '--s' || x === '--silent')) return
-      channel.send(result.replace(new RegExp(this.client.token, 'g'), '👍').replace(/require('child_process')/g, ''), { code: 'js' })
-    } catch (e) { channel.send(e.message, { code: 'js' }) }
+
+      const jsString = result.replace(new RegExp(this.client.token, 'g'), '👍').replace(/require('child_process')/g, '')
+      channel.send(codeBlock('js', jsString))
+
+    } catch (e) {
+      channel.send(codeBlock('js', e.message))
+    }
 
     function exec(code) {
       return new Promise(function (res, rej) {
