@@ -9,6 +9,6 @@ export default class extends Listener {
 
   async run (oldM, newM) {
     if (oldM.content === newM.content) return
-    this.emit('message', newM)
+    this.emit('messageCreate', newM)
   }
 }
