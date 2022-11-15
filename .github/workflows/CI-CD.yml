@@ -23,7 +23,7 @@ jobs:
       - name: ESLint
         run: yarn lint
 
-      - name: Unity test
+      - name: Unit test
         run: yarn test
 
   build:

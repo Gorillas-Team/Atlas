@@ -22,7 +22,7 @@ export default class Loader {
     }
   }
 
-  onLoad() {
+  onLoad () {
     throw new Error(`${this.name}.onLoad() not implemented`)
   }
 

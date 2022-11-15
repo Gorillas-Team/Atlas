@@ -11,7 +11,7 @@ export const loadDirectory = async (path) => {
     if (isDirectory) return loadDirectory(filePath)
 
     if (file.endsWith('.js')) {
-      return import(filePath)
+      return import('file://' + filePath)
         .then(mod => mod.default)
     }
   })
