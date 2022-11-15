@@ -22,7 +22,14 @@ export default {
     return [h, m, ss].map(n => this.pad(n, 2)).join(':')
   },
 
-  progress ({ length, total, current }) {
+  /**
+   * Creates a progress bar
+   * @param {number} length length of the bar
+   * @param {number} total total of the bar
+   * @param {number} current current state of the bar
+   * @returns
+   */
+  progress (length, total, current) {
     const char = '─'.repeat(length)
     const index = current / total * length
     return char.slice(0, index) + '🔘' + char.slice(index)
