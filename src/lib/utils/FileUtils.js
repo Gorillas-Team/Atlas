@@ -1,27 +1,21 @@
-import { readdirSync, statSync, existsSync } from 'fs'
-import { resolve } from 'path'
+import { readdir, stat } from 'node:fs/promises'
+import { resolve } from 'node:path'
 
-export default class FileUtils {
-  static async requireDir ({ dir, filesOnly = ['js'], recursive = true }, callback) {
-    if (!existsSync(dir)) return false
+export const loadDirectory = async (path) => {
+  const files = await readdir(path)
 
-    const files = readdirSync(dir)
+  const promisedFiles = files.map(async file => {
+    const filePath = resolve(path, file)
+    const isDirectory = await stat(filePath).then(d => d.isDirectory())
 
-    for (const file of files) {
-      const fullPath = resolve(dir, file)
+    if (isDirectory) return loadDirectory(filePath)
 
-      if (recursive && statSync(fullPath).isDirectory()) {
-        this.requireDir({ dir: fullPath, filesOnly, recursive }, callback)
-      }
-
-      if (filesOnly.some(ext => new RegExp(`.${ext}$`).test(file))) {
-        try {
-          const required = await import('file://' + fullPath)
-          callback(null, required.default)
-        } catch (err) {
-          callback(err, file)
-        }
-      }
+    if (file.endsWith('.js')) {
+      return import(filePath)
+        .then(mod => mod.default)
     }
-  }
+  })
+
+  return Promise.all(promisedFiles)
+    .then(arr => arr.flat(4))
 }

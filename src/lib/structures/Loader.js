@@ -1,21 +1,32 @@
+import { loadDirectory } from '../utils/FileUtils.js'
+
 export default class Loader {
-  constructor (client, name) {
+  constructor (client, name, path) {
     this.client = client
-    this.critical = true
-    this.success = 0
-    this.failed = 0
     this.name = name || null
+    this.path = path
+    this.critical = true
   }
 
-  load () {
-    return true
+  init () {
+    this.log('Carregando')
+
+    this.load()
   }
 
-  log (message) {
-    return console.log(`${this.name ? '[' + this.name.toUpperCase() + '] ' : ''}${message}`)
+  async load () {
+    const mods = await loadDirectory(this.path)
+
+    for (const mod of mods) {
+      this.onLoad(mod)
+    }
   }
 
-  logError (message) {
-    return console.error(`${this.name ? '[' + this.name.toUpperCase() + '] ' : ''}${message}`)
+  onLoad() {
+    throw new Error(`${this.name}.onLoad() not implemented`)
+  }
+
+  log (...args) {
+    return console.log(`[${this.name?.toUpperCase()}]`, ...args)
   }
 }
