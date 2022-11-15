@@ -7,9 +7,6 @@ export default class LavalinkListenerLoader extends Loader {
   }
 
   onLoad (Listener) {
-    const [clazz] = Listener
-    const c = new clazz.value()
-    console.log(c)
     const listener = new Listener()
     listener.listen(this.client)
 
