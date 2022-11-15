@@ -28,7 +28,10 @@ export default class Play extends Command {
     if (player.textChannel !== channel) player.textChannel = channel
 
     msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
-    msg.delete({ timeout: 10000 })
+
+    setTimeout(() => {
+      if (msg.deletable) msg.delete()
+    }, 10000)
 
     if (!player.playing) {
       player.updateDj(guild)
