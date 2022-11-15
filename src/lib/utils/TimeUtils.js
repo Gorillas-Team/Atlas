@@ -1,21 +1,35 @@
 export default {
-  msToTime (s) {
-    const ms = s % 1000
-    s = (s - ms) / 1000
-    const secs = s % 60
-    s = (s - secs) / 60
-    const mins = s % 60
-    const hrs = (s - mins) / 60
-
-    return hrs > 0 ? (this.pad(hrs) + ':') : '' + this.pad(mins) + ':' + this.pad(secs)
+  /**
+   *
+   * @param {number} num number of seconds
+   * @param {number} size number of digits
+   * @returns {string} formatted time
+   */
+  pad (num, size) {
+    return num.toString().padStart(size, '0')
   },
 
-  pad (n, z) {
-    z = z || 2
-    return ('00' + n).slice(-z)
+  /**
+   *
+   * @param {number} s number of seconds
+   * @returns {string} formatted time to hours, minutes and seconds (hh:mm:ss)
+   */
+  msToHours (s) {
+    const h = Math.floor(s / 3600)
+    const m = Math.floor((s % 3600) / 60)
+    const ss = Math.floor(s % 60)
+
+    return [h, m, ss].map(n => this.pad(n, 2)).join(':')
   },
 
-  progress ({ length, total, current }) {
+  /**
+   * Creates a progress bar
+   * @param {number} length length of the bar
+   * @param {number} total total of the bar
+   * @param {number} current current state of the bar
+   * @returns
+   */
+  progress (length, total, current) {
     const char = '─'.repeat(length)
     const index = current / total * length
     return char.slice(0, index) + '🔘' + char.slice(index)

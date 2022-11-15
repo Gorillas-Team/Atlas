@@ -22,7 +22,7 @@ export default class NowPlaying extends Command {
       .setAuthor(author)
       .setTitle('Tocando agora ' + title)
       .setURL(uri)
-      .setDescription(`\`\`\`▶ [${TimeUtils.progress({ total: length, current: time, length: 24 })}] - [${TimeUtils.msToTime(time)}]\`\`\``)
+      .setDescription(`\`\`\`▶ [${TimeUtils.progress(length, time, length)}] - [${TimeUtils.msToHours(time)}]\`\`\``)
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)
       .setColor(this.client.config.color)
     )
