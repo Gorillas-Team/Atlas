@@ -9,8 +9,8 @@ console.log(banner)
 const Atlas = new AtlasClient({
   token: process.env.TOKEN,
   environment: process.env.ENVIRONMENT,
-  owners: JSON.parse(process.env.OWNERS),
-  prefixes: JSON.parse(process.env.PREFIXES),
+  owners: process.env.OWNERS.split(','),
+  prefixes: process.env.PREFIXES.split(','),
   nodes: JSON.parse(process.env.LAVALINK),
   clientOptions: JSON.parse(process.env.CLIENT_OPTIONS || '{}'),
   logChannel: process.env.LOG_CHANNEL,

@@ -51,7 +51,7 @@ export default class AtlasClient extends Client {
 
   start () {
     this.initLoaders()
-    this.login(this.token)
+    // this.login(this.token)
     return this
   }
 }
