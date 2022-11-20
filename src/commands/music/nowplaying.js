@@ -15,16 +15,16 @@ export default class NowPlaying extends Command {
   }
 
   run ({ channel }) {
-    const { title, author, uri, identifier, length } = this.player.queue[0]
+    const { title, author, uri, identifier, duration } = this.player.queue[0]
     const time = this.player.state.position
 
-    return channel.send(new EmbedBuilder()
-      .setAuthor(author)
-      .setTitle('Tocando agora ' + title)
+    const embed = new EmbedBuilder()
+      .setTitle(`Tocando agora ${title} - ${author}`)
       .setURL(uri)
-      .setDescription(`\`\`\`▶ [${TimeUtils.progress(length, time, length)}] - [${TimeUtils.msToHours(time)}]\`\`\``)
+      .setDescription(`\`\`\`▶ [${TimeUtils.progress(25, duration, time)}] - [${TimeUtils.msToHours(time)}]\`\`\``)
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)
       .setColor(this.client.config.color)
-    )
+
+    return channel.send({ embeds: [embed.toJSON()]})
   }
 }

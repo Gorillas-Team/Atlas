@@ -5,7 +5,7 @@ export default {
    * @param {number} size number of digits
    * @returns {string} formatted time
    */
-  pad (num, size) {
+  pad(num, size) {
     return num.toString().padStart(size, '0')
   },
 
@@ -14,12 +14,22 @@ export default {
    * @param {number} s number of seconds
    * @returns {string} formatted time to hours, minutes and seconds (hh:mm:ss)
    */
-  msToHours (s) {
-    const h = Math.floor(s / 3600)
-    const m = Math.floor((s % 3600) / 60)
-    const ss = Math.floor(s % 60)
+  msToHours(ms) {
+    const { values, keys } = Object
 
-    return [h, m, ss].map(n => this.pad(n, 2)).join(':')
+    const time = {
+      h: Math.floor(ms / 3600000),
+      m: Math.floor((ms % 3600000) / 60000),
+      s: Math.floor(((ms % 3600000) % 60000) / 1000),
+    }
+
+    const formattedTime = values(time)
+      .reduce((acc, value, index) => {
+        if (value !== 0) acc.push(`${this.pad(value)}${keys(time)[index]}`)
+        return acc
+      }, [])
+
+    return formattedTime.length === 0 ? '0s' : formattedTime.join(':')
   },
 
   /**
@@ -29,7 +39,7 @@ export default {
    * @param {number} current current state of the bar
    * @returns
    */
-  progress (length, total, current) {
+  progress(length, total, current) {
     const char = '─'.repeat(length)
     const index = current / total * length
     return char.slice(0, index) + '🔘' + char.slice(index)
