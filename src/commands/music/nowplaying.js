@@ -25,6 +25,6 @@ export default class NowPlaying extends Command {
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)
       .setColor(this.client.config.color)
 
-    return channel.send({ embeds: [embed.toJSON()]})
+    return channel.send({ embeds: [embed.toJSON()] })
   }
 }

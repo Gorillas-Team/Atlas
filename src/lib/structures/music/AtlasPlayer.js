@@ -33,7 +33,8 @@ export default class AtlasPlayer extends GorilinkPlayer {
   }
 
   execTimeout () {
-    if (this._leaveTimeout) this.execClearTimeout()
+    if (this._leaveTimeout) return
+
     this._leaveTimeout = setTimeout(() => {
       if (this.playing && !this.channelEmpty) return
       this.textChannel.send('😴 Saindo do canal por inatividade')
