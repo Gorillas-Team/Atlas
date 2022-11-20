@@ -1,7 +1,7 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Play extends Command {
-  constructor(client) {
+export default class Play extends Command {
+  constructor (client) {
     super(client)
     this.name = 'play'
     this.aliases = ['p']
@@ -13,8 +13,8 @@ module.exports = class Play extends Command {
     }
   }
 
-  async run({ channel, member, guild, args }) {
-    if(!args[0]) return channel.send('Você precisa me dizer uma musica ou uma URL')
+  async run ({ channel, member, guild, args }) {
+    if (!args[0]) return channel.send('Você precisa me dizer uma musica ou uma URL')
 
     const player = this.client.music.join({
       guild,
@@ -25,12 +25,15 @@ module.exports = class Play extends Command {
     const query = args.join(' ')
     let msg = await channel.send(`Procurando pelo video \`${query}\``)
 
-    if(player.textChannel !== channel) player.textChannel = channel
+    if (player.textChannel !== channel) player.textChannel = channel
 
     msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
-    msg.delete({ timeout: 10000 })
 
-    if(!player.playing) {
+    setTimeout(() => {
+      if (msg.deletable) msg.delete()
+    }, 10000)
+
+    if (!player.playing) {
       player.updateDj(guild)
       return player.play()
     }

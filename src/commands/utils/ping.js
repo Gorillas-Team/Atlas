@@ -1,14 +1,14 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Ping extends Command {
-  constructor(client) {
+export default class Ping extends Command {
+  constructor (client) {
     super(client)
     this.name = 'ping'
     this.aliases = ['latencia']
     this.category = 'utils'
   }
 
-  run({ channel }) {
+  run ({ channel }) {
     channel.send(`Pong! 🏓 \`${this.client.ws.ping}ms\``)
   }
 }

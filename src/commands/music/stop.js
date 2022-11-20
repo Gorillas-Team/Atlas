@@ -1,8 +1,9 @@
-const { Command } = require('../../lib/structures')
-const { Queue } = require('gorilink')
+import Command from '../../lib/structures/Command.js'
+import gorilink from 'gorilink'
+const { Queue } = gorilink
 
-module.exports = class Stop extends Command {
-  constructor(client) {
+export default class Stop extends Command {
+  constructor (client) {
     super(client)
     this.name = 'stop'
     this.category = 'music'
@@ -15,7 +16,7 @@ module.exports = class Stop extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.queue = new Queue()
     this.player.stop()
     return message.react('🛑')

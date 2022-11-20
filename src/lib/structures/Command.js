@@ -1,7 +1,7 @@
-const musicContext = require('./music/musicContext')
+import musicContext from './music/musicContext.js'
 
-module.exports = class Command {
-  constructor(client) {
+export default class Command {
+  constructor (client) {
     this.client = client
     this.name = null
     this.category = null
@@ -19,14 +19,14 @@ module.exports = class Command {
     }
   }
 
-  init(ctx) {
+  async init (ctx) {
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
 
     try {
       if (Object.values(this.conf).includes(true)) {
-        this.memberChannel = ctx.member.voice.channel
+        this.memberChannel = await ctx.guild.channels.fetch(ctx.member.voice.channelId)
         this.player = this.client.music.players.get(ctx.guild.id)
-        this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channel
+        this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
         return musicContext({
           player: this.player,
@@ -45,5 +45,5 @@ module.exports = class Command {
     }
   }
 
-  run() { }
+  run () { }
 }

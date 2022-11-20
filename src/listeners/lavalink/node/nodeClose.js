@@ -1,14 +1,14 @@
-const { Listener } = require('../../../lib/structures')
+import Listener from '../../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'nodeClose',
       type: 'lavalink'
     })
   }
 
-  run(event, node) {
+  run (event, node) {
     console.error(`Connection to node ${node.tag || node.host} has been lost, reason: ${event}`)
   }
 }

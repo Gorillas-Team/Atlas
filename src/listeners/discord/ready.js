@@ -1,18 +1,18 @@
-const { Listener } = require('../../lib/structures')
-const { LavalinkListenerLoader } = require('../../loaders')
+import Listener from '../../lib/structures/Listener.js'
+import LavalinkListenerLoader from '../../loaders/LavalinkListenerLoader.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'ready',
       once: true
     })
   }
 
-  run() {
+  run () {
     this.music.start(this.user.id)
 
     new LavalinkListenerLoader(this).load()
-    console.log('Online on client', this.user.username)
+    console.log('[LOG] Online on client', this.user.username)
   }
 }

@@ -1,7 +1,7 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Skip extends Command {
-  constructor(client) {
+export default class Skip extends Command {
+  constructor (client) {
     super(client)
     this.name = 'skip'
     this.aliases = ['s', 'n']
@@ -16,7 +16,7 @@ module.exports = class Skip extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.stop()
     return message.react('👍')
   }

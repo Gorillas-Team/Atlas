@@ -1,30 +1,31 @@
-const { Listener } = require('../../lib/structures')
+import Listener from '../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'voiceStateUpdate'
     })
   }
 
-  run(VSOld, VSNew) {
+  async run (VSOld, VSNew) {
     const player = this.music.players.get(VSOld.guild.id || VSNew.guild.id)
 
     if (!player) return
-    let channel = this.channels.cache.get(player.voiceChannel.id || player.voiceChannel)
+    if (!VSNew.channelId) return player.destroy()
 
-    if (VSNew.channelID !== channel.id && this.user.id === VSNew.id) {
-      player.updateChannel(VSNew.channelID)
-      channel = this.channels.cache.get(VSNew.channelID)
-    }
+    if (VSNew.channelId !== player.voiceChannel && VSNew.channel.members.size > 1 && VSNew.channel.members.get(this.user.id)) {
+      if (player.channelEmpty) {
+        player.channelEmpty = false
+        player.execClearTimeout()
+      }
 
-    if (channel.members.size < 2) {
+      player.updateChannel(VSNew.channelId)
+    } else if (VSNew.channelId === player.voiceChannel) {
+      player.channelEmpty = false
+      player.execClearTimeout()
+    } else {
       player.channelEmpty = true
       player.execTimeout()
-    } else {
-      player.channelEmpty = false
-      if (!player.playing) return player.execTimeout()
-      player.execClearTimeout()
     }
   }
 }

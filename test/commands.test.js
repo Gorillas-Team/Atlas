@@ -1,11 +1,6 @@
-const { FileUtils } = require('../src/lib/utils/index')
+import { loadDirectory } from '../src/lib/utils/FileUtils.js'
 
-const commands = []
-
-FileUtils.requireDir({ dir: 'src/commands' }, (err, Command) => {
-  if (err) console.error(err)
-  commands.push(new Command())
-})
+const commands = await loadDirectory('./src/commands')
 
 describe('Commands', () => {
   it('should have no duplicate names or aliases', (done) => {
@@ -25,7 +20,7 @@ describe('Commands', () => {
 
   it('should have no duplicate class names', async (done) => {
     const cmds = commands.map(cmd => {
-      return cmd.constructor.name
+      return cmd.name
     })
 
     const dupes = arrayDuplicates(cmds)
@@ -38,7 +33,7 @@ describe('Commands', () => {
   })
 })
 
-function arrayDuplicates(arr) {
+function arrayDuplicates (arr) {
   return arr.filter((value, index) => {
     return arr.indexOf(value) !== index
   })

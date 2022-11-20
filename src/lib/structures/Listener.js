@@ -1,11 +1,11 @@
-module.exports = class Listener {
-  constructor(options = {}) {
+export default class Listener {
+  constructor (options = {}) {
     this.name = options.name || null
     this.once = options.once || null
     this.type = options.type || 'discord'
   }
 
-  listen(client) {
+  listen (client) {
     try {
       const typeListen = this.once ? 'once' : 'on'
 
@@ -18,5 +18,5 @@ module.exports = class Listener {
     }
   }
 
-  run() { }
+  run () { }
 }

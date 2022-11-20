@@ -1,7 +1,7 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Loop extends Command {
-  constructor(client) {
+export default class Loop extends Command {
+  constructor (client) {
     super(client)
     this.name = 'loop'
     this.category = 'music'
@@ -14,24 +14,24 @@ module.exports = class Loop extends Command {
     }
   }
 
-  run({ message, args, channel }) {
+  run ({ message, args, channel }) {
     if (!args[0]) return channel.send('Escolha entre `track`, `queue`, `off`')
 
     switch (args[0].toUpperCase()) {
-    case 'TRACK':
-      this.player.loop(1)
-      message.react('🔂')
-      break
-    case 'QUEUE':
-      this.player.loop(2)
-      message.react('🔁')
-      break
-    case 'OFF':
-      this.player.loop(0)
-      message.react('⏯️')
-      break
-    default:
-      message.react('🤔')
+      case 'TRACK':
+        this.player.loop(1)
+        message.react('🔂')
+        break
+      case 'QUEUE':
+        this.player.loop(2)
+        message.react('🔁')
+        break
+      case 'OFF':
+        this.player.loop(0)
+        message.react('⏯️')
+        break
+      default:
+        message.react('🤔')
     }
   }
 }

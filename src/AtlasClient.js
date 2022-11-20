@@ -1,11 +1,17 @@
-const { Client, Collection } = require('discord.js')
-const { AtlasMusicManager, AtlasPlayer } = require('./lib/structures/music')
-const Loaders = require('./loaders')
+import { Client, Collection } from 'discord.js'
+import AtlasMusicManager from './lib/structures/music/AtlasMusicManager.js'
+import AtlasPlayer from './lib/structures/music/AtlasPlayer.js'
+import Loaders from './loaders/Loaders.js'
 
-module.exports = class AtlasClient extends Client {
-  constructor(options = {}) {
-    super(options.clientOptions)
+export default class AtlasClient extends Client {
+  constructor (options = {}) {
+    super({
+      ...options.clientOptions,
+      intents: options.intents
+    })
+
     this.token = options.token
+
     this.config = {
       owners: options.owners instanceof Array ? options.owners : [options.owners],
       prefixes: options.prefixes instanceof Array ? options.prefixes : [options.prefixes],
@@ -30,12 +36,12 @@ module.exports = class AtlasClient extends Client {
     })
   }
 
-  initLoaders() {
-    for(const Loader of Object.values(Loaders)) {
+  initLoaders () {
+    for (const Loader of Loaders) {
       try {
         const loader = new Loader(this)
-        if(loader.critical) loader.init()
-      } catch(ex) {
+        if (loader.critical) loader.init()
+      } catch (ex) {
         throw new Error(ex)
       }
     }
@@ -43,7 +49,7 @@ module.exports = class AtlasClient extends Client {
     return this
   }
 
-  start() {
+  start () {
     this.initLoaders()
     this.login(this.token)
     return this

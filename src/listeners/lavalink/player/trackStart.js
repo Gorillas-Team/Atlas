@@ -1,18 +1,19 @@
-const { Listener } = require('../../../lib/structures')
+import Listener from '../../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'trackStart',
       type: 'lavalink'
     })
   }
 
-  run(player, track) {
-    if(player.lastMessage && !player.lastMessage.deleted) player.lastMessage.delete()
-    player.textChannel.send(`Tocando agora \`${track.title}\``)
-      .then(m => player.lastMessage = m)
+  async run (player, track) {
+    if (player.lastMessage && !player.lastMessage.deletable) player.lastMessage.then(m => m.delete())
+    const m = player.textChannel.send(`Tocando agora \`${track.title}\``)
 
-    if(player._leaveTimeout) player.execClearTimeout()
+    player.lastMessage = m
+
+    if (player._leaveTimeout) player.execClearTimeout()
   }
 }

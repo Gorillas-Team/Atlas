@@ -1,35 +1,15 @@
-const { Loader } = require('../lib/structures')
-const { FileUtils } = require('../lib/utils')
+import Loader from '../lib/structures/Loader.js'
 
-module.exports = class DiscordListenerLoader extends Loader {
+export default class DiscordListenerLoader extends Loader {
   constructor (client) {
-    super(client, 'listeners')
+    super(client, 'discord', 'src/listeners/discord')
     this.critical = true
   }
 
-  load () {
-    try {
-      this.init()
-      this.log(this.failed ? this.success + ' carregaram com sucesso e ' + this.failed + ' falharam' : 'Todos carregados com sucesso')
-      return true
-    } catch (err) {
-      this.logError(err.stack)
-    }
-    return false
-  }
+  onLoad (Listener) {
+    const listener = new Listener()
+    listener.listen(this.client)
 
-  init () {
-    this.log('Carregando...')
-    return FileUtils.requireDir({ dir: 'src/listeners/discord' }, async (error, Listener) => {
-      if (error) {
-        this.logError('    Erro: ' + error.stack)
-        return this.failed++
-      }
-
-      const listener = new Listener()
-      listener.listen(this.client)
-
-      console.info('    L[' + listener.name + '] carregado')
-    })
+    this.log('[' + listener.name + '] carregado')
   }
 }

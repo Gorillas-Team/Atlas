@@ -1,7 +1,7 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Leave extends Command {
-  constructor(client) {
+export default class Leave extends Command {
+  constructor (client) {
     super(client)
     this.name = 'leave'
     this.aliases = ['l', 'disconnect']
@@ -14,7 +14,7 @@ module.exports = class Leave extends Command {
     }
   }
 
-  run({ message }) {
+  run ({ message }) {
     this.player.destroy()
     this.player.execClearTimeout()
     return message.react('👋')

@@ -1,14 +1,14 @@
-const { Listener } = require('../../lib/structures')
+import Listener from '../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'messageUpdate'
     })
   }
 
-  async run(oldM, newM) {
+  async run (oldM, newM) {
     if (oldM.content === newM.content) return
-    this.emit('message', newM)
+    this.emit('messageCreate', newM)
   }
 }

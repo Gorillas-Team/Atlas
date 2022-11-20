@@ -1,8 +1,11 @@
-const { GorilinkManager } = require('gorilink')
-const { MessageEmbed } = require('discord.js')
+// TODO: update gorilink to ES Modules
+import gorilink from 'gorilink'
 
-module.exports = class AtlasMusicManager extends GorilinkManager {
-  constructor(client, nodes, options) {
+import { EmbedBuilder } from 'discord.js'
+const { GorilinkManager } = gorilink
+
+export default class AtlasMusicManager extends GorilinkManager {
+  constructor (client, nodes, options) {
     const nodesResumable = nodes.map(n => Object.assign({ resumeKey: Math.random().toString(36).slice(2) }, n))
 
     super(client, nodesResumable, options)
@@ -17,11 +20,10 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
    * @param {string} type type of playlist handle
    * @returns {Message} bot message updated
    */
-  async musicSearchHandler({ query, requester, msg, player, type = 'track' }) {
+  async musicSearchHandler ({ query, requester, msg, player, type = 'track' }) {
     const { loadType, tracks, playlistInfo } = await this.fetchTracks(query)
 
-    if (loadType === 'LOAD_FAILED' || loadType === 'NO_MATCHES')
-      return msg.edit(`Não encontrei nada buscando por: \`${query}\``)
+    if (loadType === 'LOAD_FAILED' || loadType === 'NO_MATCHES') { return msg.edit(`Não encontrei nada buscando por: \`${query}\``) }
 
     if (loadType === 'PLAYLIST_LOADED') {
       if (tracks.length > 30) tracks.splice(30, tracks.length)
@@ -34,16 +36,16 @@ module.exports = class AtlasMusicManager extends GorilinkManager {
       return msg.edit(`Foram adicionadas \`${tracks.length}\` musicas da playlist \`${playlistInfo.name}\``)
     }
 
-    if (loadType === 'TRACK_LOADED' || 'SEARCH_RESULT') {
+    if (loadType === 'TRACK_LOADED' || loadType === 'SEARCH_RESULT') {
       if (type === 'search' && loadType === 'SEARCH_RESULT') {
         tracks.splice(5, tracks.length)
-        await msg.edit(new MessageEmbed()
+        await msg.edit(new EmbedBuilder()
           .setTitle('Seleção de musicas')
           .setDescription(tracks.map(track => `${tracks.indexOf(track) + 1}. [${track.title}](${track.uri})`))
           .setFooter('Tempo de resposta é de 15 segundos')
         )
 
-        const coll = msg.channel.createMessageCollector(m => new RegExp('^([1-5])$', 'i') && m.author.id === requester.id, {
+        const coll = msg.channel.createMessageCollector(m => m.author.id === requester.id, {
           max: 1, time: 15000
         })
 
