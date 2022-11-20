@@ -16,7 +16,7 @@ export default class Help extends Command {
 
     const embed = new EmbedBuilder()
       .setTitle('🌐 | Central de comandos')
-      .setColor(guild.me.displayHexColor)
+      .setColor(this.client.config.color)
       .addFields({
         name: `🎵 | Música [${commandPerCategory('music').size}]`,
         value: commandPerCategory('music').map(mapCommand).join(', ')
@@ -24,8 +24,7 @@ export default class Help extends Command {
         name: `🛠️ | Utilitários [${commandPerCategory('utils').size}]`,
         value: commandPerCategory('utils').map(mapCommand).join(', ')
       })
-      .setColor(this.client.config.color)
 
-    channel.send(embed)
+    channel.send({ embeds: [embed.toJSON()] })
   }
 }
