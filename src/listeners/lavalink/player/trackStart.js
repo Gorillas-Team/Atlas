@@ -9,7 +9,7 @@ export default class extends Listener {
   }
 
   async run (player, track) {
-    if (player.lastMessage && !player.lastMessage.deletable) player.lastMessage.delete()
+    if (player.lastMessage && !player.lastMessage.deletable) player.lastMessage.then(m => m.delete())
     const m = player.textChannel.send(`Tocando agora \`${track.title}\``)
 
     player.lastMessage = m
