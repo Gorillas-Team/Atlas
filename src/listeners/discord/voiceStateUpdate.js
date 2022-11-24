@@ -11,7 +11,6 @@ export default class extends Listener {
     const player = this.music.players.get(VSOld.guild.id || VSNew.guild.id)
 
     if (!player) return
-    if (!VSNew.channelId) return player.destroy()
 
     if (VSNew.channelId !== player.voiceChannel && VSNew.channel.members.size > 1 && VSNew.channel.members.get(this.user.id)) {
       if (player.channelEmpty) {
