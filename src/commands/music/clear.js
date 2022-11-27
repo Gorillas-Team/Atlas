@@ -8,6 +8,7 @@ export default class Clean extends Command {
     this.name = 'clear'
     this.aliases = ['clean', 'prune']
     this.category = 'music'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,
@@ -16,8 +17,8 @@ export default class Clean extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.queue = new Queue()
-    return message.react('🗑️')
+    return '🗑️'
   }
 }

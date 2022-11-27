@@ -16,8 +16,8 @@ export default class Skip extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.stop()
-    return message.react('👍')
+    return '👍'
   }
 }

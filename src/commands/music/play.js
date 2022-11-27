@@ -6,6 +6,14 @@ export default class Play extends Command {
     this.name = 'play'
     this.aliases = ['p']
     this.category = 'music'
+    this.options = [
+      {
+        type: 3,
+        name: 'query',
+        description: 'Nome da musica ou URL',
+        required: true
+      }
+    ]
 
     this.conf = {
       voiceChannelOnly: true,
@@ -13,8 +21,14 @@ export default class Play extends Command {
     }
   }
 
-  async run ({ channel, member, guild, args }) {
-    if (!args[0]) return channel.send('Você precisa me dizer uma musica ou uma URL')
+  async run ({ channel, member, guild, args, isInteraction, interaction, options }) {
+    let query
+    if (isInteraction) {
+      query = options.getString('query')
+    } else {
+      if(!args[0]) return channel.send('Você precisa me dizer o nome da musica ou URL')
+      query = args.join(' ')
+    }
 
     const player = this.client.music.join({
       guild,
@@ -22,15 +36,24 @@ export default class Play extends Command {
       textChannel: channel
     })
 
-    const query = args.join(' ')
-    let msg = await channel.send(`Procurando pelo video \`${query}\``)
+    let searchMessage
+
+    if (isInteraction) interaction = await interaction.reply({ content: `Procurando pelo video \`${query}\``, fetchReply: true })
+    else searchMessage = await channel.send(`Procurando pelo video \`${query}\``)
 
     if (player.textChannel !== channel) player.textChannel = channel
 
-    msg = await this.client.music.musicSearchHandler({ query, requester: member, msg, player })
+    const msg = await this.client.music.musicSearchHandler({
+      requester: member,
+      query,
+      player
+    })
+
+    if (isInteraction) await interaction.reply(msg)
+    else await searchMessage.edit(msg)
 
     setTimeout(() => {
-      if (msg.deletable) msg.delete()
+      if (msg.deletable && !isInteraction) msg.delete()
     }, 10000)
 
     if (!player.playing) {

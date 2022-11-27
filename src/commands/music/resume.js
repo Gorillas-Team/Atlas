@@ -15,8 +15,8 @@ export default class Resume extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.pause(false)
-    return message.react('▶️')
+    return '▶️'
   }
 }

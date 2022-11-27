@@ -9,7 +9,7 @@ export default class Help extends Command {
     this.category = 'utils'
   }
 
-  run ({ channel, guild }) {
+  run () {
     const commands = this.client.commands.filter(({ hide, dev }) => !hide && !dev)
     const commandPerCategory = (category) => commands.filter(cmd => cmd.category === category)
     const mapCommand = (command) => `\`${command.name}\``
@@ -25,6 +25,6 @@ export default class Help extends Command {
         value: commandPerCategory('utils').map(mapCommand).join(', ')
       })
 
-    channel.send({ embeds: [embed.toJSON()] })
+    return { embeds: [embed.toJSON()] }
   }
 }

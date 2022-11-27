@@ -14,8 +14,8 @@ export default class Pause extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.pause(true)
-    return message.react('⏸️')
+    return '⏸️'
   }
 }

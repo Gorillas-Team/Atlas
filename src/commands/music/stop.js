@@ -16,9 +16,9 @@ export default class Stop extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.queue = new Queue()
     this.player.stop()
-    return message.react('🛑')
+    return '🛑'
   }
 }

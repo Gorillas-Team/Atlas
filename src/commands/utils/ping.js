@@ -8,7 +8,7 @@ export default class Ping extends Command {
     this.category = 'utils'
   }
 
-  run ({ channel }) {
-    channel.send(`Pong! 🏓 \`${this.client.ws.ping}ms\``)
+  run () {
+    return `Pong! 🏓 \`${this.client.ws.ping}ms\``
   }
 }

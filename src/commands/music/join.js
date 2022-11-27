@@ -13,14 +13,16 @@ export default class Join extends Command {
     }
   }
 
-  run ({ message, guild, channel }) {
+  run ({ guild, channel }) {
     const player = this.client.music.join({
       guild,
       voiceChannel: this.memberChannel,
       textChannel: channel
     })
 
+    if (!player.playing) player.updateDj(guild)
     player.execTimeout()
-    return message.react('👌')
+
+    return '👌'
   }
 }
