@@ -1,6 +1,6 @@
 // TODO: pls Psykka from future, refactor this file
 
-export default function musicContext ({ player, memberChannel, voiceChannel, conf, reply, ctx }) {
+export default function musicContext ({ player, memberChannel, voiceChannel, conf, reply, ctx, client }) {
   const { me, member } = ctx
   const { needsPlayer, voiceChannelOnly, memberTrack, djOnly, playingOnly, checkPermissions } = conf
 

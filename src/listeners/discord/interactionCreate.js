@@ -8,7 +8,7 @@ export default class extends Listener {
   }
 
   async run (interaction) {
-    if (!interaction.isChatInputCommand()) return;
+    if (!interaction.isChatInputCommand()) return
 
     const cmd = interaction.commandName.toLowerCase()
     const handler = this.commands.find(c => c.name === cmd || c.aliases.includes(cmd))

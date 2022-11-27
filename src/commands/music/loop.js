@@ -1,7 +1,7 @@
 import Command from '../../lib/structures/Command.js'
 
 export default class Loop extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client)
     this.name = 'loop'
     this.category = 'music'
@@ -23,7 +23,6 @@ export default class Loop extends Command {
         value: 'OFF'
       }]
     }]
-
 
     this.conf = {
       needsPlayer: true,

@@ -38,15 +38,15 @@ export default class Command {
           voiceChannel: this.voiceChannel,
           conf: this.conf,
           reply: this.reply,
+          client: this.client,
           ctx
         })
       }
 
       const message = await this.run(ctx)
       this.reply(message, this.react)
-
     } catch (err) {
-      const anwser = `Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando \`support\``
+      const anwser = 'Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando `support`'
       this.reply(anwser)
       console.error(err)
     }
@@ -56,7 +56,7 @@ export default class Command {
     const { channel, isInteraction, interaction, message } = this.ctx
 
     if (!anwser) return
-    if(react && !isInteraction) return message.react(anwser)
+    if (react && !isInteraction) return message.react(anwser)
     isInteraction ? interaction.reply(anwser) : channel.send(anwser)
   }
 

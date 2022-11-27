@@ -1,7 +1,5 @@
 // TODO: update gorilink to ES Modules
 import gorilink from 'gorilink'
-
-import { EmbedBuilder } from 'discord.js'
 const { GorilinkManager } = gorilink
 
 export default class AtlasMusicManager extends GorilinkManager {

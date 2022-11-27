@@ -18,7 +18,7 @@ export default class extends Listener {
     new LavalinkListenerLoader(this).load()
 
     const cmds = this.commands
-      .filter(c => c.hidden == false)
+      .filter(c => c.hidden === false)
       .map(c => {
         return {
           name: c.name,
