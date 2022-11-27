@@ -44,7 +44,7 @@ export default class Loop extends Command {
       type = args[0].toUpperCase()
     }
 
-    switch (type.toUpperCase()) {
+    switch (type) {
       case 'TRACK':
         this.player.loop(1)
         return '🔂'
