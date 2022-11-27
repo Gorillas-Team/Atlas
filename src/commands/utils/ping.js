@@ -6,6 +6,7 @@ export default class Ping extends Command {
     this.name = 'ping'
     this.aliases = ['latencia']
     this.category = 'utils'
+    this.description = 'Shows the bot\'s ping'
   }
 
   run () {

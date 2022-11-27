@@ -6,6 +6,8 @@ export default class Join extends Command {
     this.name = 'join'
     this.aliases = ['connect', 'j']
     this.category = 'music'
+    this.react = true
+    this.description = 'Joins the voice channel'
 
     this.conf = {
       voiceChannelOnly: true,

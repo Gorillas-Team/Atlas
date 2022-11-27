@@ -6,6 +6,8 @@ export default class Leave extends Command {
     this.name = 'leave'
     this.aliases = ['l', 'disconnect']
     this.category = 'music'
+    this.react = true
+    this.description = 'Leaves the voice channel'
 
     this.conf = {
       needsPlayer: true,

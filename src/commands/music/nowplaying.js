@@ -8,6 +8,7 @@ export default class NowPlaying extends Command {
     this.name = 'nowplaying'
     this.aliases = ['np', 'playing']
     this.category = 'music'
+    this.description = 'Shows the current playing song'
     this.conf = {
       needsPlayer: true,
       playingOnly: true

@@ -9,6 +9,7 @@ export default class Clean extends Command {
     this.aliases = ['clean', 'prune']
     this.category = 'music'
     this.react = true
+    this.description = 'Clears the queue'
 
     this.conf = {
       needsPlayer: true,

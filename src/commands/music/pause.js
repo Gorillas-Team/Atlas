@@ -5,6 +5,8 @@ export default class Pause extends Command {
     super(client)
     this.name = 'pause'
     this.category = 'music'
+    this.react = true
+    this.description = 'Pauses the current song'
 
     this.conf = {
       needsPlayer: true,

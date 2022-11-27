@@ -5,6 +5,7 @@ export default class Loop extends Command {
     super(client)
     this.name = 'loop'
     this.category = 'music'
+    this.react = true
     this.options = [{
       type: 3,
       name: 'type',
@@ -23,6 +24,7 @@ export default class Loop extends Command {
         value: 'OFF'
       }]
     }]
+    this.description = 'Set the loop mode'
 
     this.conf = {
       needsPlayer: true,

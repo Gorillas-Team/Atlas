@@ -6,6 +6,7 @@ export default class Help extends Command {
     super(client)
     this.name = 'help'
     this.aliases = ['ajuda']
+    this.description = 'Show all bot\'s commands'
     this.category = 'utils'
   }
 

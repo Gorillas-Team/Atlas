@@ -6,6 +6,7 @@ export default class Play extends Command {
     this.name = 'play'
     this.aliases = ['p']
     this.category = 'music'
+    this.description = 'Play a song or add to the queue'
     this.options = [
       {
         type: 3,

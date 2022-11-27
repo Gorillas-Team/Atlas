@@ -6,6 +6,8 @@ export default class Skip extends Command {
     this.name = 'skip'
     this.aliases = ['s', 'n']
     this.category = 'music'
+    this.description = 'Skips the current song'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,

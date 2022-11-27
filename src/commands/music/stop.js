@@ -7,6 +7,8 @@ export default class Stop extends Command {
     super(client)
     this.name = 'stop'
     this.category = 'music'
+    this.description = 'Stops the current song'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,
