@@ -7,6 +7,8 @@ export default class Stop extends Command {
     super(client)
     this.name = 'stop'
     this.category = 'music'
+    this.description = 'Stops the current song'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,
@@ -16,9 +18,9 @@ export default class Stop extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.queue = new Queue()
     this.player.stop()
-    return message.react('🛑')
+    return '🛑'
   }
 }

@@ -6,6 +6,8 @@ export default class Resume extends Command {
     this.name = 'resume'
     this.aliases = ['unpause']
     this.category = 'music'
+    this.description = 'Resumes the current song'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,
@@ -15,8 +17,8 @@ export default class Resume extends Command {
     }
   }
 
-  run ({ message }) {
+  run () {
     this.player.pause(false)
-    return message.react('▶️')
+    return '▶️'
   }
 }

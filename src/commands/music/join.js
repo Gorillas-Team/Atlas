@@ -6,6 +6,8 @@ export default class Join extends Command {
     this.name = 'join'
     this.aliases = ['connect', 'j']
     this.category = 'music'
+    this.react = true
+    this.description = 'Joins the voice channel'
 
     this.conf = {
       voiceChannelOnly: true,
@@ -13,14 +15,16 @@ export default class Join extends Command {
     }
   }
 
-  run ({ message, guild, channel }) {
+  run ({ guild, channel }) {
     const player = this.client.music.join({
       guild,
       voiceChannel: this.memberChannel,
       textChannel: channel
     })
 
+    if (!player.playing) player.updateDj(guild)
     player.execTimeout()
-    return message.react('👌')
+
+    return '👌'
   }
 }

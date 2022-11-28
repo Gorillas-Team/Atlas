@@ -6,9 +6,10 @@ export default class Ping extends Command {
     this.name = 'ping'
     this.aliases = ['latencia']
     this.category = 'utils'
+    this.description = 'Shows the bot\'s ping'
   }
 
-  run ({ channel }) {
-    channel.send(`Pong! 🏓 \`${this.client.ws.ping}ms\``)
+  run () {
+    return `Pong! 🏓 \`${this.client.ws.ping}ms\``
   }
 }
