@@ -11,5 +11,7 @@ export default class extends Listener {
   run (player, track, data) {
     player.textChannel.send(`Algo deu errado ao tocar a musica: \`${track.title}\``)
     console.log('An unexpected error happened on', player.guild.id, track, data)
+
+    if(player.queue.length < 1) player.execTimeout()
   }
 }
