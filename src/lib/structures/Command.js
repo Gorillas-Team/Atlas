@@ -32,7 +32,7 @@ export default class Command {
         this.player = this.client.music.players.get(ctx.guild.id)
         this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
-        musicContext({
+        const check = musicContext({
           player: this.player,
           memberChannel: this.memberChannel,
           voiceChannel: this.voiceChannel,
@@ -41,19 +41,21 @@ export default class Command {
           client: this.client,
           ctx
         })
+
+        if (check !== true) return
       }
 
       const message = await this.run(ctx)
-      this.reply(message, this.react)
+      this.reply(ctx, message, this.react)
     } catch (err) {
       const anwser = 'Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando `support`'
-      this.reply(anwser)
+      ctx.channel.send(anwser)
       console.error(err)
     }
   }
 
-  reply (anwser, react = false) {
-    const { channel, isInteraction, interaction, message } = this.ctx
+  reply (ctx, anwser, react = false) {
+    const { channel, isInteraction, interaction, message } = ctx
 
     if (!anwser) return
     if (react && !isInteraction) return message.react(anwser)
