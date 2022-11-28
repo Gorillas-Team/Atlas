@@ -30,9 +30,9 @@ export default class Eval extends Command {
       if (flags && flags.some(x => x.toLowerCase() === '--s' || x === '--silent')) return
 
       const jsString = result.replace(new RegExp(this.client.token, 'g'), '👍').replace(/require('child_process')/g, '')
-      channel.send(codeBlock('js', jsString))
+      return codeBlock('js', jsString)
     } catch (e) {
-      channel.send(codeBlock('js', e.message))
+      return codeBlock('js', e.message)
     }
 
     function exec (code) {

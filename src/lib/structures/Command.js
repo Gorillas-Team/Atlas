@@ -8,6 +8,9 @@ export default class Command {
     this.description = null
     this.aliases = []
     this.hidden = false
+    this.options = {}
+    this.react = false
+    this.ctx = {}
 
     this.conf = {
       needsPlayer: false,
@@ -20,6 +23,7 @@ export default class Command {
   }
 
   async init (ctx) {
+    this.ctx = ctx
     if (this.hidden && !this.client.config.owners.includes(ctx.author.id)) return
 
     try {
@@ -28,22 +32,39 @@ export default class Command {
         this.player = this.client.music.players.get(ctx.guild.id)
         this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
-        return musicContext({
+        musicContext({
           player: this.player,
           memberChannel: this.memberChannel,
           voiceChannel: this.voiceChannel,
           conf: this.conf,
-          ctx,
-          command: this
+          reply: this.reply,
+          client: this.client,
+          ctx
         })
       }
 
-      this.run(ctx)
+      const message = await this.run(ctx)
+      this.reply(message, this.react)
     } catch (err) {
-      ctx.channel.send(`Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando \`support\` \`\`\`js\n${err}\`\`\``)
+      const anwser = 'Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando `support`'
+      this.reply(anwser)
       console.error(err)
     }
   }
 
-  run () { }
+  reply (anwser, react = false) {
+    const { channel, isInteraction, interaction, message } = this.ctx
+
+    if (!anwser) return
+    if (react && !isInteraction) return message.react(anwser)
+    isInteraction ? interaction.reply(anwser) : channel.send(anwser)
+  }
+
+  /**
+   * @param {object} ctx
+   * @returns {string} anwser to send
+   */
+  run () {
+    throw new Error(`${this.name} run method not implemented`)
+  }
 }

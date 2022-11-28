@@ -30,6 +30,7 @@ export default class extends Listener {
 
 function ctx ({ client, message, args, me }) {
   return {
+    isInteraction: false,
     guild: message.guild,
     member: message.member,
     author: message.author,

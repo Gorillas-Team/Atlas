@@ -8,13 +8,14 @@ export default class NowPlaying extends Command {
     this.name = 'nowplaying'
     this.aliases = ['np', 'playing']
     this.category = 'music'
+    this.description = 'Shows the current playing song'
     this.conf = {
       needsPlayer: true,
       playingOnly: true
     }
   }
 
-  run ({ channel }) {
+  run () {
     const { title, author, uri, identifier, duration } = this.player.queue[0]
     const time = this.player.state.position
 
@@ -25,6 +26,6 @@ export default class NowPlaying extends Command {
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)
       .setColor(this.client.config.color)
 
-    return channel.send({ embeds: [embed.toJSON()] })
+    return { embeds: [embed.toJSON()] }
   }
 }
