@@ -10,10 +10,12 @@ export default class extends Listener {
   }
 
   run (player) {
-    this.client.user.setActivity(this.players.size, { type: ActivityType.Listening })
+    const size = this.client.music.players.size
+    const activity = `${size} player${size === 1 ? '' : 's'}`
+
+    this.client.user.setActivity(activity, { type: ActivityType.Listening })
 
     const guild = this.client.guilds.cache.get(player.guild)
-    
-    console.log('Player created at ' + guild.name)
+    console.log('[LAVALINK] Player created at:', guild.id)
   }
 }
