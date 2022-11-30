@@ -9,6 +9,14 @@ export default class AtlasMusicManager extends GorilinkManager {
     super(client, nodesResumable, options)
   }
 
+  join (data = {}, options = {}) {
+    const player = super.join(data, options)
+
+    this.emit('playerCreate', player)
+
+    return player
+  }
+
   /**
    * Handle all search results it comes from lavalink nodes
    * @param {string} query query to search
