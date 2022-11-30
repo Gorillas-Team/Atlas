@@ -1,11 +1,13 @@
-const { Command } = require('../../lib/structures')
+import Command from '../../lib/structures/Command.js'
 
-module.exports = class Resume extends Command {
-  constructor(client) {
+export default class Resume extends Command {
+  constructor (client) {
     super(client)
     this.name = 'resume'
-    this.aliases ['unpause']
+    this.aliases = ['unpause']
     this.category = 'music'
+    this.description = 'Resumes the current song'
+    this.react = true
 
     this.conf = {
       needsPlayer: true,
@@ -15,8 +17,8 @@ module.exports = class Resume extends Command {
     }
   }
 
-  run({ message }) {
+  run () {
     this.player.pause(false)
-    return message.react('▶️')
+    return '▶️'
   }
 }

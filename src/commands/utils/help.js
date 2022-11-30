@@ -1,22 +1,23 @@
-const { Command } = require('../../lib/structures')
-const { MessageEmbed } = require('discord.js')
+import Command from '../../lib/structures/Command.js'
+import { EmbedBuilder } from 'discord.js'
 
-module.exports = class Help extends Command {
-  constructor(client) {
+export default class Help extends Command {
+  constructor (client) {
     super(client)
     this.name = 'help'
     this.aliases = ['ajuda']
+    this.description = 'Show all bot\'s commands'
     this.category = 'utils'
   }
 
-  run({ channel, guild }) {
+  run () {
     const commands = this.client.commands.filter(({ hide, dev }) => !hide && !dev)
     const commandPerCategory = (category) => commands.filter(cmd => cmd.category === category)
     const mapCommand = (command) => `\`${command.name}\``
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle('🌐 | Central de comandos')
-      .setColor(guild.me.displayHexColor)
+      .setColor(this.client.config.color)
       .addFields({
         name: `🎵 | Música [${commandPerCategory('music').size}]`,
         value: commandPerCategory('music').map(mapCommand).join(', ')
@@ -24,8 +25,7 @@ module.exports = class Help extends Command {
         name: `🛠️ | Utilitários [${commandPerCategory('utils').size}]`,
         value: commandPerCategory('utils').map(mapCommand).join(', ')
       })
-      .setColor(this.client.config.color)
 
-    channel.send(embed)
+    return { embeds: [embed.toJSON()] }
   }
 }

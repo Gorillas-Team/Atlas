@@ -3,16 +3,17 @@
   "version": "0.0.1",
   "description": "Discord music bot focused on high sound quality",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node .",
     "dev": "nodemon",
-    "lint:fix": "eslint --fix .",
-    "lint": "eslint test/ src/",
+    "lint:fix": "eslint --fix src/",
+    "lint": "eslint src/",
     "test": "mocha",
     "test:watch": "mocha --watch"
   },
   "engines": {
-    "node": ">=13.x"
+    "node": ">=18.x"
   },
   "repository": {
     "type": "git",
@@ -24,14 +25,19 @@
   },
   "homepage": "https://github.com/Gorillas-Team/Atlas#readme",
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "eslint": "^7.13.0",
-    "mocha": "^8.2.1",
-    "nodemon": "^2.0.6"
+    "dotenv": "^16.0.3",
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "mocha": "^10.1.0",
+    "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "discord.js": "^12.4.1",
-    "gorilink": "^1.3.0",
-    "node-fetch": "^2.6.1"
-  }
+    "discord.js": "^14.6.0",
+    "gorilink": "^1.3.2",
+    "node-fetch": "^3.3.0"
+  },
+  "packageManager": "yarn@3.2.4"
 }

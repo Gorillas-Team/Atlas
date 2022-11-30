@@ -1,15 +1,17 @@
-const { Listener } = require('../../../lib/structures')
+import Listener from '../../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'trackError',
       type: 'lavalink'
     })
   }
 
-  run(player, track, data) {
+  run (player, track, data) {
     player.textChannel.send(`Algo deu errado ao tocar a musica: \`${track.title}\``)
     console.log('An unexpected error happened on', player.guild.id, track, data)
+
+    if (player.queue.length < 1) player.execTimeout()
   }
 }

@@ -1,21 +1,45 @@
-module.exports = {
-  msToTime(s) {
-    const ms = s % 1000
-    s = (s - ms) / 1000
-    const secs = s % 60
-    s = (s - secs) / 60
-    const mins = s % 60
-    const hrs = (s - mins) / 60
-
-    return hrs > 0 ? (this.pad(hrs) + ':') : '' + this.pad(mins) + ':' + this.pad(secs)
+export default {
+  /**
+   *
+   * @param {number} num number of seconds
+   * @param {number} size number of digits
+   * @returns {string} formatted time
+   */
+  pad (num, size) {
+    return num.toString().padStart(size, '0')
   },
 
-  pad(n, z) {
-    z = z || 2
-    return ('00' + n).slice(-z)
+  /**
+   *
+   * @param {number} s number of seconds
+   * @returns {string} formatted time to hours, minutes and seconds (hh:mm:ss)
+   */
+  msToHours (ms) {
+    const { values, keys } = Object
+
+    const time = {
+      h: Math.floor(ms / 3600000),
+      m: Math.floor((ms % 3600000) / 60000),
+      s: Math.floor(((ms % 3600000) % 60000) / 1000)
+    }
+
+    const formattedTime = values(time)
+      .reduce((acc, value, index) => {
+        if (value !== 0) acc.push(`${this.pad(value)}${keys(time)[index]}`)
+        return acc
+      }, [])
+
+    return formattedTime.length === 0 ? '0s' : formattedTime.join(':')
   },
 
-  progress({ length, total, current }) {
+  /**
+   * Creates a progress bar
+   * @param {number} length length of the bar
+   * @param {number} total total of the bar
+   * @param {number} current current state of the bar
+   * @returns
+   */
+  progress (length, total, current) {
     const char = '─'.repeat(length)
     const index = current / total * length
     return char.slice(0, index) + '🔘' + char.slice(index)

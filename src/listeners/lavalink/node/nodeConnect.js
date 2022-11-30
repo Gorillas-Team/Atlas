@@ -1,14 +1,14 @@
-const { Listener } = require('../../../lib/structures')
+import Listener from '../../../lib/structures/Listener.js'
 
-module.exports = class extends Listener {
-  constructor() {
+export default class extends Listener {
+  constructor () {
     super({
       name: 'nodeConnect',
       type: 'lavalink'
     })
   }
 
-  run(node) {
-    console.log(`Node: ${node.tag || node.host} connected`)
+  run (node) {
+    console.log(`[LOG] ${node.tag || node.host} node connected`)
   }
 }
