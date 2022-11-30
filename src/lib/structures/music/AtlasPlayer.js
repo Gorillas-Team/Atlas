@@ -11,6 +11,12 @@ export default class AtlasPlayer extends GorilinkPlayer {
     this.previousTrack = null
   }
 
+  destroy () {
+    super.destroy()
+    this.manager.updateStats()
+    console.log('[LAVALINK] Player destroyed at:', this.guild.id || this.guild)
+  }
+
   updateDj (guild) {
     // database soon
     let djRole = guild.roles.cache.filter(g => g.name.toUpperCase().includes('DJ')).first()

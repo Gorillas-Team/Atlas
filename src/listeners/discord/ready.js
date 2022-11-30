@@ -31,6 +31,8 @@ export default class extends Listener {
       body: cmds
     })
 
+    this.music.updateStats()
+
     console.log('[LOG] Online on client', this.user.username)
   }
 }
