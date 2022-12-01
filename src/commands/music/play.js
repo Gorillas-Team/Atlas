@@ -27,7 +27,7 @@ export default class Play extends Command {
     if (isInteraction) {
       query = options.getString('query')
     } else {
-      if (!args[0]) return channel.send('Você precisa me dizer o nome da musica ou URL')
+      if (!args[0]) return 'Você precisa me dizer o nome da musica ou URL'
       query = args.join(' ')
     }
 
