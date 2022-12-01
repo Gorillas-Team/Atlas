@@ -28,7 +28,7 @@ export default class Command {
 
     try {
       if (Object.values(this.conf).includes(true)) {
-        this.memberChannel = await ctx.guild.channels.fetch(ctx.member.voice.channelId)
+        this.memberChannel = ctx.member.voice.channel
         this.player = this.client.music.players.get(ctx.guild.id)
         this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
@@ -48,7 +48,7 @@ export default class Command {
       const message = await this.run(ctx)
       this.reply(ctx, message, this.react)
     } catch (err) {
-      const anwser = 'Algo deu extremamente errado ao executar esse comando por favor entrem em contato com a equipe de desenvolvimento usando o comando `support`'
+      const anwser = 'Algo deu extremamente errado ao executar esse comando!'
       ctx.channel.send(anwser)
       console.error(err)
     }
@@ -56,6 +56,11 @@ export default class Command {
 
   reply (ctx, anwser, react = false) {
     const { channel, isInteraction, interaction, message } = ctx
+
+    if (typeof anwser !== 'string') {
+      const typeofAnwser = typeof anwser
+      anwser = `Algo deu errado ao executar esse comando!\n\`\`\`reply method only accepts string recived a: ${typeofAnwser}\`\`\``
+    }
 
     if (!anwser) return
     if (react && !isInteraction) return message.react(anwser)

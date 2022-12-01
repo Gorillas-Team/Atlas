@@ -1,5 +1,7 @@
 // TODO: update gorilink to ES Modules
+import { ActivityType } from 'discord.js'
 import gorilink from 'gorilink'
+
 const { GorilinkManager } = gorilink
 
 export default class AtlasMusicManager extends GorilinkManager {
@@ -7,6 +9,21 @@ export default class AtlasMusicManager extends GorilinkManager {
     const nodesResumable = nodes.map(n => Object.assign({ resumeKey: Math.random().toString(36).slice(2) }, n))
 
     super(client, nodesResumable, options)
+  }
+
+  updateStats () {
+    const size = this.players.size
+    const activity = size === 0 ? '' : `${size} player${size === 1 ? '' : 's'}`
+
+    this.client.user.setActivity(activity, { type: ActivityType.Listening })
+  }
+
+  join (data = {}, options = {}) {
+    const player = super.join(data, options)
+
+    this.emit('playerCreate', player)
+
+    return player
   }
 
   /**
