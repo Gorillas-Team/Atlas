@@ -1,15 +1,14 @@
-<center>
-  <h1>Atlas</h1>
-  <img src="https://i.imgur.com/qTECMKb.png" width="200">
+<p align="center"><img src="https://i.imgur.com/qTECMKb.png" width="200"></p>
+<h1 align="center">Atlas</h1>
+<p align="center">Discord music bot focused on high sound quality</p>
 
-  Discord music bot focused on high sound quality
-
-  [![CI-CD](https://github.com/Gorillas-Team/Atlas/actions/workflows/CI-CD.yml/badge.svg?branch=master)](https://github.com/Gorillas-Team/Atlas/actions/workflows/CI-CD.yml)
-</center>
+<p align="center">
+<img src="https://github.com/Gorillas-Team/Atlas/actions/workflows/CI-CD.yml/badge.svg?branch=master">
+<img src="https://img.shields.io/badge/License-ISC-2ea44f">
+</p>
 
 ## Table of contents
 
-- [Table of contents](#table-of-contents)
 - [Features](#features)
 - [Usage](#usage)
   - [Commands](#commands)
