@@ -65,7 +65,7 @@ export default class Command {
     }
 
     if (typeof anwser === 'object' && (!anwser.embeds && !anwser.content)) {
-      anwser = `Algo deu errado ao executar esse comando!\n\`\`\`reply method only accepts object with embeds and content properties\`\`\``
+      anwser = 'Algo deu errado ao executar esse comando!\n```reply method only accepts object with embeds and content properties```'
     }
 
     if (react && !isInteraction) return message.react(anwser)

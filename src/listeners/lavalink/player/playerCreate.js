@@ -13,7 +13,7 @@ export default class extends Listener {
 
     const guild = this.client.guilds.cache.get(player.guild)
 
-    if(player.playing) return
+    if (player.playing) return
     console.log('[LAVALINK] Player created at:', guild.id)
   }
 }
