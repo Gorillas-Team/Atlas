@@ -57,12 +57,17 @@ export default class Command {
   reply (ctx, anwser, react = false) {
     const { channel, isInteraction, interaction, message } = ctx
 
-    if (typeof anwser !== 'string') {
+    if (!anwser) return
+
+    if (typeof anwser !== 'string' && typeof anwser !== 'object') {
       const typeofAnwser = typeof anwser
-      anwser = `Algo deu errado ao executar esse comando!\n\`\`\`reply method only accepts string recived a: ${typeofAnwser}\`\`\``
+      anwser = `Algo deu errado ao executar esse comando!\n\`\`\`reply method only accepts string recived: ${typeofAnwser}\`\`\``
     }
 
-    if (!anwser) return
+    if (typeof anwser === 'object' && (!anwser.embeds && !anwser.content)) {
+      anwser = `Algo deu errado ao executar esse comando!\n\`\`\`reply method only accepts object with embeds and content properties\`\`\``
+    }
+
     if (react && !isInteraction) return message.react(anwser)
     isInteraction ? interaction.reply(anwser) : channel.send(anwser)
   }
