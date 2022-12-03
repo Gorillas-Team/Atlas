@@ -18,7 +18,7 @@ export default class Clean extends Command {
   }
 
   run () {
-    this.player.queue = new Queue()
+    this.player.queue = this.player.queue.splice(0, 1)
     return '🗑️'
   }
 }
