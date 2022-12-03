@@ -17,7 +17,6 @@ export default class Leave extends Command {
 
   run () {
     this.player.destroy()
-    this.player.execClearTimeout()
     return '👋'
   }
 }
