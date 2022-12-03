@@ -11,7 +11,6 @@ export default class Pause extends Command {
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,
-      djOnly: true,
       playingOnly: true
     }
   }

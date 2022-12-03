@@ -58,7 +58,6 @@ export default class Play extends Command {
     }, 10000)
 
     if (!player.playing) {
-      player.updateDj(guild)
       return player.play()
     }
   }

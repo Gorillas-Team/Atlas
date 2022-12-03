@@ -13,8 +13,7 @@ export default class Clean extends Command {
 
     this.conf = {
       needsPlayer: true,
-      voiceChannelOnly: true,
-      djOnly: true
+      voiceChannelOnly: true
     }
   }
 

@@ -12,7 +12,6 @@ export default class Resume extends Command {
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,
-      djOnly: true,
       playingOnly: true
     }
   }

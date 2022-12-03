@@ -13,7 +13,6 @@ export default class Stop extends Command {
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,
-      djOnly: true,
       playingOnly: true
     }
   }

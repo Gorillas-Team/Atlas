@@ -29,7 +29,6 @@ export default class Loop extends Command {
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,
-      djOnly: true,
       playingOnly: true
     }
   }
