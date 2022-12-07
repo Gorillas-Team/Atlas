@@ -20,7 +20,8 @@ export default class NowPlaying extends Command {
     const time = this.player.state.position
 
     const embed = new EmbedBuilder()
-      .setTitle(`Tocando agora ${title} - ${author}`)
+      .setTitle('Tocando agora')
+      .addField(title, author)
       .setURL(uri)
       .setDescription(`\`\`\`▶ [${TimeUtils.progress(25, duration, time)}] - [${TimeUtils.msToHours(time)}]\`\`\``)
       .setThumbnail(`https://img.youtube.com/vi/${identifier}/mqdefault.jpg`)

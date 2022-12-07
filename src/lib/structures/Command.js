@@ -16,7 +16,6 @@ export default class Command {
       needsPlayer: false,
       voiceChannelOnly: false,
       memberTrack: false,
-      djOnly: false,
       playingOnly: false,
       checkPermissions: false
     }

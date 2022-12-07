@@ -22,7 +22,6 @@ export default class Join extends Command {
       textChannel: channel
     })
 
-    if (!player.playing) player.updateDj(guild)
     player.execTimeout()
 
     return '👌'

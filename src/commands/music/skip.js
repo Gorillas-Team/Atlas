@@ -12,7 +12,6 @@ export default class Skip extends Command {
     this.conf = {
       needsPlayer: true,
       voiceChannelOnly: true,
-      djOnly: true,
       memberTrack: true,
       playingOnly: true
     }

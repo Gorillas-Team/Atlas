@@ -11,14 +11,12 @@ export default class Leave extends Command {
 
     this.conf = {
       needsPlayer: true,
-      voiceChannelOnly: true,
-      djOnly: true
+      voiceChannelOnly: true
     }
   }
 
   run () {
     this.player.destroy()
-    this.player.execClearTimeout()
     return '👋'
   }
 }
