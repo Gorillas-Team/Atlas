@@ -1,6 +1,4 @@
 import Command from '../../lib/structures/Command.js'
-import gorilink from 'gorilink'
-const { Queue } = gorilink
 
 export default class Clean extends Command {
   constructor (client) {

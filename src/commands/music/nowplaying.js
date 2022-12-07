@@ -20,7 +20,7 @@ export default class NowPlaying extends Command {
     const time = this.player.state.position
 
     const embed = new EmbedBuilder()
-      .setTitle(`Tocando agora`)
+      .setTitle('Tocando agora')
       .addField(title, author)
       .setURL(uri)
       .setDescription(`\`\`\`▶ [${TimeUtils.progress(25, duration, time)}] - [${TimeUtils.msToHours(time)}]\`\`\``)
