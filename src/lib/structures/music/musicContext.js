@@ -1,21 +1,13 @@
 // TODO: pls Psykka from future, refactor this file
 
 export default function musicContext ({ player, memberChannel, voiceChannel, conf, reply, ctx, client }) {
-  const { me, member } = ctx
-  const { needsPlayer, voiceChannelOnly, memberTrack, djOnly, playingOnly, checkPermissions } = conf
+  const { me } = ctx
+  const { needsPlayer, voiceChannelOnly, playingOnly, checkPermissions } = conf
 
   if (needsPlayer && !player) return reply(ctx, ':x: | Não estou tocando nada no momento')
 
   if (voiceChannelOnly && player && (!memberChannel || memberChannel !== voiceChannel)) {
     return reply(ctx, `:x: | Estou conectado em \`${client.channels.cache.get(voiceChannel.id || voiceChannel).name}\``)
-  }
-
-  if (djOnly) {
-    if (memberTrack && (member.id !== player.track.requester.id && !player.isDJ(member))) {
-      return reply(ctx, ':x: | Somente o DJ e o requester tem permissão para isso')
-    }
-
-    if (!player.isDJ(member) && !memberTrack) return reply(ctx, ':x: | Somente o DJ tem permissão para isso')
   }
 
   if (playingOnly && !player.playing) return reply(ctx, ':x: | Não estou tocando nada no momento')

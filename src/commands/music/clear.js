@@ -1,6 +1,4 @@
 import Command from '../../lib/structures/Command.js'
-import gorilink from 'gorilink'
-const { Queue } = gorilink
 
 export default class Clean extends Command {
   constructor (client) {
@@ -13,13 +11,12 @@ export default class Clean extends Command {
 
     this.conf = {
       needsPlayer: true,
-      voiceChannelOnly: true,
-      djOnly: true
+      voiceChannelOnly: true
     }
   }
 
   run () {
-    this.player.queue = new Queue()
+    this.player.queue = this.player.queue.splice(0, 1)
     return '🗑️'
   }
 }

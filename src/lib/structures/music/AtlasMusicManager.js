@@ -4,6 +4,8 @@ import gorilink from 'gorilink'
 
 const { GorilinkManager } = gorilink
 
+const MAX_PLAYLIST_SIZE = 100
+
 export default class AtlasMusicManager extends GorilinkManager {
   constructor (client, nodes, options) {
     const nodesResumable = nodes.map(n => Object.assign({ resumeKey: Math.random().toString(36).slice(2) }, n))
@@ -40,7 +42,7 @@ export default class AtlasMusicManager extends GorilinkManager {
     if (loadType === 'LOAD_FAILED' || loadType === 'NO_MATCHES') return `Não encontrei nada buscando por: \`${query}\``
 
     if (loadType === 'PLAYLIST_LOADED') {
-      if (tracks.length > 30) tracks.splice(30, tracks.length)
+      if (tracks.length > MAX_PLAYLIST_SIZE) tracks.splice(MAX_PLAYLIST_SIZE, tracks.length)
 
       const limitedPlaylist = tracks.map(t => Object.assign({ requester }, t))
 
