@@ -1,0 +1,9 @@
+{
+  "name": "@atlasbot/utils",
+  "packageManager": "yarn@3.3.1",
+  "type": "module",
+  "types": "lib.d.ts",
+  "dependencies": {
+    "undici": "^5.16.0"
+  }
+}

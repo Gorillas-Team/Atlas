@@ -1,0 +1,31 @@
+export const Events = Object.freeze({
+  READY: 'ready',
+  MESSAGE: 'message',
+  INTERACTIONS_CREATE: 'interactionsCreate',
+  VOICE_STATE_UPDATE: 'voiceStateUpdate'
+})
+
+export const RawEvents = Object.freeze({
+  READY: 'READY',
+  CHANNEL_CREATE: 'CHANNEL_CREATE',
+  MESSAGE_CREATE: 'MESSAGE_CREATE',
+  MESSAGE_UPDATE: 'MESSAGE_UPDATE',
+  GUILD_CREATE: 'GUILD_CREATE',
+  GUILD_DELETE: 'GUILD_DELETE',
+  VOICE_STATE_UPDATE: 'VOICE_STATE_UPDATE',
+  INTERACTION_CREATE: 'INTERACTION_CREATE'
+})
+
+export const PayloadOpcodes = Object.freeze({
+  DISPATCH: 0,
+  HEARTBEAT: 1,
+  IDENTIFY: 2,
+  PRESENCE_UPDATE: 3,
+  VOICE_STATE_UPDATE: 4,
+  RESUME: 6,
+  RECONNECT: 7,
+  REQUEST_GUILD_MEMBERS: 8,
+  INVALID_SESSION: 9,
+  HELLO: 10,
+  HEARTBEAT_ACK: 11
+})

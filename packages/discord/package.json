@@ -1,0 +1,10 @@
+{
+  "name": "@atlasbot/discord",
+  "packageManager": "yarn@3.3.1",
+  "type": "module",
+  "dependencies": {
+    "@atlasbot/structures": "workspace:^",
+    "@atlasbot/utils": "workspace:^",
+    "ws": "^8.12.0"
+  }
+}
