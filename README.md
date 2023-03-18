@@ -18,7 +18,7 @@ This branch is the next stage of development for Atlas. It is a complete rewrite
 
 The original Atlas was in a very bad state, it was a mess of code and was very hard to maintain. One of the main reasons for this was that it was written using Discord.js. Which is a good library, but every update the changes were so big that it was hard to keep up with them.
 
-This rewrite is being done using a self made library focused on simplicity and ease of use. This library does not have name yet, but it is called `@atlas/discord` for now. [You can check it out here](packages/discord/README.md).
+This rewrite is being done using a self made library focused on simplicity and ease of use. This library does not have name yet, but it is called `@atlas/discord` for now. [You can check it out here](packages/discord).
 
 ## Roadmap
 
