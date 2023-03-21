@@ -1,5 +1,7 @@
 // import User from './User.js'
 import { Maybe, SugarMap } from '@atlasbot/utils'
+
+// TODO: import from index @atlasbot/discord
 import User from './User.js'
 
 const mapRoles = (guild) => (roleId) => [roleId, guild.roles.get(roleId)]

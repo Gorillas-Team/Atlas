@@ -1,5 +1,6 @@
 import BaseGatewayEvent from './src/resources/gateway/BaseGatewayEvent.js'
 
+import * as Endpoints from './src/Endpoints.js'
 import Client from './src/Client.js'
 
 import Channel from './src/resources/Channel.js'
@@ -22,6 +23,7 @@ import { PayloadOpcodes, Events } from './src/Constants.js'
 export {
   BaseGatewayEvent,
 
+  Endpoints,
   Client,
 
   Channel,

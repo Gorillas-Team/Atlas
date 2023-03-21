@@ -1,12 +1,12 @@
 // TODO: update gorilink to ES Modules
 // import { ActivityType } from 'discord.js'
-import gorilink from 'gorilink'
+// import gorilink from 'gorilink'
 
-const { GorilinkManager } = gorilink
+// const { GorilinkManager } = gorilink
 
 const MAX_PLAYLIST_TRACKS = 100
 
-export default class MusicManager extends GorilinkManager {
+export default class MusicManager {
   constructor (client, nodes, options) {
     const nodesResumable = nodes
       .map((n) =>
@@ -15,7 +15,7 @@ export default class MusicManager extends GorilinkManager {
         }, n)
       )
 
-    super(client, nodesResumable, options)
+    // super(client, nodesResumable, options)
   }
 
   join (data = {}, options = {}) {

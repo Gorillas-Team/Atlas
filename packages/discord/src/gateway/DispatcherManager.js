@@ -1,3 +1,4 @@
+// TODO: import from index @atlasbot/discord
 import { RawEvents } from '../Constants.js'
 
 import ReadyEvent from '../events/ReadyEvent.js'
