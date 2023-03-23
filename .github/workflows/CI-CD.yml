@@ -29,6 +29,9 @@ jobs:
       - name: Unit test
         run: yarn test
 
+      - name: Test coverage
+        run: yarn test:cov
+
       - name: Coveralls report
         run: yarn coveralls
         env:
