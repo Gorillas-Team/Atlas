@@ -2,7 +2,6 @@ name: CI-CD
 
 on:
   - push
-  - pull_request
 
 jobs:
   test:
@@ -11,6 +10,10 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
+
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
@@ -39,4 +42,4 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
           COVERALLS_SERVICE_NAME: github-actions
           COVERALLS_SERVICE_JOB_ID: ${{ github.job }}
-          COVERALLS_GIT_BRANCH: ${GITHUB_REF##*/}
+          COVERALLS_GIT_BRANCH: ${{ steps.vars.outputs.short_ref }}
