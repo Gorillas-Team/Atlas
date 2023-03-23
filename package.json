@@ -13,7 +13,7 @@
     "lint": "eslint \"{app,packages}\"/**/*.js",
     "test": "ava",
     "test:watch": "ava --watch",
-    "test:cov": "c8 -x \"{.pnp.cjs,.pnp.loader.mjs}\" --src \"{app,packages}\" -r lcov --check-coverage --lines 0 yarn test",
+    "test:cov": "c8 -x \"{.pnp.cjs,.pnp.loader.mjs,.yarn/*}\" --src \"{app,packages}\" -r lcov --check-coverage --lines 0 yarn test",
     "coveralls": "coveralls < coverage/lcov.info"
   },
   "devDependencies": {
