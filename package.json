@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint \"{app,packages}\"/**/*.js",
     "test": "ava",
     "test:watch": "ava --watch",
     "test:cov": "c8 -x \"{.pnp.cjs,.pnp.loader.mjs}\" --src \"{app,packages}\" -r lcov --check-coverage ava",

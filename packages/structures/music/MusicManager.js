@@ -7,16 +7,16 @@
 const MAX_PLAYLIST_TRACKS = 100
 
 export default class MusicManager {
-  constructor (client, nodes, options) {
-    const nodesResumable = nodes
-      .map((n) =>
-        Object.assign({
-          resumeKey: Math.random().toString(36).slice(2)
-        }, n)
-      )
+  // constructor (client, nodes, options) {
+  // const nodesResumable = nodes
+  //   .map((n) =>
+  //     Object.assign({
+  //       resumeKey: Math.random().toString(36).slice(2)
+  //     }, n)
+  //   )
 
-    // super(client, nodesResumable, options)
-  }
+  // super(client, nodesResumable, options)
+  // }
 
   join (data = {}, options = {}) {
     const player = super.join(data, options)
