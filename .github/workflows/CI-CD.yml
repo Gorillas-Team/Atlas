@@ -33,6 +33,7 @@ jobs:
         run: yarn test:cov
 
       - name: Coveralls report
+        continue-on-error: true
         run: yarn coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
