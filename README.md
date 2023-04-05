@@ -7,6 +7,7 @@
 
 <p align="center">
 <img src="https://github.com/Gorillas-Team/Atlas/actions/workflows/CI-CD.yml/badge.svg?branch=rewrite">
+<a href='https://coveralls.io/github/Gorillas-Team/Atlas?branch=rewrite'><img src='https://coveralls.io/repos/github/Gorillas-Team/Atlas/badge.svg?branch=rewrite' alt='Coverage Status' /></a>
 <img src="https://img.shields.io/github/license/Gorillas-Team/Atlas">
 </p>
 
