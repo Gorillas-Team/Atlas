@@ -12,3 +12,6 @@
 
 # env files
 .env
+
+# tests
+/coverage
