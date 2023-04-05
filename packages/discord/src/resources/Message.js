@@ -1,4 +1,6 @@
 import { Maybe } from '@atlasbot/utils'
+
+// TODO: import from index @atlasbot/discord
 import Member from './Member.js'
 import User from './User.js'
 

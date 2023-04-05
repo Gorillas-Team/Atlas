@@ -1,5 +1,6 @@
 import WebSocket from 'ws'
 
+// TODO: import from index @atlasbot/discord
 import EventManager from './EventManager.js'
 
 export default class DiscordGateway {

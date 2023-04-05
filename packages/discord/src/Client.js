@@ -1,10 +1,8 @@
 import EventEmitter from 'node:events'
 import { notDeepStrictEqual, ok } from 'node:assert'
-import { RequestUtils, SugarMap } from '@atlasbot/utils'
-import { Message } from '@atlasbot/discord'
-import * as Endpoints from './Endpoints.js'
 
-import DiscordGateway from './gateway/DiscordGateway.js'
+import { RequestUtils, SugarMap } from '@atlasbot/utils'
+import { Message, Endpoints, DiscordGateway } from '@atlasbot/discord'
 
 const DEFAULT_OPTIONS = {
   intents: 0,

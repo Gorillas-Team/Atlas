@@ -1,4 +1,6 @@
 import { Maybe } from '@atlasbot/utils'
+
+// TODO: import from index @atlasbot/discord
 import InteractionDataOptions from './InteractionDataOptions.js'
 
 export default class InteractionData extends InteractionDataOptions {

@@ -1,4 +1,4 @@
-import musicContext from './music/musicContext.js'
+// import musicContext from './music/musicContext.js'
 
 export default class Command {
   constructor (client) {
@@ -31,17 +31,17 @@ export default class Command {
         this.player = this.client.music.players.get(ctx.guild.id)
         this.voiceChannel = this.client.channels.cache.get(this.player ? this.player.voiceChannel : null) || ctx.me.voice.channelId
 
-        const check = musicContext({
-          player: this.player,
-          memberChannel: this.memberChannel,
-          voiceChannel: this.voiceChannel,
-          conf: this.conf,
-          reply: this.reply,
-          client: this.client,
-          ctx
-        })
+        // const check = musicContext({
+        //   player: this.player,
+        //   memberChannel: this.memberChannel,
+        //   voiceChannel: this.voiceChannel,
+        //   conf: this.conf,
+        //   reply: this.reply,
+        //   client: this.client,
+        //   ctx
+        // })
 
-        if (check !== true) return
+        // if (check !== true) return
       }
 
       const message = await this.run(ctx)
