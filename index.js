@@ -11,6 +11,7 @@ const Atlas = new AtlasClient({
   environment: process.env.ENVIRONMENT,
   owners: process.env.OWNERS.split(','),
   prefixes: process.env.PREFIXES.split(','),
+  blacklist: process.env.BLACKLIST.split(',') || [],
   nodes: JSON.parse(process.env.LAVALINK),
   clientOptions: JSON.parse(process.env.CLIENT_OPTIONS || '{}'),
   logChannel: process.env.LOG_CHANNEL,
