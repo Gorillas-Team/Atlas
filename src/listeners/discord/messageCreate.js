@@ -8,6 +8,7 @@ export default class extends Listener {
   }
 
   run (msg) {
+    if (this.config.blacklist.includes(msg.author.id)) return
     if (msg.channel.type === 'dm' || msg.author.bot) return
 
     const prefix = this.config.prefixes.find(x => msg.content.toLowerCase().startsWith(x))
