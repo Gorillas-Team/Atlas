@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@atlasbot/discord": ["./packages/discord/index.js"],
+      "@atlasbot/utils": ["./packages/utils/index.js"],
+      "@atlasbot/lavalink": ["./packages/lavalink/index.js"],
+      "@atlasbot/structures": ["./packages/structures/index.js"],
+    }
+  }
+}
