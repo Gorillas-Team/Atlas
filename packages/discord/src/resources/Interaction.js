@@ -17,12 +17,12 @@ export default class Interaction {
     this.guild = client.guilds.cache.get(data.guild_id)
     this.channel = this.guild.channels.get(data.channel_id)
 
-    this.member = Maybe.maybe(data.member).map((member) => new Member(this.guild, member))
+    this.member = Maybe.of(data.member).map((member) => new Member(this.guild, member))
 
     this.token = data.token
     this.version = data.version
 
-    this.message = Maybe.maybe(data.message).map((message) => new Message(this.channel, message))
+    this.message = Maybe.of(data.message).map((message) => new Message(this.channel, message))
     this.locale = data.locale
   }
 }

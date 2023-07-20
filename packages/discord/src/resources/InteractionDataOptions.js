@@ -10,9 +10,9 @@ export default class InteractionDataOptions {
   constructor (data) {
     this.name = data.name
     this.type = data.type
-    this.value = Maybe.maybe(data.value)
+    this.value = Maybe.of(data.value)
 
-    this.options = Maybe.maybe(data.options)
+    this.options = Maybe.of(data.options)
       .map(createInteractionDataOptions)
       .getOr([])
   }

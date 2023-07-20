@@ -5,10 +5,10 @@ export default class Guild {
   constructor (data) {
     this.id = data.id
     this.name = data.name
-    this.description = Maybe.maybe(data.description)
+    this.description = Maybe.of(data.description)
     this.icon = data.icon
-    this.owner = Maybe.maybe(data.owner)
-    this.permissions = Maybe.maybe(data.permissions)
+    this.owner = Maybe.of(data.owner)
+    this.permissions = Maybe.of(data.permissions)
     this.joinedAt = data.joined_at
     this.unavailable = data.unavailable
     this.memberCount = data.member_count
