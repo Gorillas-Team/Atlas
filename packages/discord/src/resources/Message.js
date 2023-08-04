@@ -9,15 +9,15 @@ export default class Message {
     this.id = data.id
 
     this.guild = client.guilds.cache.get(data.guild_id)
-    this.channel = Maybe.maybe(this.guild).map((g) => g.channels.get(data.channel_id)).getOr()
+    this.channel = Maybe.of(this.guild).map((g) => g.channels.get(data.channel_id)).getOr(null)
     this.type = data.type
 
-    this.member = Maybe.maybe(data.member)
+    this.member = Maybe.of(data.member)
       .map((member) => new Member(this.guild, member))
       .getOr()
 
     this.content = data.content
-    this.author = Maybe.maybe(data.author).map((user) => new User(user)).getOr()
+    this.author = Maybe.of(data.author).map((user) => new User(user)).getOr(null)
     this.createdAt = data.timestamp
   }
 }

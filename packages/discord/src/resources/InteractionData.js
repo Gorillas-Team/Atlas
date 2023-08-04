@@ -8,6 +8,6 @@ export default class InteractionData extends InteractionDataOptions {
     super(data)
 
     this.id = data.id
-    this.resolved = Maybe.maybe(data.resolved)
+    this.resolved = Maybe.of(data.resolved)
   }
 }
