@@ -2,7 +2,7 @@ import { BaseGatewayEvent, Guild } from '@atlasbot/discord'
 
 export default class GuildCreateEvent extends BaseGatewayEvent {
   handle (data) {
-    const guild = new Guild(data.d)
+    const guild = new Guild(this.client, data.d)
 
     const { cache, partials } = this.client.guilds
 

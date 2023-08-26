@@ -92,7 +92,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/lavalink/",\
           "packageDependencies": [\
             ["@atlasbot/lavalink", "workspace:packages/lavalink"],\
-            ["undici", "npm:5.16.0"],\
+            ["@atlasbot/utils", "workspace:packages/utils"],\
             ["ws", "virtual:047dbbee60608933b50b7c610269c979a53f571993f9a636647dda54538186390eb0b50b636fedffceaf764d7edd3baf2f602c4fd39f55ded6c34c3c57c5b4ec#npm:8.12.0"]\
           ],\
           "linkType": "SOFT"\
@@ -1666,6 +1666,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["app", "workspace:app"],\
             ["@atlasbot/discord", "workspace:packages/discord"],\
+            ["@atlasbot/lavalink", "workspace:packages/lavalink"],\
             ["@atlasbot/utils", "workspace:packages/utils"],\
             ["dotenv", "npm:16.0.3"]\
           ],\

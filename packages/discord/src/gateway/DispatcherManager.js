@@ -5,6 +5,7 @@ import ReadyEvent from '../events/ReadyEvent.js'
 import InteractionCreate from '../events/InteractionCreate.js'
 import MessageCreateEvent from '../events/MessageCreate.js'
 import GuildCreateEvent from '../events/GuildCreate.js'
+import VoiceStateUpdate from '../events/VoiceStateUpdate.js'
 
 export default class DispatcherManager {
   constructor (client) {
@@ -14,6 +15,7 @@ export default class DispatcherManager {
     this.register(RawEvents.INTERACTION_CREATE, new InteractionCreate(client))
     this.register(RawEvents.MESSAGE_CREATE, new MessageCreateEvent(client))
     this.register(RawEvents.GUILD_CREATE, new GuildCreateEvent(client))
+    this.register(RawEvents.VOICE_STATE_UPDATE, new VoiceStateUpdate(client))
   }
 
   register (name, event) {

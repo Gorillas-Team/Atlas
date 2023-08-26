@@ -2,7 +2,9 @@ import { SugarMap, Maybe } from '@atlasbot/utils'
 import { Role, Member, Channel, VoiceState } from '@atlasbot/discord'
 
 export default class Guild {
-  constructor (data) {
+  constructor (client, data) {
+    this.client = client
+
     this.id = data.id
     this.name = data.name
     this.description = Maybe.of(data.description)
@@ -17,16 +19,16 @@ export default class Guild {
       data.roles.map((role) => [role.id, new Role(role)])
     )
 
-    this.members = new SugarMap(
-      data.members.map((member) => [member.user.id, new Member(this, member)])
-    )
-
     this.channels = new SugarMap(
       data.channels.map((chan) => [chan.id, new Channel(this, chan)])
     )
 
     this.voiceStates = new SugarMap(
-      data.voice_states.map((state) => [state.id, new VoiceState(this, state)])
+      data.voice_states.map((state) => [state.user_id, new VoiceState(this.client, state)])
+    )
+
+    this.members = new SugarMap(
+      data.members.map((member) => [member.user.id, new Member(this, member)])
     )
   }
 }

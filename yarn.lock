@@ -25,11 +25,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@atlasbot/lavalink@workspace:packages/lavalink":
+"@atlasbot/lavalink@workspace:^, @atlasbot/lavalink@workspace:packages/lavalink":
   version: 0.0.0-use.local
   resolution: "@atlasbot/lavalink@workspace:packages/lavalink"
   dependencies:
-    undici: ^5.16.0
+    "@atlasbot/utils": "workspace:^"
     ws: ^8.12.0
   languageName: unknown
   linkType: soft
@@ -1117,6 +1117,7 @@ __metadata:
   resolution: "app@workspace:app"
   dependencies:
     "@atlasbot/discord": "workspace:^"
+    "@atlasbot/lavalink": "workspace:^"
     "@atlasbot/utils": "workspace:^"
     dotenv: ^16.0.3
   languageName: unknown

@@ -3,9 +3,6 @@ import { BaseGatewayEvent } from '@atlasbot/discord'
 
 export default class ReadyEvent extends BaseGatewayEvent {
   handle (data) {
-    // TODO: cache guilds, users, etc
-    // This is just a basic implementation of the ready event
-    // to get the bot up and running
     this.client.v = data.d.v
     this.client.user = data.d.user
 

@@ -1,5 +1,9 @@
 import { notStrictEqual } from 'node:assert'
 
+/**
+ * @template K,V
+ * @extends {Map<K,V>}
+ */
 export class SugarMap extends Map {
   first () {
     const values = [...this.values()]

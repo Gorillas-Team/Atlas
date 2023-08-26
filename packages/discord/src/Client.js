@@ -66,7 +66,7 @@ export default class Client extends EventEmitter {
 
     /**
      * The bot's channels.
-     * @type {SugarMap}
+     * @type {SugarMap <string, import('@atlasbot/discord').Channel>}
      * @default new SugarMap()
      */
     this.channels = new SugarMap()
@@ -85,6 +85,23 @@ export default class Client extends EventEmitter {
      */
     this.sessionStartLimit = {}
 
+    /**
+     * The all the bot's voice states.
+     * @type {SugarMap<string, import('@atlasbot/discord').VoiceState}
+     */
+    this.voiceStates = new SugarMap()
+
+    /**
+     * @typedef VoiceServer
+     * @prop {string} token
+     * @prop {string} endpoint
+    */
+
+    /**
+     * The all the bot's voice servers.
+     * @type {SugarMap<string, VoiceServer>}
+     */
+    this.voiceServers = new SugarMap()
     /**
      * The utility object for making API requests.
      * @type {RequestUtils}

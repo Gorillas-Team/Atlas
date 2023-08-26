@@ -68,6 +68,10 @@ export class Nothing {
    */
   getOr (defaultValue) { return defaultValue }
 
+  /**
+   * @template U
+   * @returns {Nothing}
+   */
   map () { return new Nothing() }
 
   /**

@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  lavalink:
+    image: fredboat/lavalink:4.0.0-beta.3-alpine
+    restart: always
+    environment:
+        - SERVER_PORT=2333
+        - LAVALINK_SERVER_PASSWORD=youshallnotpass
+    volumes:
+        - ./application.yml:/opt/Lavalink/application.yml
+    networks:
+        - lavalink
+    expose:
+        - 2333
+    ports:
+        - 2333:2333
+
+networks:
+  lavalink:
+    name: lavalink

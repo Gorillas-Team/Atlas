@@ -1,7 +1,6 @@
 import { Maybe } from '@atlasbot/utils'
 
 // TODO: import from index @atlasbot/discord
-import Member from './Member.js'
 import Message from './Message.js'
 import InteractionData from './InteractionData.js'
 
@@ -16,13 +15,16 @@ export default class Interaction {
     this.data = new InteractionData(data.data)
     this.guild = client.guilds.cache.get(data.guild_id)
     this.channel = this.guild.channels.get(data.channel_id)
-
-    this.member = Maybe.of(data.member).map((member) => new Member(this.guild, member))
+    this.memberId = data.member.user.id
 
     this.token = data.token
     this.version = data.version
 
     this.message = Maybe.of(data.message).map((message) => new Message(this.channel, message))
     this.locale = data.locale
+  }
+
+  get member () {
+    return this.guild.members.get(this.memberId)
   }
 }
