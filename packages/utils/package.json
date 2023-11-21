@@ -4,6 +4,6 @@
   "type": "module",
   "types": "lib.d.ts",
   "dependencies": {
-    "undici": "^5.16.0"
+    "undici": "^5.27.2"
   }
 }
