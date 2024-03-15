@@ -86,7 +86,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["discord-api-types", "npm:0.37.17"],\
             ["file-type", "npm:18.0.0"],\
             ["tslib", "npm:2.4.1"],\
-            ["undici", "npm:5.26.3"]\
+            ["undici", "npm:5.28.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -981,7 +981,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fast-deep-equal", "npm:3.1.3"],\
             ["lodash.snakecase", "npm:4.1.1"],\
             ["tslib", "npm:2.4.1"],\
-            ["undici", "npm:5.26.3"],\
+            ["undici", "npm:5.28.3"],\
             ["ws", "virtual:7aa2848a4951cc02968116f8ee2a2410fba294411e9d0c44466cf54224866dfff833ab193994928de26ae2ccb4d4b7021bcf0ff703728829eabd8070e427c28f#npm:8.11.0"]\
           ],\
           "linkType": "HARD"\
@@ -3567,10 +3567,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["undici", [\
-        ["npm:5.26.3", {\
-          "packageLocation": "./.yarn/cache/undici-npm-5.26.3-bdeea4fdde-aaa9aadb71.zip/node_modules/undici/",\
+        ["npm:5.28.3", {\
+          "packageLocation": "./.yarn/cache/undici-npm-5.28.3-fb5b0fbd18-fa1e65aff8.zip/node_modules/undici/",\
           "packageDependencies": [\
-            ["undici", "npm:5.26.3"],\
+            ["undici", "npm:5.28.3"],\
             ["@fastify/busboy", "npm:2.0.0"]\
           ],\
           "linkType": "HARD"\
