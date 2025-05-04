@@ -3,25 +3,37 @@ import { Client, ClientEvents, REST, Routes } from "discord.js";
 import { AtlasOptions } from "./config";
 import { BaseDiscordEvent } from "@/shared/discord/BaseDiscordEvent";
 import pino, { Logger } from "pino";
+import { LavalinkClient } from "@/shared/lavalink/LavalinkClient";
 
 export class Atlas extends Client {
     public logger: Logger;
     public commands: Map<string, BaseDiscordCommand> = new Map();
+    public lavalink: LavalinkClient;
+    public config: AtlasOptions['config'];
     private events: Map<keyof ClientEvents, BaseDiscordEvent<keyof ClientEvents>> = new Map();
-    private config: AtlasOptions['config'];
     private gateway: REST;
 
     constructor(options: AtlasOptions) {
-        super({
-            ...options,
+        super({ ...options });
+
+        const { config, botToken } = options;
+
+        this.config = config;
+
+        this.logger = pino({
+            name: 'Discord-Client',
+            level: config.logLevel,
         });
 
-        this.config = options.config
-        this.gateway = new REST({ version: '10' }).setToken(options.botToken);
-        this.logger = pino({
-            level: options.config.logLevel,
-            name: 'Client',
-        })
+        this.lavalink = new LavalinkClient(
+            {
+                clientId: config.applicationId,
+                logLevel: config.logLevel,
+            },
+            config.lavalinkNodes
+        );
+
+        this.gateway = new REST({ version: '10' }).setToken(botToken);
     }
 
     private async loadCommands() {

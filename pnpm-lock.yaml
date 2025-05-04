@@ -14,6 +14,9 @@ importers:
       pino:
         specifier: ^9.6.0
         version: 9.6.0
+      ws:
+        specifier: ^8.18.2
+        version: 8.18.2
     devDependencies:
       '@swc/cli':
         specifier: ^0.1.62
@@ -21,6 +24,9 @@ importers:
       '@swc/core':
         specifier: ^1.3.92
         version: 1.11.24
+      '@types/ws':
+        specifier: ^8.18.1
+        version: 8.18.1
       pino-pretty:
         specifier: ^13.0.0
         version: 13.0.0
