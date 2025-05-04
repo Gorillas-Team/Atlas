@@ -1,6 +1,6 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode'
 import pino, { Logger } from 'pino'
-import { LavalinkPlayer } from './LavalinkPlayer'
+import { LavalinkPlayer, LavalinkSpawnOptions } from './LavalinkPlayer'
 
 type LavalinkOptions = {
   clientId: string
@@ -32,5 +32,15 @@ export class LavalinkClient {
     node.connect()
     this.nodes.set(node.name, node)
     return node
+  }
+
+  public spawn(options: LavalinkSpawnOptions) {
+    const node = this.getBestNode()
+
+  }
+
+  private getBestNode(): LavalinkNode {
+    // TODO: Get best node based on CPU and memory data
+    return Array.from(this.nodes.values())[0]
   }
 }

@@ -1,3 +1,9 @@
+export type LavalinkSpawnOptions = {
+  guildId: string
+  voiceChannelId: string
+  sessionId: string
+}
+
 export class LavalinkPlayer {
   private identifier: string
   private encodedTrack: string | null

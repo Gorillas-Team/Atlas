@@ -1,6 +1,9 @@
 import { WebSocket } from 'ws'
 import { LavalinkClient } from './LavalinkClient'
 import { Logger } from 'pino'
+import { LavalinkPacket, ReadyPacket } from './LavalinkPackets'
+import { LavalinkApi } from './api/LavalinkApi'
+import { LavalinkPlayer, LavalinkSpawnOptions } from './LavalinkPlayer'
 
 export type LavalinkNodeOptions = {
   name: string
@@ -9,8 +12,6 @@ export type LavalinkNodeOptions = {
   password: string
   maxReconnectAttempts?: number
 }
-
-type LavalinkNodeOps = 'ready' | 'playerUpdate' | 'stats' | 'event'
 
 const WEBSOCKET_ENDPOINT = 'v4/websocket'
 const CLIENT_NAME = 'Atlas'
@@ -25,11 +26,13 @@ export class LavalinkNode {
   public port: number
   public clientId: string
   public password: string
+  public resumed: boolean = false
   public sessionId: string | null = null
   public ws: WebSocket | null = null
   public maxReconnectAttempts: number = 5
   public reconnectAttempts: number = 0
   public reconnectTimeout: NodeJS.Timeout | null = null
+  public api: LavalinkApi | null = null
 
   constructor(lavalink: LavalinkClient, options: LavalinkNodeOptions) {
     const { name, host, port, password } = options
@@ -46,33 +49,42 @@ export class LavalinkNode {
   }
 
   public connect() {
-    const { host, port, password, sessionId, clientId } = this
+    const { host, port, password, sessionId, clientId, resumed } = this
 
-    const url = `ws://${host}:${port}/${WEBSOCKET_ENDPOINT}`
+    const baseUrl = `//${host}:${port}/${WEBSOCKET_ENDPOINT}`
     const headers = {
       Authorization: password,
       'Client-Name': `${CLIENT_NAME}/${CLIENT_VERSION}`,
       'User-Id': clientId,
-      'Session-Id': sessionId ?? ''
+      'Session-Id': sessionId ?? '',
+      'Session-Resumed': String(resumed)
     }
 
-    this.ws = new WebSocket(url, { headers })
+    this.ws = new WebSocket(`ws:${baseUrl}`, { headers })
+    this.api = new LavalinkApi(`http:${baseUrl}`, password)
 
     this.ws.on('open', () => this.onOpen())
     this.ws.on('message', (message: string) => this.onMessage(message))
     this.ws.on('error', (error: Error) => this.onError(error))
     this.ws.on('close', () => this.onClose())
 
-    this.logger.info(`Connecting to Lavalink node ${this.name} at ${url}`)
+    this.logger.info(`Connecting to Lavalink node ${this.name} at ws:${baseUrl}`)
   }
 
   private onMessage(message: string) {
-    const data = JSON.parse(message)
-    // TODO: Handle different message types
+    const packet: LavalinkPacket = JSON.parse(message)
+
+    if (packet.op == 'ready') this.handleReadyPacket(packet)
+  }
+
+  private handleReadyPacket(packet: ReadyPacket) {
+    this.resumed = packet.resumed
+    this.sessionId = packet.sessionId
   }
 
   private onOpen() {
     this.logger.info('Connected to Lavalink node')
+    this.resumed = false
     this.clearReconnectTimeout()
     this.reconnectAttempts = 0
   }
