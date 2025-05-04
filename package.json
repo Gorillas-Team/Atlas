@@ -1,0 +1,23 @@
+{
+  "name": "meu-projeto",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/index.ts | pino-pretty",
+    "build": "swc src -d dist",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.92",
+    "pino-pretty": "^13.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  },
+  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "pino": "^9.6.0"
+  }
+}
