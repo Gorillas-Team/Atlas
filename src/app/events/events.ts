@@ -1,21 +1,22 @@
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
 import { Atlas } from '../Atlas'
 import { Ready } from './listeners/ready'
-import { ClientEvents } from 'discord.js'
+import { Events } from 'discord.js'
 import { InteractionCreate } from './listeners/interactionCreate'
+import { Raw } from './listeners/raw'
 
 export function loadEvents(
   client: Atlas
-): Map<keyof ClientEvents, BaseDiscordEvent<keyof ClientEvents>> {
+): Map<Events, BaseDiscordEvent<Events>> {
   const events = new Map<
-    keyof ClientEvents,
-    BaseDiscordEvent<keyof ClientEvents>
+    Events,
+    BaseDiscordEvent<Events>
   >()
-
-  const discordEvents = [
+  const discordEvents: BaseDiscordEvent<Events>[] = [
     new Ready(client),
-    new InteractionCreate(client)
-  ] as BaseDiscordEvent<keyof ClientEvents>[]
+    new InteractionCreate(client),
+    new Raw(client)
+  ]
 
   for (const event of discordEvents) {
     events.set(event.eventName, event)

@@ -1,11 +1,11 @@
 import { BaseDiscordEvent } from "@/shared/discord/BaseDiscordEvent";
 import { Atlas } from "../../Atlas";
-import { Interaction } from "discord.js";
+import { Events, Interaction } from "discord.js";
 import { findAndRunInteraction } from "@/app/interactions/interactions";
 
-export class InteractionCreate extends BaseDiscordEvent<'interactionCreate'> {
+export class InteractionCreate extends BaseDiscordEvent<Events.InteractionCreate> {
   constructor(client: Atlas) {
-    super(client, 'interactionCreate');
+    super(client, Events.InteractionCreate);
   }
 
   async run(interaction: Interaction) {

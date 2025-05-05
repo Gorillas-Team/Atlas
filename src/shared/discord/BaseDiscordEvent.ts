@@ -1,8 +1,8 @@
 import { Atlas } from '@/app/Atlas'
-import { ClientEvents } from 'discord.js'
+import { Events } from 'discord.js'
 import { Logger } from 'pino'
 
-export class BaseDiscordEvent<T extends keyof ClientEvents> {
+export class BaseDiscordEvent<T extends Events> {
   logger: Logger
   eventName: T
   client: Atlas

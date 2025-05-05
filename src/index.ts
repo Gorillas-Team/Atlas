@@ -13,7 +13,7 @@ const bot = new Atlas({
     lavalinkNodes: getEnvJson('LAVALINK_NODES', []),
     logLevel: getEnvString('LOG_LEVEL', 'info') as LogLevel,
     environment: getEnvString('NODE_ENV', 'development') as Environment,
-    testGuildId: getEnvString('DISCORD_TEST_GUILD_ID', undefined) ?? null
+    testGuildId: getEnvString('DISCORD_TEST_GUILD_ID') ?? null
   },
   intents: []
 })

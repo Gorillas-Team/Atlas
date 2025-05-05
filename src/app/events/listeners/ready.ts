@@ -1,9 +1,10 @@
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
 import { Atlas } from '../../Atlas'
+import { Events } from 'discord.js'
 
-export class Ready extends BaseDiscordEvent<'ready'> {
+export class Ready extends BaseDiscordEvent<Events.ClientReady> {
   constructor(client: Atlas) {
-    super(client, 'ready')
+    super(client, Events.ClientReady)
   }
 
   async run(client: Atlas) {

@@ -1,5 +1,5 @@
 import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand'
-import { Client, ClientEvents, REST, Routes } from 'discord.js'
+import { Client, Events, REST, Routes } from 'discord.js'
 import { AtlasOptions } from './config'
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
 import pino, { Logger } from 'pino'
@@ -13,10 +13,8 @@ export class Atlas extends Client {
   public interactions: Map<string, BaseDiscordInteraction> = new Map()
   public lavalink: LavalinkClient
   public config: AtlasOptions['config']
-  private events: Map<
-    keyof ClientEvents,
-    BaseDiscordEvent<keyof ClientEvents>
-  > = new Map()
+  // new Map<Events, BaseDiscordEvent<Events>>()
+  private events: Map<Events, BaseDiscordEvent<Events>> = new Map()
   private gateway: REST
 
   constructor(options: AtlasOptions) {
@@ -88,7 +86,7 @@ export class Atlas extends Client {
 
   private async loadEvents() {
     for (const [eventName, event] of this.events) {
-      this.on(eventName, (...args) => event.run(...args))
+      this.on(eventName as string, (...args) => event.run(...args))
     }
   }
 
@@ -97,7 +95,7 @@ export class Atlas extends Client {
   }
 
   public setEvents(
-    events: Map<keyof ClientEvents, BaseDiscordEvent<keyof ClientEvents>>
+    events: Map<Events, BaseDiscordEvent<Events>>
   ) {
     this.events = events
   }

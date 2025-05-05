@@ -16,11 +16,17 @@ type LavalinkSpawnOptions = {
   selfMute?: boolean
 }
 
+type VoiceServer = {
+  token: string
+  endpoint: string
+}
+
 export class LavalinkClient {
   public logger: Logger
   public clientId: string
   private players: Map<string, LavalinkPlayer> = new Map()
   private voiceStates: Map<string, VoiceState> = new Map()
+  private voiceServers: Map<string, VoiceServer> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
 
   constructor(options: LavalinkOptions, nodes: LavalinkNodeOptions[]) {
