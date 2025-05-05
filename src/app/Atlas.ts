@@ -13,7 +13,6 @@ export class Atlas extends Client {
   public interactions: Map<string, BaseDiscordInteraction> = new Map()
   public lavalink: LavalinkClient
   public config: AtlasOptions['config']
-  // new Map<Events, BaseDiscordEvent<Events>>()
   private events: Map<Events, BaseDiscordEvent<Events>> = new Map()
   private gateway: REST
 
@@ -41,9 +40,7 @@ export class Atlas extends Client {
   }
 
   private async loadCommands() {
-    const commandData = Array.from(this.commands.values()).map(command =>
-      command.data.toJSON()
-    )
+    const commandData = Array.from(this.commands.values()).map(command => command.data.toJSON())
 
     const applicationId = this.config.applicationId
     if (!applicationId) {
@@ -51,42 +48,34 @@ export class Atlas extends Client {
     }
 
     try {
-      if (
-        this.config.environment === 'development' &&
-        this.config.testGuildId
-      ) {
-        await this.gateway.put(
-          Routes.applicationGuildCommands(
-            applicationId,
-            this.config.testGuildId
-          ),
-          {
-            body: commandData
-          }
-        )
+      const { testGuildId, environment } = this.config
+      if (environment === 'development' && testGuildId) {
+        const route = Routes.applicationGuildCommands(applicationId, testGuildId)
+        await this.gateway.put(route, { body: commandData })
 
         this.logger.info('Successfully registered development commands')
         return
       }
 
-      if (this.config.environment === 'production') {
-        await this.gateway.put(Routes.applicationCommands(applicationId), {
-          body: commandData
-        })
+      if (environment === 'production') {
+        const route = Routes.applicationCommands(applicationId)
+        await this.gateway.put(route, { body: commandData })
 
         this.logger.info('Successfully registered production commands')
         return
       }
 
       throw new Error("Invalid environment. Use 'development' or 'production'.")
-    } catch (error) {
-      throw new Error(`Failed to register application commands: ${error}`)
+    } catch (error: unknown) {
+      throw new Error(`Failed to register application commands: ${(error as Error).message}`)
     }
   }
 
-  private async loadEvents() {
+  private loadEvents() {
     for (const [eventName, event] of this.events) {
-      this.on(eventName as string, (...args) => event.run(...args))
+      this.on(eventName as string, (...args: unknown[]) => {
+        event.run(...args).catch(error => this.logger.error(`Error in event ${eventName}:`, error))
+      })
     }
   }
 
@@ -94,15 +83,11 @@ export class Atlas extends Client {
     this.commands = commands
   }
 
-  public setEvents(
-    events: Map<Events, BaseDiscordEvent<Events>>
-  ) {
+  public setEvents(events: Map<Events, BaseDiscordEvent<Events>>) {
     this.events = events
   }
 
-  public setInteractions(
-    interactions: Map<string, BaseDiscordInteraction>
-  ) {
+  public setInteractions(interactions: Map<string, BaseDiscordInteraction>) {
     this.interactions = interactions
   }
 
@@ -110,8 +95,8 @@ export class Atlas extends Client {
     return this.interactions.values().find(interaction => interaction.id === id && interaction.type === type) ?? null
   }
 
-  public bootstrap() {
+  public async bootstrap() {
     this.loadEvents()
-    this.loadCommands()
+    await this.loadCommands()
   }
 }

@@ -12,9 +12,7 @@ export function getEnvNumber(key: string, defaultValue?: number): number {
   const value = parseInt(raw, 10)
 
   if (isNaN(value)) {
-    throw new Error(
-      `Environment variable "${key}" must be a valid number, got "${raw}"`
-    )
+    throw new Error(`Environment variable "${key}" must be a valid number, got "${raw}"`)
   }
 
   return value
@@ -26,9 +24,7 @@ export function getEnvBoolean(key: string, defaultValue?: boolean): boolean {
   if (raw === 'true') return true
   if (raw === 'false') return false
 
-  throw new Error(
-    `Environment variable "${key}" must be "true" or "false", got "${raw}"`
-  )
+  throw new Error(`Environment variable "${key}" must be "true" or "false", got "${raw}"`)
 }
 
 export function getEnvString(key: string, defaultValue?: string): string {
@@ -41,16 +37,11 @@ export function getEnvJson<T>(key: string, defaultValue?: T): T {
   try {
     return JSON.parse(raw) as T
   } catch {
-    throw new Error(
-      `Environment variable "${key}" must be valid JSON, got "${raw}"`
-    )
+    throw new Error(`Environment variable "${key}" must be valid JSON, got "${raw}"`)
   }
 }
 
-export function getEnvStringArray(
-  key: string,
-  defaultValue?: string[]
-): string[] {
+export function getEnvStringArray(key: string, defaultValue?: string[]): string[] {
   // 1,2,3
   const raw = getEnv(key, defaultValue?.join(','))
   const values = raw
@@ -59,9 +50,7 @@ export function getEnvStringArray(
     .filter(Boolean)
 
   if (values.length === 0) {
-    throw new Error(
-      `Environment variable "${key}" must be a non-empty comma-separated list`
-    )
+    throw new Error(`Environment variable "${key}" must be a non-empty comma-separated list`)
   }
 
   return values

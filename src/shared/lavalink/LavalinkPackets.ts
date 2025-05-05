@@ -1,8 +1,4 @@
-export type OpType =
-  | 'ready'
-  | 'playerUpdate'
-  | 'stats'
-  | 'event'
+export type OpType = 'ready' | 'playerUpdate' | 'stats' | 'event'
 
 interface BasePacket {
   op: OpType
@@ -70,12 +66,7 @@ export interface TrackStartEventPacket extends EventPacketBase {
   track: Track
 }
 
-export type TrackEndReason =
-  | 'finished'
-  | 'loadFailed'
-  | 'stopped'
-  | 'replaced'
-  | 'cleanup'
+export type TrackEndReason = 'finished' | 'loadFailed' | 'stopped' | 'replaced' | 'cleanup'
 
 export interface TrackEndEventPacket extends EventPacketBase {
   type: 'TrackEndEvent'

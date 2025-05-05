@@ -1,5 +1,5 @@
-import axios, { Axios } from "axios";
-import { LavalinkPlayer } from "../LavalinkPlayer";
+import axios, { Axios } from 'axios'
+import { LavalinkPlayer } from '../LavalinkPlayer'
 
 export class LavalinkApi {
   private client: Axios
@@ -9,15 +9,15 @@ export class LavalinkApi {
       baseURL: `${url}/v4/`,
       headers: {
         Authorization: authentication,
-        "Content-Type": "application/json",
-        Accept: "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
       }
     })
   }
 
   public async getPlayer(sessionId: string, guildId: string): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
-      throw new Error("Session ID and Guild ID are required to get player.")
+      throw new Error('Session ID and Guild ID are required to get player.')
     }
 
     try {
@@ -30,7 +30,7 @@ export class LavalinkApi {
 
   public async updatePlayer(sessionId: string, guildId: string, player: LavalinkPlayer): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
-      throw new Error("Session ID and Guild ID are required to get player.")
+      throw new Error('Session ID and Guild ID are required to get player.')
     }
 
     try {
