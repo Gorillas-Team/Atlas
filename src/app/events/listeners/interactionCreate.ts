@@ -16,7 +16,10 @@ export class InteractionCreate extends BaseDiscordEvent {
 
     const command = this.client.commands.get(interaction.commandName)
     if (!command) {
-      await interaction.reply({ content: 'Command not found', ephemeral: true })
+      await interaction.reply({
+        content: 'Comando não encontrado 😓',
+        ephemeral: true
+      })
       return
     }
 
@@ -25,14 +28,14 @@ export class InteractionCreate extends BaseDiscordEvent {
         await command.run(interaction)
       } else {
         await interaction.reply({
-          content: 'This command type is not supported.',
+          content: 'Comando não suportado 😓',
           ephemeral: true
         })
       }
     } catch (error) {
       console.error(error)
       await interaction.reply({
-        content: 'There was an error while executing this command!',
+        content: 'Algo deu errado 😓',
         ephemeral: true
       })
     }
