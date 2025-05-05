@@ -1,6 +1,6 @@
 import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand'
 import { Client, Events, REST, Routes } from 'discord.js'
-import { AtlasOptions } from './config'
+import { AtlasConfig, AtlasOptions } from './config'
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
 import pino, { Logger } from 'pino'
 import { LavalinkClient } from '@/shared/lavalink/LavalinkClient'
@@ -12,7 +12,7 @@ export class Atlas extends Client {
   public commands: Map<string, BaseDiscordCommand> = new Map()
   public interactions: Map<string, BaseDiscordInteraction> = new Map()
   public lavalink: LavalinkClient
-  public config: AtlasOptions['config']
+  public config: AtlasConfig
   private events: Map<Events, BaseDiscordEvent> = new Map()
   private gateway: REST
 
