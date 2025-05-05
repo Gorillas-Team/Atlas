@@ -21,5 +21,6 @@ const bot = new Atlas({
 bot.setCommands(loadCommands(bot))
 bot.setEvents(loadEvents(bot))
 bot.setInteractions(loadInteractions(bot))
-bot.bootstrap()
-bot.login(getEnvString('DISCORD_TOKEN'))
+
+void bot.bootstrap()
+void bot.login(getEnvString('DISCORD_TOKEN'))

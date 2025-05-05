@@ -2,7 +2,7 @@ import { Atlas } from '@/app/Atlas'
 import { Events } from 'discord.js'
 import { Logger } from 'pino'
 
-export class BaseDiscordEvent<T extends Events> {
+export abstract class BaseDiscordEvent<T extends Events> {
   logger: Logger
   eventName: T
   client: Atlas
@@ -15,7 +15,5 @@ export class BaseDiscordEvent<T extends Events> {
     })
   }
 
-  async run(...args: any): Promise<void> {
-    throw new Error("Method 'run' not implemented.")
-  }
+  abstract run(...args: any[]): Promise<void> | void
 }

@@ -21,23 +21,34 @@ export class LavalinkApi {
     }
 
     try {
-      const response = await this.client.get(`${sessionId}/players/${guildId}`)
+      const response = await this.client.get<LavalinkPlayer>(`${sessionId}/players/${guildId}`)
       return response.data
     } catch (error) {
-      throw new Error(`Failed to get player: ${error}`)
+      throw new Error(
+        `Failed to get player: ${error instanceof Error ? error.message : String(error)}`
+      )
     }
   }
 
-  public async updatePlayer(sessionId: string, guildId: string, player: LavalinkPlayer): Promise<LavalinkPlayer> {
+  public async updatePlayer(
+    sessionId: string,
+    guildId: string,
+    player: LavalinkPlayer
+  ): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
       throw new Error('Session ID and Guild ID are required to get player.')
     }
 
     try {
-      const response = await this.client.patch(`${sessionId}/players/${guildId}`, player)
+      const response = await this.client.patch<LavalinkPlayer>(
+        `${sessionId}/players/${guildId}`,
+        player
+      )
       return response.data
     } catch (error) {
-      throw new Error(`Failed to get player: ${error}`)
+      throw new Error(
+        `Failed to update player: ${error instanceof Error ? error.message : String(error)}`
+      )
     }
   }
 }

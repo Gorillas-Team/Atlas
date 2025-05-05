@@ -7,7 +7,8 @@ export class Raw extends BaseDiscordEvent<Events.Raw> {
     super(client, Events.Raw)
   }
 
-  async run(paket: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async run(packet: any) {
     // TODO: handle voice state updates
     // TODO: handle voice server updates
   }

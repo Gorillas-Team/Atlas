@@ -74,7 +74,9 @@ export class Atlas extends Client {
   private loadEvents() {
     for (const [eventName, event] of this.events) {
       this.on(eventName as string, (...args: unknown[]) => {
-        event.run(...args).catch(error => this.logger.error(`Error in event ${eventName}:`, error))
+        Promise.resolve(event.run(...args)).catch((error: unknown) =>
+          this.logger.error(`Error in event ${eventName}:`, error)
+        )
       })
     }
   }
@@ -92,7 +94,11 @@ export class Atlas extends Client {
   }
 
   public findInteraction(id: string, type: InteractionType): BaseDiscordInteraction | null {
-    return this.interactions.values().find(interaction => interaction.id === id && interaction.type === type) ?? null
+    return (
+      this.interactions
+        .values()
+        .find(interaction => interaction.id === id && interaction.type === type) ?? null
+    )
   }
 
   public async bootstrap() {

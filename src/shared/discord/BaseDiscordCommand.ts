@@ -2,7 +2,7 @@ import { Atlas } from '@/app/Atlas'
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'
 import { Logger } from 'pino'
 
-export class BaseDiscordCommand {
+export abstract class BaseDiscordCommand {
   logger: Logger
   data: SlashCommandBuilder
   client: Atlas
@@ -15,7 +15,5 @@ export class BaseDiscordCommand {
     })
   }
 
-  async run(interaction: ChatInputCommandInteraction): Promise<void> {
-    throw new Error("Method 'run' not implemented.")
-  }
+  abstract run(interaction: ChatInputCommandInteraction): Promise<void> | void
 }

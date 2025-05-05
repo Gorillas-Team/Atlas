@@ -7,7 +7,7 @@ export class Ready extends BaseDiscordEvent<Events.ClientReady> {
     super(client, Events.ClientReady)
   }
 
-  async run(client: Atlas) {
+  run(client: Atlas) {
     this.logger.info(`Logged in as ${client.user?.tag}`)
   }
 }

@@ -72,9 +72,13 @@ export class LavalinkNode {
   }
 
   private onMessage(message: string) {
-    const packet: LavalinkPacket = JSON.parse(message)
-
-    if (packet.op == 'ready') this.handleReadyPacket(packet)
+    try {
+      const packet = JSON.parse(message) as LavalinkPacket
+      if (packet.op == 'ready') this.handleReadyPacket(packet)
+    } catch (error) {
+      this.logger.error('Failed to parse message as LavalinkPacket:', error)
+      return
+    }
   }
 
   private handleReadyPacket(packet: ReadyPacket) {

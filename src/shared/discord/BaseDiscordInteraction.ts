@@ -2,7 +2,7 @@ import { Atlas } from '@/app/Atlas'
 import { InteractionType } from '@/app/interactions/interactions'
 import { Interaction } from 'discord.js'
 
-export class BaseDiscordInteraction {
+export abstract class BaseDiscordInteraction {
   client: Atlas
   id: string
   type: InteractionType
@@ -13,5 +13,5 @@ export class BaseDiscordInteraction {
     this.type = type
   }
 
-  async run(interaction: Interaction) {}
+  abstract run(interaction: Interaction): Promise<void> | void
 }

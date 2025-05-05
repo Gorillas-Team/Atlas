@@ -10,7 +10,7 @@ export class InteractionCreate extends BaseDiscordEvent<Events.InteractionCreate
 
   async run(interaction: Interaction) {
     if (!interaction.isCommand()) {
-      findAndRunInteraction(this.client, interaction)
+      void findAndRunInteraction(this.client, interaction)
       return
     }
 

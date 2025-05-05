@@ -12,13 +12,21 @@ import {
 
 export class PingCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
-    super(client, new SlashCommandBuilder().setName('ping').setDescription('Ping the bot to check if it is alive'))
+    super(
+      client,
+      new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Ping the bot to check if it is alive')
+    )
   }
 
   async run(interaction: ChatInputCommandInteraction): Promise<void> {
     this.logger.info('Ping command executed')
 
-    const button = new ButtonBuilder().setCustomId('ping').setEmoji('🏓').setStyle(ButtonStyle.Primary)
+    const button = new ButtonBuilder()
+      .setCustomId('ping')
+      .setEmoji('🏓')
+      .setStyle(ButtonStyle.Primary)
 
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(button)
 
