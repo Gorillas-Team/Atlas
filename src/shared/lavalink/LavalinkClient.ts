@@ -1,6 +1,7 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode'
 import pino, { Logger } from 'pino'
-import { LavalinkPlayer, LavalinkSpawnOptions } from './LavalinkPlayer'
+import { LavalinkPlayer } from './LavalinkPlayer'
+import { VoiceState } from 'discord.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -8,10 +9,18 @@ type LavalinkOptions = {
   maxNodeReconnectAttempts?: number
 }
 
+type LavalinkSpawnOptions = {
+  guildId: string
+  voiceChannelId: string
+  selfDeaf?: boolean
+  selfMute?: boolean
+}
+
 export class LavalinkClient {
   public logger: Logger
   public clientId: string
   private players: Map<string, LavalinkPlayer> = new Map()
+  private voiceStates: Map<string, VoiceState> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
 
   constructor(options: LavalinkOptions, nodes: LavalinkNodeOptions[]) {
@@ -34,9 +43,15 @@ export class LavalinkClient {
     return node
   }
 
-  public spawn(options: LavalinkSpawnOptions) {
+  public async spawn(options: LavalinkSpawnOptions) {
     const node = this.getBestNode()
+    if (!node || !node.connected || !node.api) {
+      throw new Error('No available Lavalink nodes')
+    }
 
+    const player = new LavalinkPlayer()
+    const updatedPlayer = await node.api.updatePlayer(node.sessionId!, options.guildId, player)
+    this.players.set(options.guildId, updatedPlayer)
   }
 
   private getBestNode(): LavalinkNode {

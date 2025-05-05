@@ -1,11 +1,5 @@
-export type LavalinkSpawnOptions = {
-  guildId: string
-  voiceChannelId: string
-  sessionId: string
-}
-
 export class LavalinkPlayer {
-  private identifier: string
+  private identifier: string | null
   private encodedTrack: string | null
   private startTime: number
   private endTime: number
@@ -65,8 +59,8 @@ export class LavalinkPlayer {
     sessionId: string | null
   }
 
-  constructor(identifier: string) {
-    this.identifier = identifier
+  constructor() {
+    this.identifier = null
     this.encodedTrack = null
     this.startTime = 0
     this.endTime = 0

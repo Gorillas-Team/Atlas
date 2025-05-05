@@ -3,7 +3,6 @@ import { LavalinkClient } from './LavalinkClient'
 import { Logger } from 'pino'
 import { LavalinkPacket, ReadyPacket } from './LavalinkPackets'
 import { LavalinkApi } from './api/LavalinkApi'
-import { LavalinkPlayer, LavalinkSpawnOptions } from './LavalinkPlayer'
 
 export type LavalinkNodeOptions = {
   name: string
@@ -33,6 +32,7 @@ export class LavalinkNode {
   public reconnectAttempts: number = 0
   public reconnectTimeout: NodeJS.Timeout | null = null
   public api: LavalinkApi | null = null
+  public connected: boolean = false
 
   constructor(lavalink: LavalinkClient, options: LavalinkNodeOptions) {
     const { name, host, port, password } = options
@@ -51,7 +51,7 @@ export class LavalinkNode {
   public connect() {
     const { host, port, password, sessionId, clientId, resumed } = this
 
-    const baseUrl = `//${host}:${port}/${WEBSOCKET_ENDPOINT}`
+    const baseUrl = `${host}:${port}`
     const headers = {
       Authorization: password,
       'Client-Name': `${CLIENT_NAME}/${CLIENT_VERSION}`,
@@ -60,15 +60,15 @@ export class LavalinkNode {
       'Session-Resumed': String(resumed)
     }
 
-    this.ws = new WebSocket(`ws:${baseUrl}`, { headers })
-    this.api = new LavalinkApi(`http:${baseUrl}`, password)
+    this.ws = new WebSocket(`ws://${baseUrl}/${WEBSOCKET_ENDPOINT}`, { headers })
+    this.api = new LavalinkApi(`http://${baseUrl}`, password)
 
     this.ws.on('open', () => this.onOpen())
     this.ws.on('message', (message: string) => this.onMessage(message))
     this.ws.on('error', (error: Error) => this.onError(error))
     this.ws.on('close', () => this.onClose())
 
-    this.logger.info(`Connecting to Lavalink node ${this.name} at ws:${baseUrl}`)
+    this.logger.info(`Connecting to Lavalink node ${this.name} at ws://${baseUrl}`)
   }
 
   private onMessage(message: string) {
@@ -85,8 +85,9 @@ export class LavalinkNode {
   private onOpen() {
     this.logger.info('Connected to Lavalink node')
     this.resumed = false
-    this.clearReconnectTimeout()
     this.reconnectAttempts = 0
+    this.connected = true
+    this.clearReconnectTimeout()
   }
 
   private onError(error: Error) {

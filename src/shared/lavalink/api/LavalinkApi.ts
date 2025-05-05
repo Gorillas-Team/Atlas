@@ -1,12 +1,12 @@
 import axios, { Axios } from "axios";
-import { LavalinkPlayer, LavalinkSpawnOptions } from "../LavalinkPlayer";
+import { LavalinkPlayer } from "../LavalinkPlayer";
 
 export class LavalinkApi {
   private client: Axios
 
-  constructor (url: string, authentication: string) {
+  constructor(url: string, authentication: string) {
     this.client = axios.create({
-      baseURL: url,
+      baseURL: `${url}/v4/`,
       headers: {
         Authorization: authentication,
         "Content-Type": "application/json",
@@ -15,17 +15,29 @@ export class LavalinkApi {
     })
   }
 
-  async updatePlayer(options: LavalinkSpawnOptions, player: Partial<LavalinkPlayer>) {
-    return await this.client.patch(this.getSessionEndpoint(options.sessionId, `players/${options.guildId}`), {
-      ...player
-    })
+  public async getPlayer(sessionId: string, guildId: string): Promise<LavalinkPlayer> {
+    if (!sessionId || !guildId) {
+      throw new Error("Session ID and Guild ID are required to get player.")
+    }
+
+    try {
+      const response = await this.client.get(`${sessionId}/players/${guildId}`)
+      return response.data
+    } catch (error) {
+      throw new Error(`Failed to get player: ${error}`)
+    }
   }
 
-  async deletePlayer(options: LavalinkSpawnOptions) {
-    return await this.client.patch(this.getSessionEndpoint(options.sessionId, `players/${options.guildId}`))
-  }
+  public async updatePlayer(sessionId: string, guildId: string, player: LavalinkPlayer): Promise<LavalinkPlayer> {
+    if (!sessionId || !guildId) {
+      throw new Error("Session ID and Guild ID are required to get player.")
+    }
 
-  private getSessionEndpoint(sessionId: string, path: string) {
-    return `/sessions/${sessionId}/${path}`
-  } 
+    try {
+      const response = await this.client.patch(`${sessionId}/players/${guildId}`, player)
+      return response.data
+    } catch (error) {
+      throw new Error(`Failed to get player: ${error}`)
+    }
+  }
 }
