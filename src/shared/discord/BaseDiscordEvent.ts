@@ -2,12 +2,12 @@ import { Atlas } from '@/app/Atlas'
 import { Events } from 'discord.js'
 import { Logger } from 'pino'
 
-export abstract class BaseDiscordEvent<T extends Events> {
+export abstract class BaseDiscordEvent {
   logger: Logger
-  eventName: T
+  eventName: Events
   client: Atlas
 
-  constructor(client: Atlas, eventName: T) {
+  constructor(client: Atlas, eventName: Events) {
     this.client = client
     this.eventName = eventName
     this.logger = client.logger.child({

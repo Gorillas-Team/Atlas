@@ -5,9 +5,9 @@ import { Events } from 'discord.js'
 import { InteractionCreate } from './listeners/interactionCreate'
 import { Raw } from './listeners/raw'
 
-export function loadEvents(client: Atlas): Map<Events, BaseDiscordEvent<Events>> {
-  const events = new Map<Events, BaseDiscordEvent<Events>>()
-  const discordEvents: BaseDiscordEvent<Events>[] = [
+export function loadEvents(client: Atlas): Map<Events, BaseDiscordEvent> {
+  const events = new Map<Events, BaseDiscordEvent>()
+  const discordEvents: BaseDiscordEvent[] = [
     new Ready(client),
     new InteractionCreate(client),
     new Raw(client)

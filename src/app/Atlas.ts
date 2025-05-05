@@ -13,7 +13,7 @@ export class Atlas extends Client {
   public interactions: Map<string, BaseDiscordInteraction> = new Map()
   public lavalink: LavalinkClient
   public config: AtlasOptions['config']
-  private events: Map<Events, BaseDiscordEvent<Events>> = new Map()
+  private events: Map<Events, BaseDiscordEvent> = new Map()
   private gateway: REST
 
   constructor(options: AtlasOptions) {
@@ -85,7 +85,7 @@ export class Atlas extends Client {
     this.commands = commands
   }
 
-  public setEvents(events: Map<Events, BaseDiscordEvent<Events>>) {
+  public setEvents(events: Map<Events, BaseDiscordEvent>) {
     this.events = events
   }
 

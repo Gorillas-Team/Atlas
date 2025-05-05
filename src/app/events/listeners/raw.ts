@@ -2,7 +2,7 @@ import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
 import { Atlas } from '../../Atlas'
 import { Events } from 'discord.js'
 
-export class Raw extends BaseDiscordEvent<Events.Raw> {
+export class Raw extends BaseDiscordEvent {
   constructor(client: Atlas) {
     super(client, Events.Raw)
   }

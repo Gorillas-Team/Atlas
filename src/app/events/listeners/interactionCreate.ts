@@ -3,7 +3,7 @@ import { Atlas } from '../../Atlas'
 import { Events, Interaction } from 'discord.js'
 import { findAndRunInteraction } from '@/app/interactions/interactions'
 
-export class InteractionCreate extends BaseDiscordEvent<Events.InteractionCreate> {
+export class InteractionCreate extends BaseDiscordEvent {
   constructor(client: Atlas) {
     super(client, Events.InteractionCreate)
   }
