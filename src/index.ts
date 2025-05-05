@@ -15,7 +15,9 @@ const bot = new Atlas({
     environment: getEnvString('NODE_ENV', 'development') as Environment,
     testGuildId: getEnvString('DISCORD_TEST_GUILD_ID') ?? null
   },
-  intents: []
+  clientOptions: {
+    intents: []
+  }
 })
 
 bot.setCommands(loadCommands(bot))

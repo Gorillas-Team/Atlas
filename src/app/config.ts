@@ -16,4 +16,5 @@ export type AtlasConfig = {
 export type AtlasOptions = {
   config: AtlasConfig
   botToken: string
-} & ClientOptions
+  clientOptions: ClientOptions
+}

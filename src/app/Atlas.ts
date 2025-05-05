@@ -17,7 +17,7 @@ export class Atlas extends Client {
   private gateway: REST
 
   constructor(options: AtlasOptions) {
-    super({ ...options })
+    super(options.clientOptions)
 
     const { config, botToken } = options
 
