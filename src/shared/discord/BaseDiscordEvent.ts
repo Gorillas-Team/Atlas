@@ -1,4 +1,4 @@
-import { Atlas } from '@/app/Atlas'
+import { Atlas } from '@/app/Atlas.js'
 import { Events } from 'discord.js'
 import { Logger } from 'pino'
 

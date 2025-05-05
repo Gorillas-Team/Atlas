@@ -1,5 +1,5 @@
 import axios, { Axios } from 'axios'
-import { LavalinkPlayer } from '../LavalinkPlayer'
+import { LavalinkPlayer } from '../LavalinkPlayer.js'
 
 export class LavalinkApi {
   private client: Axios

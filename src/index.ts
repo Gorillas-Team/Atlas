@@ -1,9 +1,9 @@
-import { Atlas } from './app/Atlas'
-import { loadCommands } from './app/commands/commands'
+import { Atlas } from './app/Atlas.js'
+import { loadCommands } from './app/commands/commands.js'
 import { getEnvJson, getEnvString, getEnvStringArray } from '@/shared/env.js'
-import { loadEvents } from './app/events/events'
-import { Environment, LogLevel } from './app/config'
-import { loadInteractions } from './app/interactions/interactions'
+import { loadEvents } from './app/events/events.js'
+import { Environment, LogLevel } from './app/config.js'
+import { loadInteractions } from './app/interactions/interactions.js'
 
 const bot = new Atlas({
   botToken: getEnvString('DISCORD_TOKEN'),

@@ -1,5 +1,5 @@
-import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
-import { Atlas } from '../../Atlas'
+import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
+import { Atlas } from '@/app/Atlas.js'
 import { Events } from 'discord.js'
 
 export class Ready extends BaseDiscordEvent {

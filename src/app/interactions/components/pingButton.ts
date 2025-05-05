@@ -1,5 +1,5 @@
-import { Atlas } from '@/app/Atlas'
-import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction'
+import { Atlas } from '@/app/Atlas.js'
+import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
 import { ButtonInteraction, MessageFlags } from 'discord.js'
 
 export class PingButtonInteraction extends BaseDiscordInteraction {

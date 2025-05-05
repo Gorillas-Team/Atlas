@@ -1,7 +1,7 @@
-import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
-import { Atlas } from '../../Atlas'
+import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
+import { Atlas } from '@/app/Atlas.js'
 import { Events, Interaction } from 'discord.js'
-import { findAndRunInteraction } from '@/app/interactions/interactions'
+import { findAndRunInteraction } from '@/app/interactions/interactions.js'
 
 export class InteractionCreate extends BaseDiscordEvent {
   constructor(client: Atlas) {

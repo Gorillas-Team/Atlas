@@ -1,11 +1,11 @@
-import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand'
+import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
 import { Client, Events, REST, Routes } from 'discord.js'
-import { AtlasConfig, AtlasOptions } from './config'
-import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
-import pino, { Logger } from 'pino'
-import { LavalinkClient } from '@/shared/lavalink/LavalinkClient'
-import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction'
-import { InteractionType } from './interactions/interactions'
+import { AtlasConfig, AtlasOptions } from './config.js'
+import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
+import { pino, Logger } from 'pino'
+import { LavalinkClient } from '@/shared/lavalink/LavalinkClient.js'
+import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
+import { InteractionType } from './interactions/interactions.js'
 
 export class Atlas extends Client {
   public logger: Logger

@@ -1,4 +1,4 @@
-import { Atlas } from '@/app/Atlas'
+import { Atlas } from '@/app/Atlas.js'
 import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
 import {
   ActionRowBuilder,

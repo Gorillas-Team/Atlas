@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws'
-import { LavalinkClient } from './LavalinkClient'
+import { LavalinkClient } from './LavalinkClient.js'
 import { Logger } from 'pino'
-import { LavalinkPacket, ReadyPacket } from './LavalinkPackets'
-import { LavalinkApi } from './api/LavalinkApi'
+import { LavalinkPacket, ReadyPacket } from './LavalinkPackets.js'
+import { LavalinkApi } from './api/LavalinkApi.js'
 
 export type LavalinkNodeOptions = {
   name: string

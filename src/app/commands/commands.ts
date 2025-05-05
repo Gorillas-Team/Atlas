@@ -1,6 +1,6 @@
-import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand'
-import { PingCommand } from './util/ping'
-import { Atlas } from '../Atlas'
+import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
+import { PingCommand } from './util/ping.js'
+import { Atlas } from '../Atlas.js'
 
 export function loadCommands(client: Atlas): Map<string, BaseDiscordCommand> {
   const commands = new Map<string, BaseDiscordCommand>()

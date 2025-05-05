@@ -1,7 +1,7 @@
 import { Interaction } from 'discord.js'
-import { Atlas } from '../Atlas'
-import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction'
-import { PingButtonInteraction } from './components/pingButton'
+import { Atlas } from '../Atlas.js'
+import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
+import { PingButtonInteraction } from './components/pingButton.js'
 
 export type InteractionType = 'button' | 'menu'
 

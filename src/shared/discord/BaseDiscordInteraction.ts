@@ -1,5 +1,5 @@
-import { Atlas } from '@/app/Atlas'
-import { InteractionType } from '@/app/interactions/interactions'
+import { Atlas } from '@/app/Atlas.js'
+import { InteractionType } from '@/app/interactions/interactions.js'
 import { Interaction } from 'discord.js'
 
 export abstract class BaseDiscordInteraction {

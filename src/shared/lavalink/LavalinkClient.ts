@@ -1,6 +1,6 @@
-import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode'
-import pino, { Logger } from 'pino'
-import { LavalinkPlayer } from './LavalinkPlayer'
+import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
+import { pino, Logger } from 'pino'
+import { LavalinkPlayer } from './LavalinkPlayer.js'
 import { VoiceState } from 'discord.js'
 
 type LavalinkOptions = {

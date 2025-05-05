@@ -1,9 +1,9 @@
-import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent'
-import { Atlas } from '../Atlas'
-import { Ready } from './listeners/ready'
+import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
+import { Atlas } from '../Atlas.js'
+import { Ready } from './listeners/ready.js'
 import { Events } from 'discord.js'
-import { InteractionCreate } from './listeners/interactionCreate'
-import { Raw } from './listeners/raw'
+import { InteractionCreate } from './listeners/interactionCreate.js'
+import { Raw } from './listeners/raw.js'
 
 export function loadEvents(client: Atlas): Map<Events, BaseDiscordEvent> {
   const events = new Map<Events, BaseDiscordEvent>()
