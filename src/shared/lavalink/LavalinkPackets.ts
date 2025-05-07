@@ -99,12 +99,10 @@ export interface WebSocketClosedEventPacket extends EventPacketBase {
   byRemote: boolean
 }
 
-export interface Track {
-  encoded: string
-  info: TrackInfo
-  pluginInfo: Record<string, unknown>
-}
+/** All possible results from a /v4/loadtracks request */
+export type LoadResultType = 'track' | 'playlist' | 'search' | 'empty' | 'error'
 
+/** Core metadata about a track */
 export interface TrackInfo {
   identifier: string
   isSeekable: boolean
@@ -113,11 +111,49 @@ export interface TrackInfo {
   isStream: boolean
   position: number
   title: string
-  uri: string
-  artworkUrl: string
-  isrc: string | null
+  uri?: string
+  artworkUrl?: string
+  isrc?: string
   sourceName: string
 }
+
+export interface Track {
+  encoded: string
+  info: TrackInfo
+  pluginInfo: Record<string, unknown>
+  userData: Record<string, unknown>
+}
+
+export interface PlaylistInfo {
+  name: string
+  selectedTrack: number
+}
+
+export interface TrackResultData {
+  encoded: string
+  info: TrackInfo
+  pluginInfo: Record<string, unknown>
+  userData: Record<string, unknown>
+}
+
+export interface PlaylistResultData {
+  info: PlaylistInfo
+  pluginInfo: Record<string, unknown>
+  tracks: Track[]
+}
+
+export interface ErrorResultData {
+  message: string
+  severity: 'common' | 'suspicious' | 'fault'
+  cause?: string
+}
+
+export type LoadTracksResponse =
+  | { loadType: 'track'; data: Track }
+  | { loadType: 'playlist'; data: PlaylistResultData }
+  | { loadType: 'search'; data: Track[] }
+  | { loadType: 'empty'; data: unknown }
+  | { loadType: 'error'; data: ErrorResultData }
 
 export type LavalinkPacket =
   | ReadyPacket

@@ -1,13 +1,19 @@
 import { Atlas } from '@/app/Atlas.js'
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+  SlashCommandOptionsOnlyBuilder
+} from 'discord.js'
 import { Logger } from 'pino'
+
+export type SlashCommandData = SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
 
 export abstract class BaseDiscordCommand {
   logger: Logger
-  data: SlashCommandBuilder
+  data: SlashCommandData
   client: Atlas
 
-  constructor(client: Atlas, data: SlashCommandBuilder) {
+  constructor(client: Atlas, data: SlashCommandData) {
     this.client = client
     this.data = data
     this.logger = client.logger.child({

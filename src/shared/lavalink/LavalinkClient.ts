@@ -1,7 +1,6 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
 import { pino, Logger } from 'pino'
 import { LavalinkPlayer } from './LavalinkPlayer.js'
-import { VoiceState } from 'discord.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -9,14 +8,14 @@ type LavalinkOptions = {
   maxNodeReconnectAttempts?: number
 }
 
-type LavalinkSpawnOptions = {
+type LavalinkVoiceState = {
   guildId: string
   voiceChannelId: string
   selfDeaf?: boolean
   selfMute?: boolean
 }
 
-type VoiceServer = {
+type LavalinkVoiceServer = {
   token: string
   endpoint: string
 }
@@ -25,8 +24,8 @@ export class LavalinkClient {
   public logger: Logger
   public clientId: string
   private players: Map<string, LavalinkPlayer> = new Map()
-  private voiceStates: Map<string, VoiceState> = new Map()
-  private voiceServers: Map<string, VoiceServer> = new Map()
+  private voiceStates: Map<string, LavalinkVoiceState> = new Map()
+  private voiceServers: Map<string, LavalinkVoiceServer> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
 
   constructor(options: LavalinkOptions, nodes: LavalinkNodeOptions[]) {
@@ -49,7 +48,7 @@ export class LavalinkClient {
     return node
   }
 
-  public async spawn(options: LavalinkSpawnOptions) {
+  public async spawn(options: LavalinkVoiceState) {
     const node = this.getBestNode()
     if (!node || !node.connected || !node.api) {
       throw new Error('No available Lavalink nodes')
@@ -60,7 +59,23 @@ export class LavalinkClient {
     this.players.set(options.guildId, updatedPlayer)
   }
 
-  private getBestNode(): LavalinkNode {
+  public updateVoiceState(guildId: string, voiceState: LavalinkVoiceState) {
+    this.voiceStates.set(guildId, voiceState)
+  }
+
+  public updateVoiceServer(guildId: string, voiceServer: LavalinkVoiceServer) {
+    this.voiceServers.set(guildId, voiceServer)
+  }
+
+  public getVoiceState(guildId: string): LavalinkVoiceState | undefined {
+    return this.voiceStates.get(guildId)
+  }
+
+  public getVoiceServer(guildId: string): LavalinkVoiceServer | undefined {
+    return this.voiceServers.get(guildId)
+  }
+
+  getBestNode(): LavalinkNode {
     // TODO: Get best node based on CPU and memory data
     return Array.from(this.nodes.values())[0]
   }

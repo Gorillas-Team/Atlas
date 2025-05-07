@@ -1,5 +1,6 @@
 import axios, { Axios } from 'axios'
 import { LavalinkPlayer } from '../LavalinkPlayer.js'
+import { LoadTracksResponse, Track } from '@/shared/lavalink/LavalinkPackets.js'
 
 export class LavalinkApi {
   private client: Axios
@@ -48,6 +49,51 @@ export class LavalinkApi {
     } catch (error) {
       throw new Error(
         `Failed to update player: ${error instanceof Error ? error.message : String(error)}`
+      )
+    }
+  }
+
+  public loadTracks(
+    response: LoadTracksResponse,
+    // player: LavalinkPlayer,
+    search: boolean = false
+  ): Track | Track[] | null {
+    if (response.loadType === 'track') {
+      // player.queue.push(response.data)
+      return response.data
+    }
+
+    if (response.loadType === 'playlist') {
+      // player.queue.push(...response.data.tracks)
+      return response.data.tracks
+    }
+
+    if (response.loadType === 'search') {
+      if (search) {
+        return response.data
+      }
+
+      // player.queue.push(response.data[0])
+      return response.data[0]
+    }
+
+    if (response.loadType === 'empty' || response.loadType === 'error') {
+      return null
+    }
+
+    return null
+  }
+
+  public async findTracks(query: string, source: string): Promise<LoadTracksResponse> {
+    try {
+      const response = await this.client.get<LoadTracksResponse>(
+        `loadtracks?identifier=${source}:${query}`
+      )
+
+      return response.data
+    } catch (error) {
+      throw new Error(
+        `Failed to find tracks: ${error instanceof Error ? error.message : String(error)}`
       )
     }
   }

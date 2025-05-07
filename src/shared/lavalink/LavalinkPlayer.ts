@@ -1,3 +1,5 @@
+import { Track } from '@/shared/lavalink/LavalinkPackets.js'
+
 export class LavalinkPlayer {
   private identifier: string | null
   private encodedTrack: string | null
@@ -53,6 +55,10 @@ export class LavalinkPlayer {
       smoothing: number
     }
   }
+
+  // TODO: implement our own queue
+  public queue: Track[]
+
   public voice: {
     token: string | null
     endpoint: string | null
@@ -113,6 +119,9 @@ export class LavalinkPlayer {
         smoothing: 20.0
       }
     }
+
+    this.queue = []
+
     this.voice = {
       token: null,
       endpoint: null,
