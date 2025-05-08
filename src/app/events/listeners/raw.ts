@@ -18,26 +18,43 @@ export class Raw extends BaseDiscordEvent {
   }
 
   run(packet: RawPacket) {
+    const lavalink = this.client.lavalink
+    const clientId = this.client.config.applicationId
+
     switch (packet.t) {
       case GatewayDispatchEvents.VoiceStateUpdate: {
-        const { guild_id, channel_id, self_deaf, self_mute } = packet.d
-        if (!guild_id || !channel_id) return
+        const { guild_id, channel_id, self_deaf, self_mute, user_id, session_id } = packet.d
+        if (!guild_id || !user_id) return
 
-        this.client.lavalink.updateVoiceState(guild_id, {
+        if (channel_id === null) {
+          lavalink.deleteVoiceState(user_id)
+
+          if (clientId === user_id) {
+            // TODO: maybe destroy the player here
+            lavalink.deleteVoiceServer(guild_id)
+          }
+
+          return
+        }
+
+        lavalink.updateVoiceState(user_id, {
           guildId: guild_id,
           voiceChannelId: channel_id,
           selfDeaf: self_deaf,
-          selfMute: self_mute
+          selfMute: self_mute,
+          sessionId: session_id
         })
         break
       }
+
       case GatewayDispatchEvents.VoiceServerUpdate: {
         const { token, guild_id, endpoint } = packet.d
         if (!guild_id || !token || !endpoint) return
 
-        this.client.lavalink.updateVoiceServer(guild_id, { token, endpoint })
+        lavalink.updateVoiceServer(guild_id, { token, endpoint })
         break
       }
+
       default:
         break
     }

@@ -4,6 +4,7 @@ import { getEnvJson, getEnvString, getEnvStringArray } from '@/shared/env.js'
 import { loadEvents } from './app/events/events.js'
 import { Environment, LogLevel } from './app/config.js'
 import { loadInteractions } from './app/interactions/interactions.js'
+import { GatewayIntentBits } from 'discord.js'
 
 const bot = new Atlas({
   botToken: getEnvString('DISCORD_TOKEN'),
@@ -16,7 +17,11 @@ const bot = new Atlas({
     testGuildId: getEnvString('DISCORD_TEST_GUILD_ID') ?? null
   },
   clientOptions: {
-    intents: []
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildVoiceStates,
+      GatewayIntentBits.GuildMembers
+    ]
   }
 })
 

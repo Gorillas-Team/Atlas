@@ -31,12 +31,57 @@ export class PlayCommand extends BaseDiscordCommand {
     const source = interaction.options.getString('source') ?? 'ytsearch'
 
     const api = this.client.lavalink.getBestNode().api
+
+    if (!api) {
+      return void interaction.reply('No Lavalink node available.')
+    }
+
     const searchData = await api?.findTracks(query, source)
+    if (!searchData) {
+      return void interaction.reply('No results found.')
+    }
+
+    const userVoiceState = this.client.lavalink.getVoiceState(interaction.user.id)
+    if (!userVoiceState) {
+      return void interaction.reply('You are not in a voice channel.')
+    }
+
+    this.client.joinVoiceChannel(interaction.guildId!, userVoiceState.voiceChannelId!)
+
+    const player = this.client.lavalink.spawn({
+      guildId: interaction.guildId!,
+      voiceChannelId: userVoiceState.voiceChannelId,
+      sessionId: userVoiceState.sessionId
+    })
+
+    const voiceServer = this.client.lavalink.getVoiceServer(interaction.guildId!)
+    if (!voiceServer) {
+      return void interaction.reply('No voice server available.')
+    }
+
     if (!searchData) return
-    const tracks = api?.loadTracks(searchData, true)
+    const tracks = api.loadTracks(searchData, player, true)
 
-    if (!(tracks instanceof Array)) return
+    if (tracks.length === 0) {
+      return void interaction.reply('No tracks found.')
+    }
 
-    interaction.reply(tracks.map(track => track.info.title).join('\n'))
+    if (!player.node.sessionId) {
+      return void interaction.reply('Player session ID is missing.')
+    }
+
+    player.state.track = tracks[0]
+    player.setVoice({
+      endpoint: voiceServer.endpoint,
+      token: voiceServer.token,
+      sessionId: userVoiceState.sessionId
+    })
+
+    await api.updatePlayer(player.node.sessionId, player.guildId, player.state)
+
+    void interaction.reply({
+      content: `Playing **${tracks[0].info.title}** from **${tracks[0].info.author}**`,
+      flags: 64
+    })
   }
 }

@@ -33,7 +33,8 @@ export class Atlas extends Client {
         clientId: config.applicationId,
         logLevel: config.logLevel
       },
-      config.lavalinkNodes
+      config.lavalinkNodes,
+      this.joinVoiceChannel.bind(this)
     )
 
     this.gateway = new REST({ version: '10' }).setToken(botToken)
@@ -99,6 +100,28 @@ export class Atlas extends Client {
         .values()
         .find(interaction => interaction.id === id && interaction.type === type) ?? null
     )
+  }
+
+  public joinVoiceChannel(guildId: string, channelId: string) {
+    const shardId = this.guilds.cache.get(guildId)?.shardId ?? 0
+
+    const payload = {
+      op: 4,
+      d: {
+        guild_id: guildId,
+        channel_id: channelId,
+        self_mute: false,
+        self_deaf: true
+      }
+    }
+
+    const shard = this.ws.shards.get(shardId)
+    if (!shard) {
+      this.logger.error(`Shard ${shardId} not found for guild ${guildId}`)
+      return
+    }
+
+    shard.send(payload)
   }
 
   public async bootstrap() {

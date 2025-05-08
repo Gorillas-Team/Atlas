@@ -63,14 +63,14 @@ interface EventPacketBase extends BasePacket {
 
 export interface TrackStartEventPacket extends EventPacketBase {
   type: 'TrackStartEvent'
-  track: Track
+  track: LavalinkTrack
 }
 
 export type TrackEndReason = 'finished' | 'loadFailed' | 'stopped' | 'replaced' | 'cleanup'
 
 export interface TrackEndEventPacket extends EventPacketBase {
   type: 'TrackEndEvent'
-  track: Track
+  track: LavalinkTrack
   reason: TrackEndReason
 }
 
@@ -82,13 +82,13 @@ export interface ExceptionInfo {
 }
 export interface TrackExceptionEventPacket extends EventPacketBase {
   type: 'TrackExceptionEvent'
-  track: Track
+  track: LavalinkTrack
   exception: ExceptionInfo
 }
 
 export interface TrackStuckEventPacket extends EventPacketBase {
   type: 'TrackStuckEvent'
-  track: Track
+  track: LavalinkTrack
   thresholdMs: number
 }
 
@@ -117,7 +117,7 @@ export interface TrackInfo {
   sourceName: string
 }
 
-export interface Track {
+export interface LavalinkTrack {
   encoded: string
   info: TrackInfo
   pluginInfo: Record<string, unknown>
@@ -139,7 +139,7 @@ export interface TrackResultData {
 export interface PlaylistResultData {
   info: PlaylistInfo
   pluginInfo: Record<string, unknown>
-  tracks: Track[]
+  tracks: LavalinkTrack[]
 }
 
 export interface ErrorResultData {
@@ -149,9 +149,9 @@ export interface ErrorResultData {
 }
 
 export type LoadTracksResponse =
-  | { loadType: 'track'; data: Track }
+  | { loadType: 'track'; data: LavalinkTrack }
   | { loadType: 'playlist'; data: PlaylistResultData }
-  | { loadType: 'search'; data: Track[] }
+  | { loadType: 'search'; data: LavalinkTrack[] }
   | { loadType: 'empty'; data: unknown }
   | { loadType: 'error'; data: ErrorResultData }
 

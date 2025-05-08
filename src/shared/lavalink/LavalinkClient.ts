@@ -8,14 +8,15 @@ type LavalinkOptions = {
   maxNodeReconnectAttempts?: number
 }
 
-type LavalinkVoiceState = {
+export type LavalinkVoiceState = {
   guildId: string
-  voiceChannelId: string
+  sessionId: string | null
+  voiceChannelId: string | null
   selfDeaf?: boolean
   selfMute?: boolean
 }
 
-type LavalinkVoiceServer = {
+export type LavalinkVoiceServer = {
   token: string
   endpoint: string
 }
@@ -27,8 +28,13 @@ export class LavalinkClient {
   private voiceStates: Map<string, LavalinkVoiceState> = new Map()
   private voiceServers: Map<string, LavalinkVoiceServer> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
+  public join: (guildId: string, channelId: string) => void
 
-  constructor(options: LavalinkOptions, nodes: LavalinkNodeOptions[]) {
+  constructor(
+    options: LavalinkOptions,
+    nodes: LavalinkNodeOptions[],
+    join: (guildId: string, channelId: string) => void
+  ) {
     this.logger = pino({
       level: options.logLevel,
       name: 'Lavalink-Client'
@@ -39,6 +45,8 @@ export class LavalinkClient {
     for (const nodeOptions of nodes) {
       this.addNode(nodeOptions)
     }
+
+    this.join = join
   }
 
   public addNode(options: LavalinkNodeOptions) {
@@ -48,27 +56,39 @@ export class LavalinkClient {
     return node
   }
 
-  public async spawn(options: LavalinkVoiceState) {
+  public spawn(options: LavalinkVoiceState): LavalinkPlayer {
     const node = this.getBestNode()
     if (!node || !node.connected || !node.api) {
       throw new Error('No available Lavalink nodes')
     }
 
-    const player = new LavalinkPlayer()
-    const updatedPlayer = await node.api.updatePlayer(node.sessionId!, options.guildId, player)
-    this.players.set(options.guildId, updatedPlayer)
+    if (!options.guildId || !options.voiceChannelId) {
+      throw new Error('Guild ID and Voice Channel ID are required to spawn a player.')
+    }
+
+    const player = new LavalinkPlayer(options.guildId, node)
+    this.players.set(options.guildId, player)
+    return player
   }
 
-  public updateVoiceState(guildId: string, voiceState: LavalinkVoiceState) {
-    this.voiceStates.set(guildId, voiceState)
+  public updateVoiceState(userId: string, voiceState: LavalinkVoiceState) {
+    this.voiceStates.set(userId, voiceState)
   }
 
   public updateVoiceServer(guildId: string, voiceServer: LavalinkVoiceServer) {
     this.voiceServers.set(guildId, voiceServer)
   }
 
-  public getVoiceState(guildId: string): LavalinkVoiceState | undefined {
-    return this.voiceStates.get(guildId)
+  public deleteVoiceState(userId: string) {
+    this.voiceStates.delete(userId)
+  }
+
+  public deleteVoiceServer(guildId: string) {
+    this.voiceServers.delete(guildId)
+  }
+
+  public getVoiceState(userId: string): LavalinkVoiceState | undefined {
+    return this.voiceStates.get(userId)
   }
 
   public getVoiceServer(guildId: string): LavalinkVoiceServer | undefined {

@@ -1,6 +1,6 @@
 import axios, { Axios } from 'axios'
-import { LavalinkPlayer } from '../LavalinkPlayer.js'
-import { LoadTracksResponse, Track } from '@/shared/lavalink/LavalinkPackets.js'
+import { LavalinkPlayer, LavalinkPlayerState } from '../LavalinkPlayer.js'
+import { LoadTracksResponse, LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 
 export class LavalinkApi {
   private client: Axios
@@ -34,7 +34,8 @@ export class LavalinkApi {
   public async updatePlayer(
     sessionId: string,
     guildId: string,
-    player: LavalinkPlayer
+    player: LavalinkPlayerState,
+    noReplace = true
   ): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
       throw new Error('Session ID and Guild ID are required to get player.')
@@ -42,8 +43,13 @@ export class LavalinkApi {
 
     try {
       const response = await this.client.patch<LavalinkPlayer>(
-        `${sessionId}/players/${guildId}`,
-        player
+        `sessions/${sessionId}/players/${guildId}`,
+        player,
+        {
+          params: {
+            noReplace
+          }
+        }
       )
       return response.data
     } catch (error) {
@@ -55,16 +61,16 @@ export class LavalinkApi {
 
   public loadTracks(
     response: LoadTracksResponse,
-    // player: LavalinkPlayer,
+    player: LavalinkPlayer,
     search: boolean = false
-  ): Track | Track[] | null {
+  ): LavalinkTrack[] {
     if (response.loadType === 'track') {
-      // player.queue.push(response.data)
-      return response.data
+      player.queue.push(response.data)
+      return [response.data]
     }
 
     if (response.loadType === 'playlist') {
-      // player.queue.push(...response.data.tracks)
+      player.queue.push(...response.data.tracks)
       return response.data.tracks
     }
 
@@ -73,15 +79,15 @@ export class LavalinkApi {
         return response.data
       }
 
-      // player.queue.push(response.data[0])
-      return response.data[0]
+      player.queue.push(response.data[0])
+      return [response.data[0]]
     }
 
     if (response.loadType === 'empty' || response.loadType === 'error') {
-      return null
+      return []
     }
 
-    return null
+    return []
   }
 
   public async findTracks(query: string, source: string): Promise<LoadTracksResponse> {
