@@ -47,11 +47,15 @@ export class PlayCommand extends BaseDiscordCommand {
     }
 
     this.client.joinVoiceChannel(interaction.guildId!, userVoiceState.voiceChannelId!)
+    const selfVoiceState = this.client.lavalink.getVoiceState(this.client.user!.id)
+    if (!selfVoiceState) {
+      return void interaction.reply('Bot is not in a voice channel.')
+    }
 
     const player = this.client.lavalink.spawn({
       guildId: interaction.guildId!,
       voiceChannelId: userVoiceState.voiceChannelId,
-      sessionId: userVoiceState.sessionId
+      sessionId: selfVoiceState.sessionId
     })
 
     const voiceServer = this.client.lavalink.getVoiceServer(interaction.guildId!)
@@ -74,7 +78,7 @@ export class PlayCommand extends BaseDiscordCommand {
     player.setVoice({
       endpoint: voiceServer.endpoint,
       token: voiceServer.token,
-      sessionId: userVoiceState.sessionId
+      sessionId: selfVoiceState.sessionId
     })
 
     await api.updatePlayer(player.node.sessionId, player.guildId, player.state)
