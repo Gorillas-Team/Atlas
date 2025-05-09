@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@types/luxon':
+        specifier: ^3.6.2
+        version: 3.6.2
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -20,6 +23,9 @@ importers:
       eslint:
         specifier: ^9.26.0
         version: 9.26.0
+      luxon:
+        specifier: ^3.6.1
+        version: 3.6.1
       pino:
         specifier: ^9.6.0
         version: 9.6.0
@@ -452,6 +458,9 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/luxon@3.6.2':
+    resolution: {integrity: sha512-R/BdP7OxEMc44l2Ex5lSXHoIXTB2JLNa3y2QISIbr58U/YcsffyQrYW//hZSdrfxrjRZj3GcUoxMPGdO8gSYuw==}
 
   '@types/node@22.15.3':
     resolution: {integrity: sha512-lX7HFZeHf4QG/J7tBZqrCAXwz9J5RD56Y6MpP0eJkka8p+K0RY/yBTW7CYFJ4VGCclxqOLKmiGP5juQc6MKgcw==}
@@ -1236,6 +1245,10 @@ packages:
 
   lru-cache@4.1.5:
     resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}
+
+  luxon@3.6.1:
+    resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
+    engines: {node: '>=12'}
 
   magic-bytes.js@1.12.1:
     resolution: {integrity: sha512-ThQLOhN86ZkJ7qemtVRGYM+gRgR8GEXNli9H/PMvpnZsE44Xfh3wx9kGJaldg314v85m+bFW6WBMaVHJc/c3zA==}
@@ -2157,6 +2170,8 @@ snapshots:
     dependencies:
       '@types/node': 22.15.3
 
+  '@types/luxon@3.6.2': {}
+
   '@types/node@22.15.3':
     dependencies:
       undici-types: 6.21.0
@@ -3039,6 +3054,8 @@ snapshots:
     dependencies:
       pseudomap: 1.0.2
       yallist: 2.1.2
+
+  luxon@3.6.1: {}
 
   magic-bytes.js@1.12.1: {}
 

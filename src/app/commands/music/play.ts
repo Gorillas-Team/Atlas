@@ -1,6 +1,7 @@
 import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
 import { Atlas } from '@/app/Atlas.js'
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { Duration } from 'luxon'
 
 export class PlayCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
@@ -27,7 +28,7 @@ export class PlayCommand extends BaseDiscordCommand {
   }
 
   async run(interaction: ChatInputCommandInteraction) {
-    const query = interaction.options.getString('query') as string
+    const query = interaction.options.getString('query')
     const source = interaction.options.getString('source') ?? 'ytsearch'
     const guild = interaction.guild
     const api = this.client.lavalink.getBestNode().api
@@ -50,7 +51,7 @@ export class PlayCommand extends BaseDiscordCommand {
       voiceChannelId: userVoiceState.channelId
     })
 
-    const searchData = await api.findTracks(query, source)
+    const searchData = await api.findTracks(query!, source)
     if (!searchData) {
       return void interaction.reply('No results found.')
     }
@@ -65,9 +66,11 @@ export class PlayCommand extends BaseDiscordCommand {
     player.addTrack(tracks[0])
     await player.play()
 
+    const title = tracks[0].info.title
+    const duration = Duration.fromMillis(tracks[0].info.length).toFormat('mm:ss')
+
     void interaction.reply({
-      content: `Playing **${tracks[0].info.title}** from **${tracks[0].info.author}**`,
-      flags: 64
+      content: `Tocando agora: **${title}** - **${duration}**`
     })
   }
 }
