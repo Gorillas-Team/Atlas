@@ -7,7 +7,7 @@ export class LavalinkApi {
 
   constructor(url: string, authentication: string) {
     this.client = axios.create({
-      baseURL: `${url}/v4/`,
+      baseURL: url,
       headers: {
         Authorization: authentication,
         'Content-Type': 'application/json',
@@ -59,18 +59,12 @@ export class LavalinkApi {
     }
   }
 
-  public loadTracks(
-    response: LoadTracksResponse,
-    player: LavalinkPlayer,
-    search: boolean = false
-  ): LavalinkTrack[] {
+  public loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
     if (response.loadType === 'track') {
-      player.queue.push(response.data)
       return [response.data]
     }
 
     if (response.loadType === 'playlist') {
-      player.queue.push(...response.data.tracks)
       return response.data.tracks
     }
 
@@ -79,7 +73,6 @@ export class LavalinkApi {
         return response.data
       }
 
-      player.queue.push(response.data[0])
       return [response.data[0]]
     }
 

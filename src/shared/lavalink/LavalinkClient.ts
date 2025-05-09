@@ -1,6 +1,6 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
 import { pino, Logger } from 'pino'
-import { LavalinkPlayer } from './LavalinkPlayer.js'
+import { LavalinkPlayer, LavalinkPlayerVoice } from './LavalinkPlayer.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -10,7 +10,7 @@ type LavalinkOptions = {
 
 export type LavalinkVoiceState = {
   guildId: string
-  sessionId: string | null
+  sessionId?: string
   voiceChannelId: string | null
   selfDeaf?: boolean
   selfMute?: boolean
@@ -28,12 +28,12 @@ export class LavalinkClient {
   private voiceStates: Map<string, LavalinkVoiceState> = new Map()
   private voiceServers: Map<string, LavalinkVoiceServer> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
-  public join: (guildId: string, channelId: string) => void
+  public join: (voiceState: LavalinkVoiceState) => void
 
   constructor(
     options: LavalinkOptions,
     nodes: LavalinkNodeOptions[],
-    join: (guildId: string, channelId: string) => void
+    join: (voiceState: LavalinkVoiceState) => void
   ) {
     this.logger = pino({
       level: options.logLevel,
@@ -56,27 +56,60 @@ export class LavalinkClient {
     return node
   }
 
-  public spawn(options: LavalinkVoiceState): LavalinkPlayer {
+  public async spawn(options: LavalinkVoiceState) {
     const node = this.getBestNode()
+    const { guildId, voiceChannelId } = options
     if (!node || !node.connected || !node.api) {
       throw new Error('No available Lavalink nodes')
     }
 
-    if (!options.guildId || !options.voiceChannelId) {
+    if (!guildId || !voiceChannelId) {
       throw new Error('Guild ID and Voice Channel ID are required to spawn a player.')
     }
 
-    const player = new LavalinkPlayer(options.guildId, node)
-    this.players.set(options.guildId, player)
+    const player = new LavalinkPlayer(options, node)
+    this.players.set(guildId, player)
+    await this.attemptConnect(guildId)
     return player
   }
 
-  public updateVoiceState(userId: string, voiceState: LavalinkVoiceState) {
-    this.voiceStates.set(userId, voiceState)
+  private async attemptConnect(guildId: string, playerVoice?: Partial<LavalinkPlayerVoice>) {
+    const player = this.players.get(guildId)
+    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+
+    // TODO: handle channel switches
+    if (player.connected) return
+
+    const playerStateVoice = player.state.voice
+
+    player.setVoice({
+      ...playerStateVoice,
+      ...playerVoice
+    })
+
+    this.join({
+      guildId: player.guildId,
+      voiceChannelId: player.channelId ?? null,
+      selfDeaf: player.selfDeaf,
+      selfMute: player.selfMute
+    })
+
+    await player.connect()
   }
 
-  public updateVoiceServer(guildId: string, voiceServer: LavalinkVoiceServer) {
+  public async updateVoiceState(userId: string, voiceState: LavalinkVoiceState) {
+    this.voiceStates.set(userId, voiceState)
+    await this.attemptConnect(voiceState.guildId, {
+      sessionId: voiceState.sessionId
+    })
+  }
+
+  public async updateVoiceServer(guildId: string, voiceServer: LavalinkVoiceServer) {
     this.voiceServers.set(guildId, voiceServer)
+    await this.attemptConnect(guildId, {
+      token: voiceServer.token,
+      endpoint: voiceServer.endpoint
+    })
   }
 
   public deleteVoiceState(userId: string) {

@@ -3,7 +3,7 @@ import { Client, Events, REST, Routes } from 'discord.js'
 import { AtlasConfig, AtlasOptions } from './config.js'
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
 import { pino, Logger } from 'pino'
-import { LavalinkClient } from '@/shared/lavalink/LavalinkClient.js'
+import { LavalinkClient, LavalinkVoiceState } from '@/shared/lavalink/LavalinkClient.js'
 import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
 import { InteractionType } from './interactions/interactions.js'
 
@@ -75,9 +75,11 @@ export class Atlas extends Client {
   private loadEvents() {
     for (const [eventName, event] of this.events) {
       this.on(eventName as string, (...args: unknown[]) => {
-        Promise.resolve(event.run(...args)).catch((error: unknown) =>
-          this.logger.error(`Error in event ${eventName}:`, error)
-        )
+        try {
+          void event.run(...args)
+        } catch (error) {
+          this.logger.error(`Error in event ${eventName}: ${(error as Error).message}`)
+        }
       })
     }
   }
@@ -102,16 +104,18 @@ export class Atlas extends Client {
     )
   }
 
-  public joinVoiceChannel(guildId: string, channelId: string) {
+  public joinVoiceChannel(voiceState: LavalinkVoiceState) {
+    const { guildId, voiceChannelId, selfDeaf, selfMute } = voiceState
+
     const shardId = this.guilds.cache.get(guildId)?.shardId ?? 0
 
     const payload = {
       op: 4,
       d: {
         guild_id: guildId,
-        channel_id: channelId,
-        self_mute: false,
-        self_deaf: true
+        channel_id: voiceChannelId,
+        self_mute: selfMute ?? false,
+        self_deaf: selfDeaf ?? true
       }
     }
 

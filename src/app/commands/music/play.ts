@@ -29,59 +29,41 @@ export class PlayCommand extends BaseDiscordCommand {
   async run(interaction: ChatInputCommandInteraction) {
     const query = interaction.options.getString('query') as string
     const source = interaction.options.getString('source') ?? 'ytsearch'
-
+    const guild = interaction.guild
     const api = this.client.lavalink.getBestNode().api
+
+    if (!guild) {
+      return void interaction.reply('This command can only be used in a server.')
+    }
 
     if (!api) {
       return void interaction.reply('No Lavalink node available.')
     }
 
-    const searchData = await api?.findTracks(query, source)
+    const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
+    if (!userVoiceState || !userVoiceState.channelId) {
+      return void interaction.reply('You are not in a voice channel.')
+    }
+
+    const player = await this.client.lavalink.spawn({
+      guildId: guild.id,
+      voiceChannelId: userVoiceState.channelId
+    })
+
+    const searchData = await api.findTracks(query, source)
     if (!searchData) {
       return void interaction.reply('No results found.')
     }
 
-    const userVoiceState = this.client.lavalink.getVoiceState(interaction.user.id)
-    if (!userVoiceState) {
-      return void interaction.reply('You are not in a voice channel.')
-    }
-
-    this.client.joinVoiceChannel(interaction.guildId!, userVoiceState.voiceChannelId!)
-    const selfVoiceState = this.client.lavalink.getVoiceState(this.client.user!.id)
-    if (!selfVoiceState) {
-      return void interaction.reply('Bot is not in a voice channel.')
-    }
-
-    const player = this.client.lavalink.spawn({
-      guildId: interaction.guildId!,
-      voiceChannelId: userVoiceState.voiceChannelId,
-      sessionId: selfVoiceState.sessionId
-    })
-
-    const voiceServer = this.client.lavalink.getVoiceServer(interaction.guildId!)
-    if (!voiceServer) {
-      return void interaction.reply('No voice server available.')
-    }
-
     if (!searchData) return
-    const tracks = api.loadTracks(searchData, player, true)
+    const tracks = api.loadTracks(searchData, true)
 
     if (tracks.length === 0) {
       return void interaction.reply('No tracks found.')
     }
 
-    if (!player.node.sessionId) {
-      return void interaction.reply('Player session ID is missing.')
-    }
-
-    player.state.track = tracks[0]
-    player.setVoice({
-      endpoint: voiceServer.endpoint,
-      token: voiceServer.token,
-      sessionId: selfVoiceState.sessionId
-    })
-
-    await api.updatePlayer(player.node.sessionId, player.guildId, player.state)
+    player.addTrack(tracks[0])
+    await player.play()
 
     void interaction.reply({
       content: `Playing **${tracks[0].info.title}** from **${tracks[0].info.author}**`,

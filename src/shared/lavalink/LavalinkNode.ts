@@ -12,7 +12,8 @@ export type LavalinkNodeOptions = {
   maxReconnectAttempts?: number
 }
 
-const WEBSOCKET_ENDPOINT = 'v4/websocket'
+const WEBSOCKET_ENDPOINT = '/websocket'
+const LAVALINK_VERSION = 'v4'
 const CLIENT_NAME = 'Atlas'
 const CLIENT_VERSION = '1.0.0'
 const RETRY_DELAY = 5000
@@ -51,7 +52,7 @@ export class LavalinkNode {
   public connect() {
     const { host, port, password, sessionId, clientId, resumed } = this
 
-    const baseUrl = `${host}:${port}`
+    const baseUrl = `${host}:${port}/${LAVALINK_VERSION}`
     const headers = {
       Authorization: password,
       'Client-Name': `${CLIENT_NAME}/${CLIENT_VERSION}`,
@@ -60,7 +61,7 @@ export class LavalinkNode {
       'Session-Resumed': String(resumed)
     }
 
-    this.ws = new WebSocket(`ws://${baseUrl}/${WEBSOCKET_ENDPOINT}`, { headers })
+    this.ws = new WebSocket(`ws://${baseUrl}${WEBSOCKET_ENDPOINT}`, { headers })
     this.api = new LavalinkApi(`http://${baseUrl}`, password)
 
     this.ws.on('open', () => this.onOpen())

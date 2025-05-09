@@ -1,14 +1,16 @@
 import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
+import { LavalinkApi } from './api/LavalinkApi.js'
+import { LavalinkVoiceState } from './LavalinkClient.js'
 
-type LavalinkPlayerVoice = {
+export type LavalinkPlayerVoice = {
   token: string | null
   endpoint: string | null
   sessionId: string | null
 }
 
 export type LavalinkPlayerState = {
-  track: LavalinkTrack | null
+  track?: LavalinkTrack
   position: number
   endTime?: number
   volume: number
@@ -38,33 +40,84 @@ export type LavalinkPlayerState = {
     }
     lowPass?: { smoothing: number }
   }
-  voice?: LavalinkPlayerVoice
+  voice: LavalinkPlayerVoice
 }
 
 export class LavalinkPlayer {
-  public node: LavalinkNode
+  public api: LavalinkApi | null = null
+  public sessionId: string | null = null
+  public channelId: string | null = null
   public guildId: string
-  public state: LavalinkPlayerState
+  public selfDeaf: boolean = true
+  public selfMute: boolean = false
+  public connected: boolean = false
   public queue: LavalinkTrack[]
+  public state: LavalinkPlayerState
 
-  constructor(guildId: string, LavalinkNode: LavalinkNode) {
-    this.node = LavalinkNode
-    this.guildId = guildId
+  constructor(options: LavalinkVoiceState, node: LavalinkNode) {
+    this.api = node.api
+    this.sessionId = node.sessionId
+    this.channelId = options.voiceChannelId
+    this.guildId = options.guildId
+    this.selfDeaf = options.selfDeaf ?? true
+    this.selfMute = options.selfMute ?? false
     this.queue = []
     this.state = {
-      track: null,
       position: 0,
       volume: 100,
       paused: false,
-      filters: {}
+      filters: {},
+      voice: {
+        token: null,
+        endpoint: null,
+        sessionId: null
+      }
     }
   }
 
-  public setVoice(voiceServer: LavalinkPlayerVoice) {
-    if (!voiceServer.token || !voiceServer.endpoint || !voiceServer.sessionId) {
-      throw new Error('Voice server information is incomplete')
+  private async updatePlayerState(onReplace = true) {
+    if (!this.connected) return
+
+    if (!this.api || !this.sessionId || !this.guildId) {
+      throw new Error('API, session ID, or guild ID is missing')
     }
 
-    this.state.voice = voiceServer
+    await this.api.updatePlayer(this.sessionId, this.guildId, this.state, onReplace)
+  }
+
+  public async connect() {
+    const { token, endpoint, sessionId } = this.state.voice
+    if (!token || !endpoint || !sessionId) return
+    this.connected = true
+    await this.updatePlayerState()
+  }
+
+  public async play() {
+    const track = this.queue[0]
+
+    if (!track) {
+      throw new Error('No track to play')
+    }
+
+    this.state.track = track
+    this.state.position = 0
+    this.state.paused = false
+
+    await this.updatePlayerState(false)
+  }
+
+  public addTrack(track: LavalinkTrack) {
+    if (!track) {
+      throw new Error('Track is required')
+    }
+
+    this.queue.push(track)
+  }
+
+  public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {
+    this.state.voice = {
+      ...this.state.voice,
+      ...voiceServer
+    }
   }
 }
