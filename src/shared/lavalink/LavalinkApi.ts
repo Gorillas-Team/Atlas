@@ -1,6 +1,6 @@
 import axios, { Axios } from 'axios'
-import { LavalinkPlayer, LavalinkPlayerState } from '../LavalinkPlayer.js'
-import { LoadTracksResponse, LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
+import { LavalinkPlayer, LavalinkPlayerState } from './LavalinkPlayer.js'
+import { LoadTracksResponse } from '@/shared/lavalink/LavalinkPackets.js'
 
 export class LavalinkApi {
   private client: Axios
@@ -35,7 +35,7 @@ export class LavalinkApi {
     sessionId: string,
     guildId: string,
     player: LavalinkPlayerState,
-    noReplace = true
+    noReplace: boolean = true
   ): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
       throw new Error('Session ID and Guild ID are required to get player.')
@@ -59,31 +59,7 @@ export class LavalinkApi {
     }
   }
 
-  public loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
-    if (response.loadType === 'track') {
-      return [response.data]
-    }
-
-    if (response.loadType === 'playlist') {
-      return response.data.tracks
-    }
-
-    if (response.loadType === 'search') {
-      if (search) {
-        return response.data
-      }
-
-      return [response.data[0]]
-    }
-
-    if (response.loadType === 'empty' || response.loadType === 'error') {
-      return []
-    }
-
-    return []
-  }
-
-  public async findTracks(query: string, source: string): Promise<LoadTracksResponse> {
+  public async fetchTracks(query: string, source: string): Promise<LoadTracksResponse> {
     try {
       const response = await this.client.get<LoadTracksResponse>(
         `loadtracks?identifier=${source}:${query}`

@@ -1,6 +1,7 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
 import { pino, Logger } from 'pino'
 import { LavalinkPlayer, LavalinkPlayerVoice } from './LavalinkPlayer.js'
+import { LavalinkTrack, LoadTracksResponse } from './LavalinkPackets.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -73,6 +74,46 @@ export class LavalinkClient {
     return player
   }
 
+  private loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
+    if (response.loadType === 'track') {
+      return [response.data]
+    }
+
+    if (response.loadType === 'playlist') {
+      return response.data.tracks
+    }
+
+    if (response.loadType === 'search') {
+      if (search) {
+        return response.data
+      }
+
+      return [response.data[0]]
+    }
+
+    if (response.loadType === 'empty' || response.loadType === 'error') {
+      return []
+    }
+
+    return []
+  }
+
+  public async findTracks(query: string, source: string, search = false): Promise<LavalinkTrack[]> {
+    const node = this.getBestNode()
+    if (!node || !node.api) {
+      throw new Error('No available Lavalink nodes')
+    }
+
+    const response = await node.api.fetchTracks(query, source)
+    if (!response) {
+      throw new Error('No tracks found')
+    }
+
+    const tracks = this.loadTracks(response, search)
+
+    return tracks
+  }
+
   private async attemptConnect(guildId: string, playerVoice?: Partial<LavalinkPlayerVoice>) {
     const player = this.players.get(guildId)
     if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
@@ -128,7 +169,7 @@ export class LavalinkClient {
     return this.voiceServers.get(guildId)
   }
 
-  getBestNode(): LavalinkNode {
+  public getBestNode(): LavalinkNode {
     // TODO: Get best node based on CPU and memory data
     return Array.from(this.nodes.values())[0]
   }

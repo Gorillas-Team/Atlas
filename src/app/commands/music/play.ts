@@ -31,14 +31,9 @@ export class PlayCommand extends BaseDiscordCommand {
     const query = interaction.options.getString('query')
     const source = interaction.options.getString('source') ?? 'ytsearch'
     const guild = interaction.guild
-    const api = this.client.lavalink.getBestNode().api
 
     if (!guild) {
       return void interaction.reply('This command can only be used in a server.')
-    }
-
-    if (!api) {
-      return void interaction.reply('No Lavalink node available.')
     }
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
@@ -51,14 +46,7 @@ export class PlayCommand extends BaseDiscordCommand {
       voiceChannelId: userVoiceState.channelId
     })
 
-    const searchData = await api.findTracks(query!, source)
-    if (!searchData) {
-      return void interaction.reply('No results found.')
-    }
-
-    if (!searchData) return
-    const tracks = api.loadTracks(searchData, true)
-
+    const tracks = await this.client.lavalink.findTracks(query!, source)
     if (tracks.length === 0) {
       return void interaction.reply('No tracks found.')
     }

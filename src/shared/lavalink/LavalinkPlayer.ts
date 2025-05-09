@@ -1,6 +1,6 @@
 import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
-import { LavalinkApi } from './api/LavalinkApi.js'
+import { LavalinkApi } from './LavalinkApi.js'
 import { LavalinkVoiceState } from './LavalinkClient.js'
 
 export type LavalinkPlayerVoice = {
@@ -75,7 +75,7 @@ export class LavalinkPlayer {
     }
   }
 
-  private async updatePlayerState(onReplace = true) {
+  private async updatePlayerState(onReplace: boolean = true) {
     if (!this.connected) return
 
     if (!this.api || !this.sessionId || !this.guildId) {
@@ -92,7 +92,7 @@ export class LavalinkPlayer {
     await this.updatePlayerState()
   }
 
-  public async play() {
+  public async play(noReplace: boolean = true) {
     const track = this.queue[0]
 
     if (!track) {
@@ -103,7 +103,7 @@ export class LavalinkPlayer {
     this.state.position = 0
     this.state.paused = false
 
-    await this.updatePlayerState(false)
+    await this.updatePlayerState(noReplace)
   }
 
   public addTrack(track: LavalinkTrack) {
