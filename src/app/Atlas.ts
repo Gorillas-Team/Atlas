@@ -34,7 +34,7 @@ export class Atlas extends Client {
         logLevel: config.logLevel
       },
       config.lavalinkNodes,
-      this.joinVoiceChannel.bind(this)
+      this.voiceState.bind(this)
     )
 
     this.gateway = new REST({ version: '10' }).setToken(botToken)
@@ -104,7 +104,7 @@ export class Atlas extends Client {
     )
   }
 
-  public joinVoiceChannel(voiceState: LavalinkVoiceState) {
+  public voiceState(voiceState: LavalinkVoiceState) {
     const { guildId, voiceChannelId, selfDeaf, selfMute } = voiceState
 
     const shardId = this.guilds.cache.get(guildId)?.shardId ?? 0

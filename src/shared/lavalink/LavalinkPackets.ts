@@ -99,10 +99,8 @@ export interface WebSocketClosedEventPacket extends EventPacketBase {
   byRemote: boolean
 }
 
-/** All possible results from a /v4/loadtracks request */
 export type LoadResultType = 'track' | 'playlist' | 'search' | 'empty' | 'error'
 
-/** Core metadata about a track */
 export interface TrackInfo {
   identifier: string
   isSeekable: boolean

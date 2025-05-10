@@ -52,7 +52,9 @@ export class PlayCommand extends BaseDiscordCommand {
     }
 
     player.addTrack(tracks[0])
-    await player.play()
+    if (player.state.paused) {
+      await player.play()
+    }
 
     const title = tracks[0].info.title
     const duration = Duration.fromMillis(tracks[0].info.length).toFormat('mm:ss')

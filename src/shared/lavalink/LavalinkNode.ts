@@ -65,17 +65,28 @@ export class LavalinkNode {
     this.api = new LavalinkApi(`http://${baseUrl}`, password)
 
     this.ws.on('open', () => this.onOpen())
-    this.ws.on('message', (message: string) => this.onMessage(message))
+    this.ws.on('message', (message: string) => {
+      void this.onMessage(message)
+    })
     this.ws.on('error', (error: Error) => this.onError(error))
     this.ws.on('close', () => this.onClose())
 
     this.logger.info(`Connecting to Lavalink node ${this.name} at ws://${baseUrl}`)
   }
 
-  private onMessage(message: string) {
+  private async onMessage(message: string) {
     try {
       const packet = JSON.parse(message) as LavalinkPacket
       if (packet.op == 'ready') this.handleReadyPacket(packet)
+      if (packet.op == 'event') {
+        if (packet.type == 'TrackStartEvent') {
+          this.lavalink.trackStart(packet.guildId, packet.track)
+          return
+        } else if (packet.type == 'TrackEndEvent') {
+          await this.lavalink.trackEnd(packet.guildId, packet.track, packet.reason)
+          return
+        }
+      }
     } catch (error) {
       this.logger.error('Failed to parse message as LavalinkPacket:', error)
       return

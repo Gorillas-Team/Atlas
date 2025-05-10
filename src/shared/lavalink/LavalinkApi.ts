@@ -59,6 +59,20 @@ export class LavalinkApi {
     }
   }
 
+  public async destroyPlayer(sessionId: string, guildId: string): Promise<void> {
+    if (!sessionId || !guildId) {
+      throw new Error('Session ID and Guild ID are required to get player.')
+    }
+
+    try {
+      await this.client.delete(`sessions/${sessionId}/players/${guildId}`)
+    } catch (error) {
+      throw new Error(
+        `Failed to destroy player: ${error instanceof Error ? error.message : String(error)}`
+      )
+    }
+  }
+
   public async fetchTracks(query: string, source: string): Promise<LoadTracksResponse> {
     try {
       const response = await this.client.get<LoadTracksResponse>(

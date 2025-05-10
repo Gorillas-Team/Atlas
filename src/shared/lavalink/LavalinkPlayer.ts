@@ -65,7 +65,7 @@ export class LavalinkPlayer {
     this.state = {
       position: 0,
       volume: 100,
-      paused: false,
+      paused: true,
       filters: {},
       voice: {
         token: null,
@@ -104,6 +104,19 @@ export class LavalinkPlayer {
     this.state.paused = false
 
     await this.updatePlayerState(noReplace)
+  }
+
+  public async skip() {
+    this.queue.shift()
+    await this.play(false)
+  }
+
+  public async destroy() {
+    if (!this.api || !this.sessionId || !this.guildId) {
+      throw new Error('API, session ID, or guild ID is missing')
+    }
+
+    await this.api.destroyPlayer(this.sessionId, this.guildId)
   }
 
   public addTrack(track: LavalinkTrack) {

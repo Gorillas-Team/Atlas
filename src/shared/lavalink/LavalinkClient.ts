@@ -1,7 +1,7 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
 import { pino, Logger } from 'pino'
 import { LavalinkPlayer, LavalinkPlayerVoice } from './LavalinkPlayer.js'
-import { LavalinkTrack, LoadTracksResponse } from './LavalinkPackets.js'
+import { LavalinkTrack, LoadTracksResponse, TrackEndReason } from './LavalinkPackets.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -25,16 +25,16 @@ export type LavalinkVoiceServer = {
 export class LavalinkClient {
   public logger: Logger
   public clientId: string
-  private players: Map<string, LavalinkPlayer> = new Map()
+  public players: Map<string, LavalinkPlayer> = new Map()
   private voiceStates: Map<string, LavalinkVoiceState> = new Map()
   private voiceServers: Map<string, LavalinkVoiceServer> = new Map()
   private nodes: Map<string, LavalinkNode> = new Map()
-  public join: (voiceState: LavalinkVoiceState) => void
+  public voiceState: (voiceState: LavalinkVoiceState) => void
 
   constructor(
     options: LavalinkOptions,
     nodes: LavalinkNodeOptions[],
-    join: (voiceState: LavalinkVoiceState) => void
+    voiceState: (voiceState: LavalinkVoiceState) => void
   ) {
     this.logger = pino({
       level: options.logLevel,
@@ -47,7 +47,7 @@ export class LavalinkClient {
       this.addNode(nodeOptions)
     }
 
-    this.join = join
+    this.voiceState = voiceState
   }
 
   public addNode(options: LavalinkNodeOptions) {
@@ -58,6 +58,11 @@ export class LavalinkClient {
   }
 
   public async spawn(options: LavalinkVoiceState) {
+    let player = this.players.get(options.guildId)
+    if (player) {
+      return player
+    }
+
     const node = this.getBestNode()
     const { guildId, voiceChannelId } = options
     if (!node || !node.connected || !node.api) {
@@ -68,10 +73,54 @@ export class LavalinkClient {
       throw new Error('Guild ID and Voice Channel ID are required to spawn a player.')
     }
 
-    const player = new LavalinkPlayer(options, node)
+    player = new LavalinkPlayer(options, node)
     this.players.set(guildId, player)
     await this.attemptConnect(guildId)
     return player
+  }
+
+  public trackStart(guildId: string, track: LavalinkTrack) {
+    const player = this.players.get(guildId)
+    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+
+    this.logger.debug(`Playing track: ${track.info.title}`)
+  }
+
+  public async trackEnd(guildId: string, track: LavalinkTrack, reason: TrackEndReason) {
+    const player = this.players.get(guildId)
+    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+
+    if (reason == 'replaced' && player.queue.length == 0) {
+      return await this.destroy(guildId)
+    }
+
+    if (player.queue.length <= 1) {
+      player.queue.shift()
+      player.state.paused = true
+      if (['finished', 'cleanup'].includes(reason)) {
+        await this.destroy(guildId)
+      }
+
+      return
+    }
+
+    if (player.queue.length > 0) {
+      player.queue.shift()
+      await player.play()
+
+      this.logger.debug(`Playing next track: ${player.queue[0].info.title}`)
+      return
+    }
+  }
+
+  async destroy(guildId: string) {
+    const player = this.players.get(guildId)
+    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+
+    await player.destroy()
+    this.voiceState({ voiceChannelId: null, guildId: guildId })
+
+    this.players.delete(guildId)
   }
 
   private loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
@@ -128,7 +177,7 @@ export class LavalinkClient {
       ...playerVoice
     })
 
-    this.join({
+    this.voiceState({
       guildId: player.guildId,
       voiceChannelId: player.channelId ?? null,
       selfDeaf: player.selfDeaf,
