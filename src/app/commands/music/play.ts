@@ -2,6 +2,7 @@ import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscord
 import { Atlas } from '@/app/Atlas.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { Duration } from 'luxon'
+import { t } from '@/shared/i18n/i18n.js'
 
 export class PlayCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
@@ -9,9 +10,9 @@ export class PlayCommand extends BaseDiscordCommand {
       client,
       new SlashCommandBuilder()
         .setName('play')
-        .setDescription('ele toca')
+        .setDescription(t('command.play.description'))
         .addStringOption(option =>
-          option.setName('query').setDescription('nome da musica').setRequired(true)
+          option.setName('query').setDescription(t('command.play.options.query')).setRequired(true)
         )
         .addStringOption(option =>
           option
@@ -32,12 +33,12 @@ export class PlayCommand extends BaseDiscordCommand {
     const source = options.getString('source') ?? 'ytsearch'
 
     if (!guild) {
-      return void interaction.reply('This command can only be used in a server.')
+      return void interaction.reply(t('command.notInGuild'))
     }
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
     if (!userVoiceState || !userVoiceState.channelId) {
-      return void interaction.reply('You are not in a voice channel.')
+      return void interaction.reply(t('command.play.missingVoiceChannel'))
     }
 
     const player = await this.client.lavalink.spawn({
@@ -47,7 +48,7 @@ export class PlayCommand extends BaseDiscordCommand {
 
     const tracks = await this.client.lavalink.findTracks(query!, source)
     if (tracks.length === 0) {
-      return void interaction.reply('No tracks found.')
+      return void interaction.reply(t('command.play.notFound'))
     }
 
     player.addTrack(tracks[0])
@@ -59,7 +60,7 @@ export class PlayCommand extends BaseDiscordCommand {
     const duration = Duration.fromMillis(tracks[0].info.length).toFormat('mm:ss')
 
     void interaction.reply({
-      content: `Tocando agora: **${title}** - **${duration}**`
+      content: t('command.play.playingNow', { title, duration })
     })
   }
 }

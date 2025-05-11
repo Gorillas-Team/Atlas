@@ -26,7 +26,7 @@ export class InteractionCreate extends BaseDiscordEvent {
 
     try {
       if (interaction.isChatInputCommand()) {
-        const context = this.generateContext(interaction)
+        const context = await this.generateContext(interaction)
         await command.run(context)
       } else {
         await interaction.reply({
@@ -35,7 +35,7 @@ export class InteractionCreate extends BaseDiscordEvent {
         })
       }
     } catch (error) {
-      console.error(error)
+      this.logger.error(error)
       await interaction.reply({
         content: 'Algo deu errado 😓',
         flags: ['Ephemeral']
@@ -43,10 +43,15 @@ export class InteractionCreate extends BaseDiscordEvent {
     }
   }
 
-  generateContext(interaction: ChatInputCommandInteraction): CommandContext {
+  async generateContext(interaction: ChatInputCommandInteraction): Promise<CommandContext> {
     const guild = interaction.guild
     const players = this.client.lavalink.players
     const lavalinkPlayer = (guild && players.get(guild.id)) ?? null
+
+    const clientId = this.client.user?.id
+    const me = clientId
+      ? ((guild?.members.cache.get(clientId) || (await guild?.members.fetch(clientId))) ?? null)
+      : null
 
     return {
       guild: interaction.guild,
@@ -54,6 +59,8 @@ export class InteractionCreate extends BaseDiscordEvent {
       member: (interaction.member as GuildMember) || interaction.user,
       player: lavalinkPlayer,
       options: interaction.options,
+      lavalink: this.client.lavalink,
+      me,
       interaction
     }
   }

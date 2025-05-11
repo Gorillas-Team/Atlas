@@ -10,6 +10,7 @@ import {
 } from 'discord.js'
 import { Logger } from 'pino'
 import { LavalinkPlayer } from '../lavalink/LavalinkPlayer.js'
+import { LavalinkClient } from '../lavalink/LavalinkClient.js'
 
 export type SlashCommandData = SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
 export type CommandContext = {
@@ -19,6 +20,8 @@ export type CommandContext = {
   interaction: ChatInputCommandInteraction
   options: ChatInputCommandInteraction['options']
   player: LavalinkPlayer | null
+  lavalink: LavalinkClient
+  me: GuildMember | null
 }
 
 export abstract class BaseDiscordCommand {
