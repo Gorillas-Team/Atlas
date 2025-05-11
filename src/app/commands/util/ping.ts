@@ -1,10 +1,9 @@
 import { Atlas } from '@/app/Atlas.js'
-import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ChatInputCommandInteraction,
   MessageActionRowComponentBuilder,
   MessageFlags,
   SlashCommandBuilder
@@ -20,7 +19,7 @@ export class PingCommand extends BaseDiscordCommand {
     )
   }
 
-  async run(interaction: ChatInputCommandInteraction): Promise<void> {
+  async run({ interaction }: CommandContext): Promise<void> {
     this.logger.info('Ping command executed')
 
     const button = new ButtonBuilder()

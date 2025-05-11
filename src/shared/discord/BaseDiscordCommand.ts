@@ -1,12 +1,25 @@
 import { Atlas } from '@/app/Atlas.js'
 import {
   ChatInputCommandInteraction,
+  Guild,
+  GuildMember,
   SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder
+  SlashCommandOptionsOnlyBuilder,
+  TextBasedChannel,
+  User
 } from 'discord.js'
 import { Logger } from 'pino'
+import { LavalinkPlayer } from '../lavalink/LavalinkPlayer.js'
 
 export type SlashCommandData = SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
+export type CommandContext = {
+  channel: TextBasedChannel | null
+  guild: Guild | null
+  member: GuildMember | User
+  interaction: ChatInputCommandInteraction
+  options: ChatInputCommandInteraction['options']
+  player: LavalinkPlayer | null
+}
 
 export abstract class BaseDiscordCommand {
   logger: Logger
@@ -21,5 +34,5 @@ export abstract class BaseDiscordCommand {
     })
   }
 
-  abstract run(interaction: ChatInputCommandInteraction): Promise<void> | void
+  abstract run(interaction: CommandContext): Promise<void> | void
 }

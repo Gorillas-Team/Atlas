@@ -1,6 +1,6 @@
-import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { Atlas } from '@/app/Atlas.js'
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { SlashCommandBuilder } from 'discord.js'
 import { Duration } from 'luxon'
 
 export class PlayCommand extends BaseDiscordCommand {
@@ -19,18 +19,17 @@ export class PlayCommand extends BaseDiscordCommand {
             .setDescription('source')
             .setRequired(false)
             .addChoices(
-              { name: 'youtube', value: 'ytsearch' },
               { name: 'youtube music', value: 'ytmsearch' },
+              { name: 'youtube', value: 'ytsearch' },
               { name: 'soundcloud', value: 'scsearch' }
             )
         )
     )
   }
 
-  async run(interaction: ChatInputCommandInteraction) {
-    const query = interaction.options.getString('query')
-    const source = interaction.options.getString('source') ?? 'ytsearch'
-    const guild = interaction.guild
+  async run({ guild, interaction, options }: CommandContext) {
+    const query = options.getString('query')
+    const source = options.getString('source') ?? 'ytsearch'
 
     if (!guild) {
       return void interaction.reply('This command can only be used in a server.')
