@@ -1,7 +1,12 @@
 import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
 import { pino, Logger } from 'pino'
 import { LavalinkPlayer, LavalinkPlayerVoice } from './LavalinkPlayer.js'
-import { LavalinkTrack, LoadTracksResponse, TrackEndReason } from './LavalinkPackets.js'
+import {
+  LavalinkTrack,
+  LoadTracksResponse,
+  PlayerState,
+  TrackEndReason
+} from './LavalinkPackets.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -79,6 +84,16 @@ export class LavalinkClient {
     return player
   }
 
+  public updatePlayer(guildId: string, state: PlayerState) {
+    const player = this.players.get(guildId)
+    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+
+    player.state.position = state.position
+    player.connected = state.connected
+    player.time = state.time
+    player.ping = state.ping
+  }
+
   public trackStart(guildId: string, track: LavalinkTrack) {
     const player = this.players.get(guildId)
     if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
@@ -90,7 +105,9 @@ export class LavalinkClient {
     const player = this.players.get(guildId)
     if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
 
-    if (reason == 'replaced' && player.queue.length == 0) {
+    this.logger.debug(`Track ended: ${track.info.title} (${reason})`)
+
+    if (reason == 'replaced' && player.queue.length == 1) {
       return await this.destroy(guildId)
     }
 

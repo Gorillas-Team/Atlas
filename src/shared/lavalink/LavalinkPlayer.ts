@@ -54,6 +54,9 @@ export class LavalinkPlayer {
   public queue: LavalinkTrack[]
   public state: LavalinkPlayerState
 
+  public time: number
+  public ping: number
+
   constructor(options: LavalinkVoiceState, node: LavalinkNode) {
     this.api = node.api
     this.sessionId = node.sessionId
@@ -73,6 +76,9 @@ export class LavalinkPlayer {
         sessionId: null
       }
     }
+
+    this.time = -1
+    this.ping = -1
   }
 
   private async updatePlayerState(onReplace: boolean = true) {
@@ -107,8 +113,11 @@ export class LavalinkPlayer {
   }
 
   public async skip() {
-    this.queue.shift()
-    await this.play(false)
+    this.state.track = undefined
+    this.state.position = 0
+    this.state.paused = true
+    await this.updatePlayerState()
+    if (this.queue.length > 0) await this.play(false)
   }
 
   public async destroy() {

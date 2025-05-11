@@ -116,7 +116,7 @@ export interface TrackInfo {
 }
 
 export interface LavalinkTrack {
-  encoded: string
+  encoded: string | null
   info: TrackInfo
   pluginInfo: Record<string, unknown>
   userData: Record<string, unknown>

@@ -78,6 +78,10 @@ export class LavalinkNode {
     try {
       const packet = JSON.parse(message) as LavalinkPacket
       if (packet.op == 'ready') this.handleReadyPacket(packet)
+      if (packet.op == 'playerUpdate') {
+        this.lavalink.updatePlayer(packet.guildId, packet.state)
+        return
+      }
       if (packet.op == 'event') {
         if (packet.type == 'TrackStartEvent') {
           this.lavalink.trackStart(packet.guildId, packet.track)
