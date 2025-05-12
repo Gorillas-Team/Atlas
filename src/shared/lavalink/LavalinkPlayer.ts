@@ -1,7 +1,7 @@
 import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
 import { LavalinkApi } from './LavalinkApi.js'
-import { LavalinkVoiceState } from './LavalinkClient.js'
+import { LavalinkClient, LavalinkVoiceState } from './LavalinkClient.js'
 
 export type LavalinkPlayerVoice = {
   token: string | null
@@ -44,6 +44,8 @@ export type LavalinkPlayerState = {
 }
 
 export class LavalinkPlayer {
+  public node: LavalinkNode
+  public client: LavalinkClient
   public api: LavalinkApi | null = null
   public sessionId: string | null = null
   public channelId: string | null = null
@@ -53,11 +55,12 @@ export class LavalinkPlayer {
   public connected: boolean = false
   public queue: LavalinkTrack[]
   public state: LavalinkPlayerState
-
   public time: number
   public ping: number
 
-  constructor(options: LavalinkVoiceState, node: LavalinkNode) {
+  constructor(options: LavalinkVoiceState, node: LavalinkNode, client: LavalinkClient) {
+    this.node = node
+    this.client = client
     this.api = node.api
     this.sessionId = node.sessionId
     this.channelId = options.voiceChannelId
@@ -112,20 +115,17 @@ export class LavalinkPlayer {
     await this.updatePlayerState(noReplace)
   }
 
-  public async skip() {
+  public async stop() {
+    this.state.paused = true
     this.state.track = undefined
     this.state.position = 0
-    this.state.paused = true
-    await this.updatePlayerState()
-    if (this.queue.length > 0) await this.play(false)
-  }
 
-  public async destroy() {
-    if (!this.api || !this.sessionId || !this.guildId) {
-      throw new Error('API, session ID, or guild ID is missing')
+    if (this.queue.length > 1) {
+      this.queue.shift()
+      return await this.play(false)
     }
 
-    await this.api.destroyPlayer(this.sessionId, this.guildId)
+    void this.client.destroy(this.guildId)
   }
 
   public addTrack(track: LavalinkTrack) {

@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws'
+import { randomUUID, type UUID } from 'node:crypto'
 import { LavalinkClient } from './LavalinkClient.js'
 import { Logger } from 'pino'
 import { LavalinkPacket, ReadyPacket } from './LavalinkPackets.js'
@@ -19,6 +20,7 @@ const CLIENT_VERSION = '1.0.0'
 const RETRY_DELAY = 5000
 
 export class LavalinkNode {
+  public id: UUID
   public logger: Logger
   public lavalink: LavalinkClient
   public name: string
@@ -37,6 +39,7 @@ export class LavalinkNode {
 
   constructor(lavalink: LavalinkClient, options: LavalinkNodeOptions) {
     const { name, host, port, password } = options
+    this.id = randomUUID()
     this.lavalink = lavalink
     this.name = name
     this.host = host
@@ -83,10 +86,14 @@ export class LavalinkNode {
         return
       }
       if (packet.op == 'event') {
+        this.logger.debug(`Received event packet with type={${packet.type}}`)
+
         if (packet.type == 'TrackStartEvent') {
           this.lavalink.trackStart(packet.guildId, packet.track)
           return
-        } else if (packet.type == 'TrackEndEvent') {
+        }
+
+        if (packet.type == 'TrackEndEvent') {
           await this.lavalink.trackEnd(packet.guildId, packet.track, packet.reason)
           return
         }
