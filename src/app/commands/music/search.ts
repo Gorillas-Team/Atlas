@@ -6,8 +6,7 @@ import {
   MessageActionRowComponentBuilder,
   SlashCommandBuilder,
   StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-  TextChannel
+  StringSelectMenuOptionBuilder
 } from 'discord.js'
 
 export class SearchCommand extends BaseDiscordCommand {
@@ -37,7 +36,7 @@ export class SearchCommand extends BaseDiscordCommand {
     )
   }
 
-  async run({ guild, interaction, options, channel }: CommandContext) {
+  async run({ guild, interaction, options }: CommandContext) {
     const query = options.getString('query')
     const source = options.getString('source') ?? 'ytsearch'
 
@@ -59,13 +58,6 @@ export class SearchCommand extends BaseDiscordCommand {
         flags: ['Ephemeral']
       })
     }
-
-    const player = await this.client.lavalink.spawn({
-      guildId: guild.id,
-      voiceChannelId: userVoiceState.channelId
-    })
-
-    player.textChannel = channel as TextChannel
 
     const search = (await this.client.lavalink.findTracks(query!, source, true)).slice(0, 9)
 

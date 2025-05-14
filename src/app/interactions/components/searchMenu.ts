@@ -1,7 +1,7 @@
 import { Atlas } from '@/app/Atlas.js'
 import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
 import { t } from '@/shared/i18n/i18n.js'
-import { StringSelectMenuInteraction } from 'discord.js'
+import { StringSelectMenuInteraction, TextChannel } from 'discord.js'
 import { Duration } from 'luxon'
 
 export class SearchMenuInteraction extends BaseDiscordInteraction {
@@ -14,10 +14,20 @@ export class SearchMenuInteraction extends BaseDiscordInteraction {
       return
     }
 
-    const player = this.client.lavalink.players.get(interaction.guild.id)
-    if (!player) {
-      return
+    const userVoiceState = await interaction.guild.voiceStates.fetch(interaction.user.id)
+    if (!userVoiceState || !userVoiceState.channelId) {
+      return void interaction.reply({
+        content: t('command.play.missingVoiceChannel'),
+        flags: ['Ephemeral']
+      })
     }
+
+    const player = await this.client.lavalink.spawn({
+      guildId: interaction.guild.id,
+      voiceChannelId: userVoiceState.channelId
+    })
+
+    player.textChannel = interaction.channel as TextChannel
 
     const selected = interaction.values[0]
     const [track] = await this.client.lavalink.findTracks(selected)
