@@ -21,6 +21,7 @@ export class PlayCommand extends BaseDiscordCommand {
             .setRequired(false)
             .addChoices(
               { name: 'youtube music', value: 'ytmsearch' },
+              { name: 'spotify', value: 'spsearch' },
               { name: 'youtube', value: 'ytsearch' },
               { name: 'soundcloud', value: 'scsearch' }
             )
@@ -47,12 +48,13 @@ export class PlayCommand extends BaseDiscordCommand {
       })
     }
 
-    const player = await this.client.lavalink.spawn({
-      guildId: guild.id,
-      voiceChannelId: userVoiceState.channelId
-    })
-
-    player.textChannel = channel as TextChannel
+    const player = await this.client.lavalink.spawn(
+      {
+        guildId: guild.id,
+        voiceChannelId: userVoiceState.channelId
+      },
+      channel as TextChannel
+    )
 
     const tracks = await this.client.lavalink.findTracks(query!, source)
     if (tracks.length === 0) {

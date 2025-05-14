@@ -22,12 +22,13 @@ export class SearchMenuInteraction extends BaseDiscordInteraction {
       })
     }
 
-    const player = await this.client.lavalink.spawn({
-      guildId: interaction.guild.id,
-      voiceChannelId: userVoiceState.channelId
-    })
-
-    player.textChannel = interaction.channel as TextChannel
+    const player = await this.client.lavalink.spawn(
+      {
+        guildId: interaction.guild.id,
+        voiceChannelId: userVoiceState.channelId
+      },
+      interaction.channel as TextChannel
+    )
 
     const selected = interaction.values[0]
     const [track] = await this.client.lavalink.findTracks(selected)

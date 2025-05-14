@@ -56,10 +56,10 @@ export class LavalinkPlayer {
   public connected: boolean = false
   public queue: LavalinkTrack[]
   public state: LavalinkPlayerState
-  public time: number
-  public ping: number
-
-  public textChannel: TextChannel | null
+  public time: number = -1
+  public ping: number = -1
+  public textChannel: TextChannel | null = null
+  public lastNowplayingId: string | null = null
 
   constructor(options: LavalinkVoiceState, node: LavalinkNode, client: LavalinkClient) {
     this.node = node
@@ -82,10 +82,6 @@ export class LavalinkPlayer {
         sessionId: null
       }
     }
-
-    this.textChannel = null
-    this.time = -1
-    this.ping = -1
   }
 
   private async updatePlayerState(onReplace: boolean = true) {
@@ -138,6 +134,28 @@ export class LavalinkPlayer {
     }
 
     this.queue.push(...track)
+  }
+
+  public setTextChannel(channel: TextChannel) {
+    if (!channel) {
+      throw new Error('Text channel is required')
+    }
+
+    this.textChannel = channel
+  }
+
+  public setLastNowplayingId(id: string) {
+    if (!id) {
+      throw new Error('ID is required')
+    }
+
+    this.lastNowplayingId = id
+  }
+
+  public deleteLastNowplayingId() {
+    if (this.lastNowplayingId && this.textChannel) {
+      void this.textChannel.messages.delete(this.lastNowplayingId)
+    }
   }
 
   public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {

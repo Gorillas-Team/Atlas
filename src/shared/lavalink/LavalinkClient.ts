@@ -10,6 +10,7 @@ import {
 import { UUID } from 'node:crypto'
 import { t } from '../i18n/i18n.js'
 import { Duration } from 'luxon'
+import { TextChannel } from 'discord.js'
 
 type LavalinkOptions = {
   clientId: string
@@ -65,7 +66,7 @@ export class LavalinkClient {
     return node
   }
 
-  public async spawn(options: LavalinkVoiceState) {
+  public async spawn(options: LavalinkVoiceState, channel: TextChannel) {
     let player = this.players.get(options.guildId)
     if (player) {
       return player
@@ -82,6 +83,7 @@ export class LavalinkClient {
     }
 
     player = new LavalinkPlayer(options, node, this)
+    player.setTextChannel(channel)
     this.players.set(guildId, player)
     await this.attemptConnect(guildId)
     return player
@@ -109,7 +111,12 @@ export class LavalinkClient {
       return this.logger.warn('No text channel available')
     }
 
-    await player.textChannel.send(t('command.play.playingNow', { title, duration }))
+    const msg = await player.textChannel.send({
+      content: t('command.play.playingNow', { title, duration }),
+      flags: ['SuppressNotifications']
+    })
+
+    player.setLastNowplayingId(msg.id)
   }
 
   public async trackEnd(guildId: string, track: LavalinkTrack, reason: TrackEndReason) {
@@ -117,6 +124,8 @@ export class LavalinkClient {
     if (!player) return this.logger.debug(`Player not found for guild ID: ${guildId}`)
 
     this.logger.debug(`Track ended, reason={${reason}}; track={${track.info.title}}`)
+
+    player.deleteLastNowplayingId()
 
     if (['finished', 'stopped'].includes(reason) && player.queue.length == 1) {
       return await this.destroy(guildId)
