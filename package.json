@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint --ext .ts src",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
