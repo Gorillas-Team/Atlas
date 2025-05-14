@@ -2,6 +2,7 @@ import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
 import { LavalinkApi } from './LavalinkApi.js'
 import { LavalinkClient, LavalinkVoiceState } from './LavalinkClient.js'
+import { TextChannel } from 'discord.js'
 
 export type LavalinkPlayerVoice = {
   token: string | null
@@ -58,6 +59,8 @@ export class LavalinkPlayer {
   public time: number
   public ping: number
 
+  public textChannel: TextChannel | null
+
   constructor(options: LavalinkVoiceState, node: LavalinkNode, client: LavalinkClient) {
     this.node = node
     this.client = client
@@ -80,6 +83,7 @@ export class LavalinkPlayer {
       }
     }
 
+    this.textChannel = null
     this.time = -1
     this.ping = -1
   }
@@ -128,12 +132,12 @@ export class LavalinkPlayer {
     void this.client.destroy(this.guildId)
   }
 
-  public addTrack(track: LavalinkTrack) {
+  public addTrack(track: LavalinkTrack[]) {
     if (!track) {
       throw new Error('Track is required')
     }
 
-    this.queue.push(track)
+    this.queue.push(...track)
   }
 
   public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {

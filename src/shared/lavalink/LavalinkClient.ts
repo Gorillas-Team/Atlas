@@ -8,6 +8,8 @@ import {
   TrackEndReason
 } from './LavalinkPackets.js'
 import { UUID } from 'node:crypto'
+import { t } from '../i18n/i18n.js'
+import { Duration } from 'luxon'
 
 type LavalinkOptions = {
   clientId: string
@@ -95,11 +97,19 @@ export class LavalinkClient {
     player.ping = state.ping
   }
 
-  public trackStart(guildId: string, track: LavalinkTrack) {
+  public async trackStart(guildId: string, track: LavalinkTrack) {
     const player = this.players.get(guildId)
     if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
 
     this.logger.debug(`Playing track: ${track.info.title}`)
+    const { title, length } = track.info
+    const duration = Duration.fromMillis(length).toFormat('mm:ss')
+
+    if (!player.textChannel) {
+      return this.logger.warn('No text channel available')
+    }
+
+    await player.textChannel.send(t('command.play.playingNow', { title, duration }))
   }
 
   public async trackEnd(guildId: string, track: LavalinkTrack, reason: TrackEndReason) {
@@ -136,6 +146,8 @@ export class LavalinkClient {
   }
 
   private loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
+    this.logger.debug(`load type: ${response.loadType}`)
+
     if (response.loadType === 'track') {
       return [response.data]
     }
@@ -159,7 +171,11 @@ export class LavalinkClient {
     return []
   }
 
-  public async findTracks(query: string, source: string, search = false): Promise<LavalinkTrack[]> {
+  public async findTracks(
+    query: string,
+    source?: string,
+    search = false
+  ): Promise<LavalinkTrack[]> {
     const node = this.getBestNode()
     if (!node || !node.api) {
       throw new Error('No available Lavalink nodes')

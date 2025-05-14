@@ -16,6 +16,6 @@ export class SkipCommand extends BaseDiscordCommand {
     }
 
     await player.stop()
-    void interaction.reply('Music skipped successfully')
+    void interaction.reply('Music successfully skipped')
   }
 }

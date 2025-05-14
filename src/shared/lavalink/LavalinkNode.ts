@@ -89,7 +89,7 @@ export class LavalinkNode {
         this.logger.debug(`Received event packet with type={${packet.type}}`)
 
         if (packet.type == 'TrackStartEvent') {
-          this.lavalink.trackStart(packet.guildId, packet.track)
+          await this.lavalink.trackStart(packet.guildId, packet.track)
           return
         }
 

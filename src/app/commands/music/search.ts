@@ -1,18 +1,27 @@
-import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { Atlas } from '@/app/Atlas.js'
-import { SlashCommandBuilder, TextChannel } from 'discord.js'
-import { Duration } from 'luxon'
+import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { t } from '@/shared/i18n/i18n.js'
+import {
+  ActionRowBuilder,
+  MessageActionRowComponentBuilder,
+  SlashCommandBuilder,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
+  TextChannel
+} from 'discord.js'
 
-export class PlayCommand extends BaseDiscordCommand {
+export class SearchCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
     super(
       client,
       new SlashCommandBuilder()
-        .setName('play')
-        .setDescription(t('command.play.description'))
+        .setName('search')
+        .setDescription(t('command.search.description'))
         .addStringOption(option =>
-          option.setName('query').setDescription(t('command.play.options.query')).setRequired(true)
+          option
+            .setName('query')
+            .setDescription(t('command.search.options.query'))
+            .setRequired(true)
         )
         .addStringOption(option =>
           option
@@ -31,6 +40,10 @@ export class PlayCommand extends BaseDiscordCommand {
   async run({ guild, interaction, options, channel }: CommandContext) {
     const query = options.getString('query')
     const source = options.getString('source') ?? 'ytsearch'
+
+    if (/^https?:\/\//.test(query!)) {
+      return void interaction.reply('Query must not be an URL')
+    }
 
     if (!guild) {
       return void interaction.reply({
@@ -54,39 +67,24 @@ export class PlayCommand extends BaseDiscordCommand {
 
     player.textChannel = channel as TextChannel
 
-    const tracks = await this.client.lavalink.findTracks(query!, source)
-    if (tracks.length === 0) {
-      return void interaction.reply({
-        content: t('command.play.notFound'),
-        flags: ['Ephemeral']
-      })
-    }
+    const search = (await this.client.lavalink.findTracks(query!, source, true)).slice(0, 9)
 
-    if (tracks.length == 1) {
-      const title = tracks[0].info.title
-      const duration = Duration.fromMillis(tracks[0].info.length).toFormat('mm:ss')
+    const tracks = search.map(track =>
+      new StringSelectMenuOptionBuilder().setLabel(track.info.title).setValue(track.info.identifier)
+    )
 
-      void interaction.reply({
-        content: t('command.play.addedToQueue', { title, duration }),
-        flags: ['Ephemeral']
-      })
+    const selectMenu = new StringSelectMenuBuilder()
+      .setPlaceholder('Select your song!')
+      .setCustomId('search-menu')
+      .setMaxValues(1)
+      .setOptions(tracks)
 
-      player.addTrack([tracks[0]])
-    }
+    const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(selectMenu)
 
-    if (tracks.length > 1) {
-      const toBeAdded = tracks.slice(0, 249)
-      player.addTrack(toBeAdded)
-
-      const length = toBeAdded.length
-      void interaction.reply({
-        content: t('command.play.addedPlaylist', { length }),
-        flags: ['Ephemeral']
-      })
-    }
-
-    if (player.state.paused) {
-      await player.play()
-    }
+    void interaction.reply({
+      content: `Select a track below from the query: ${query}`,
+      flags: ['Ephemeral'],
+      components: [row]
+    })
   }
 }

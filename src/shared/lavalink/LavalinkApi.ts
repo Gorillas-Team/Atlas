@@ -73,10 +73,16 @@ export class LavalinkApi {
     }
   }
 
-  public async fetchTracks(query: string, source: string): Promise<LoadTracksResponse> {
+  public async fetchTracks(query: string, source?: string): Promise<LoadTracksResponse> {
     try {
+      let identifier = query
+
+      if (!/^https?:\/\//.test(query) && source) {
+        identifier = `${source}:${query}`
+      }
+
       const response = await this.client.get<LoadTracksResponse>(
-        `loadtracks?identifier=${source}:${query}`
+        `loadtracks?identifier=${identifier}`
       )
 
       return response.data
