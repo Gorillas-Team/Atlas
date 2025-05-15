@@ -1,8 +1,15 @@
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
 import { Atlas } from '@/app/Atlas.js'
-import { ChatInputCommandInteraction, Events, GuildMember, Interaction } from 'discord.js'
+import {
+  ChatInputCommandInteraction,
+  Events,
+  GuildMember,
+  Interaction,
+  TextChannel
+} from 'discord.js'
 import { findAndRunInteraction } from '@/app/interactions/interactions.js'
 import { CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { t } from '@/shared/i18n/i18n.js'
 
 export class InteractionCreate extends BaseDiscordEvent {
   constructor(client: Atlas) {
@@ -27,6 +34,12 @@ export class InteractionCreate extends BaseDiscordEvent {
     try {
       if (interaction.isChatInputCommand()) {
         const context = await this.generateContext(interaction)
+
+        if (!context) {
+          void interaction.reply(t('command.notInGuild'))
+          return
+        }
+
         await command.run(context)
       } else {
         await interaction.reply({
@@ -43,23 +56,24 @@ export class InteractionCreate extends BaseDiscordEvent {
     }
   }
 
-  async generateContext(interaction: ChatInputCommandInteraction): Promise<CommandContext> {
+  async generateContext(interaction: ChatInputCommandInteraction): Promise<CommandContext | null> {
     const guild = interaction.guild
-    const players = this.client.lavalink.players
-    const lavalinkPlayer = (guild && players.get(guild.id)) ?? null
+    const channel = interaction.channel
 
-    const clientId = this.client.user?.id
-    const me = clientId
-      ? ((guild?.members.cache.get(clientId) || (await guild?.members.fetch(clientId))) ?? null)
-      : null
+    if (!guild || !(channel instanceof TextChannel) || !this.client.user) return null
+
+    const players = this.client.lavalink.players
+    const clientId = this.client.user.id
+    const lavalinkPlayer = players.get(guild.id) ?? null
+    const me = guild.members.cache.get(clientId) || (await guild.members.fetch(clientId))
 
     return {
-      guild: interaction.guild,
-      channel: interaction.channel,
       member: (interaction.member as GuildMember) || interaction.user,
       player: lavalinkPlayer,
       options: interaction.options,
       lavalink: this.client.lavalink,
+      guild,
+      channel,
       me,
       interaction
     }

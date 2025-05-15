@@ -5,7 +5,7 @@ import {
   GuildMember,
   SlashCommandBuilder,
   SlashCommandOptionsOnlyBuilder,
-  TextBasedChannel,
+  TextChannel,
   User
 } from 'discord.js'
 import { Logger } from 'pino'
@@ -14,14 +14,14 @@ import { LavalinkClient } from '../lavalink/LavalinkClient.js'
 
 export type SlashCommandData = SlashCommandBuilder | SlashCommandOptionsOnlyBuilder
 export type CommandContext = {
-  channel: TextBasedChannel | null
-  guild: Guild | null
+  channel: TextChannel
+  guild: Guild
   member: GuildMember | User
   interaction: ChatInputCommandInteraction
   options: ChatInputCommandInteraction['options']
   player: LavalinkPlayer | null
   lavalink: LavalinkClient
-  me: GuildMember | null
+  me: GuildMember
 }
 
 export abstract class BaseDiscordCommand {
