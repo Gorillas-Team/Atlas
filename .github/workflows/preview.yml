@@ -38,9 +38,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=raw,value=canary
             type=sha
+            type=raw,value=pr-${{ github.event.inputs.pr_number }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
