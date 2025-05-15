@@ -15,7 +15,10 @@ export class DisconnectCommand extends BaseDiscordCommand {
 
   run({ guild, interaction, lavalink }: CommandContext) {
     if (!guild) {
-      return void interaction.reply(t('command.notInGuild'))
+      return void interaction.reply({
+        content: t('command.notInGuild'),
+        flags: ['Ephemeral']
+      })
     }
 
     this.client.voiceState({ guildId: guild.id, voiceChannelId: null })

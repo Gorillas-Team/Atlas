@@ -27,8 +27,7 @@ export class Raw extends BaseDiscordEvent {
         if (!guild_id || !user_id || clientId !== user_id) return
 
         if (channel_id === null) {
-          // TODO: maybe destroy the player here
-          lavalink.deleteVoiceState(user_id)
+          await lavalink.destroy(guild_id)
           return
         }
 

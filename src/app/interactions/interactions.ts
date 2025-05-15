@@ -2,12 +2,16 @@ import { Interaction } from 'discord.js'
 import { Atlas } from '../Atlas.js'
 import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
 import { PingButtonInteraction } from './components/pingButton.js'
+import { SearchMenuInteraction } from './components/searchMenu.js'
 
 export type InteractionType = 'button' | 'menu'
 
 export function loadInteractions(client: Atlas): Map<string, BaseDiscordInteraction> {
   const interactions = new Map<string, BaseDiscordInteraction>()
-  const interactionFiles: BaseDiscordInteraction[] = [new PingButtonInteraction(client)]
+  const interactionFiles: BaseDiscordInteraction[] = [
+    new PingButtonInteraction(client),
+    new SearchMenuInteraction(client)
+  ]
 
   for (const interaction of interactionFiles) {
     interactions.set(interaction.id, interaction)

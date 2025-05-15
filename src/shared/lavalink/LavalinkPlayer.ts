@@ -1,7 +1,8 @@
 import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
 import { LavalinkApi } from './LavalinkApi.js'
-import { LavalinkVoiceState } from './LavalinkClient.js'
+import { LavalinkClient, LavalinkVoiceState } from './LavalinkClient.js'
+import { TextChannel } from 'discord.js'
 
 export type LavalinkPlayerVoice = {
   token: string | null
@@ -44,6 +45,8 @@ export type LavalinkPlayerState = {
 }
 
 export class LavalinkPlayer {
+  public node: LavalinkNode
+  public client: LavalinkClient
   public api: LavalinkApi | null = null
   public sessionId: string | null = null
   public channelId: string | null = null
@@ -53,11 +56,14 @@ export class LavalinkPlayer {
   public connected: boolean = false
   public queue: LavalinkTrack[]
   public state: LavalinkPlayerState
+  public time: number = -1
+  public ping: number = -1
+  public textChannel: TextChannel | null = null
+  public lastNowplayingId: string | null = null
 
-  public time: number
-  public ping: number
-
-  constructor(options: LavalinkVoiceState, node: LavalinkNode) {
+  constructor(options: LavalinkVoiceState, node: LavalinkNode, client: LavalinkClient) {
+    this.node = node
+    this.client = client
     this.api = node.api
     this.sessionId = node.sessionId
     this.channelId = options.voiceChannelId
@@ -76,9 +82,6 @@ export class LavalinkPlayer {
         sessionId: null
       }
     }
-
-    this.time = -1
-    this.ping = -1
   }
 
   private async updatePlayerState(onReplace: boolean = true) {
@@ -112,28 +115,47 @@ export class LavalinkPlayer {
     await this.updatePlayerState(noReplace)
   }
 
-  public async skip() {
+  public async stop() {
+    this.state.paused = true
     this.state.track = undefined
     this.state.position = 0
-    this.state.paused = true
-    await this.updatePlayerState()
-    if (this.queue.length > 0) await this.play(false)
-  }
 
-  public async destroy() {
-    if (!this.api || !this.sessionId || !this.guildId) {
-      throw new Error('API, session ID, or guild ID is missing')
+    if (this.queue.length > 1) {
+      this.queue.shift()
+      return await this.play(false)
     }
 
-    await this.api.destroyPlayer(this.sessionId, this.guildId)
+    void this.client.destroy(this.guildId)
   }
 
-  public addTrack(track: LavalinkTrack) {
+  public addTrack(track: LavalinkTrack[]) {
     if (!track) {
       throw new Error('Track is required')
     }
 
-    this.queue.push(track)
+    this.queue.push(...track)
+  }
+
+  public setTextChannel(channel: TextChannel) {
+    if (!channel) {
+      throw new Error('Text channel is required')
+    }
+
+    this.textChannel = channel
+  }
+
+  public setLastNowplayingId(id: string) {
+    if (!id) {
+      throw new Error('ID is required')
+    }
+
+    this.lastNowplayingId = id
+  }
+
+  public deleteLastNowplayingId() {
+    if (this.lastNowplayingId && this.textChannel) {
+      void this.textChannel.messages.delete(this.lastNowplayingId)
+    }
   }
 
   public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {
