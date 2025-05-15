@@ -11,6 +11,15 @@ export const en = {
         query: 'Song name'
       }
     },
+    skip: {
+      description: 'Skip the current song',
+      missingUserVoiceChannel: 'You are not in a voice channel.',
+      missingBotVoiceChannel: 'I am not in a voice channel.',
+      notInSameVoiceChannel: 'You are not in the same voice channel as me.',
+      noSongsInQueue: 'No songs in the queue to skip.',
+      playerNotFound: 'Player not found',
+      success: 'Music successfully skipped'
+    },
     disconnect: {
       description: 'Disconnect from voice channel',
       success: 'Disconnected from voice channel'
