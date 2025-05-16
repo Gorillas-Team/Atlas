@@ -1,9 +1,9 @@
 import { locales } from './locales.js'
 
-export type SupportedLang = keyof typeof locales
-export const defaultLang: SupportedLang = 'en'
+export type SupportedLangs = keyof typeof locales
+export const defaultLang: SupportedLangs = 'en'
 
-type MessageTree = (typeof locales)[SupportedLang]
+type MessageTree = (typeof locales)[SupportedLangs]
 
 export type FlattenKeys<T, Prefix extends string = ''> = {
   [K in keyof T]: T[K] extends string
@@ -29,7 +29,7 @@ export function getNestedValue<T>(obj: T, path: string): string | undefined {
   return typeof current === 'string' ? current : undefined
 }
 
-export function t<K extends MessageKey, L extends SupportedLang = typeof defaultLang>(
+export function t<K extends MessageKey, L extends SupportedLangs = typeof defaultLang>(
   key: K,
   vars: Record<string, string | number> = {},
   lang: L = defaultLang as L
