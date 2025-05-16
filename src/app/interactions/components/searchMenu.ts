@@ -18,16 +18,16 @@ export class SearchMenuInteraction extends BaseDiscordInteraction {
     if (!userVoiceState || !userVoiceState.channelId) {
       return void interaction.reply({
         content: t('command.play.missingVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     const player = await this.client.lavalink.spawn(
       {
         guildId: interaction.guild.id,
-        voiceChannelId: userVoiceState.channelId
+        voiceChannelId: userVoiceState.channelId,
       },
-      interaction.channel as TextChannel
+      interaction.channel as TextChannel,
     )
 
     const selected = interaction.values[0]
@@ -39,7 +39,7 @@ export class SearchMenuInteraction extends BaseDiscordInteraction {
 
     void interaction.reply({
       content: t('command.play.addedToQueue', { title, duration }),
-      flags: ['Ephemeral']
+      flags: ['Ephemeral'],
     })
 
     if (player.state.paused) {

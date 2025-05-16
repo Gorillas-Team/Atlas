@@ -1,6 +1,6 @@
 import { Atlas } from '@/app/Atlas.js'
 import { Events } from 'discord.js'
-import { Logger } from 'pino'
+import type { Logger } from 'pino'
 
 export abstract class BaseDiscordEvent {
   logger: Logger
@@ -11,7 +11,7 @@ export abstract class BaseDiscordEvent {
     this.client = client
     this.eventName = eventName
     this.logger = client.logger.child({
-      name: `Event-${this.constructor.name}`
+      name: `Event-${this.constructor.name}`,
     })
   }
 

@@ -32,7 +32,7 @@ export function getNestedValue<T>(obj: T, path: string): string | undefined {
 export function t<K extends MessageKey, L extends SupportedLang = typeof defaultLang>(
   key: K,
   vars: Record<string, string | number> = {},
-  lang: L = defaultLang as L
+  lang: L = defaultLang as L,
 ): string {
   const catalog = locales[lang] ?? locales[defaultLang]
   let template = getNestedValue(catalog, key) ?? getNestedValue(locales[defaultLang], key) ?? key

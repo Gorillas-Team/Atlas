@@ -4,11 +4,11 @@ import {
   ChatInputCommandInteraction,
   Events,
   GuildMember,
-  Interaction,
-  TextChannel
+  type Interaction,
+  TextChannel,
 } from 'discord.js'
 import { findAndRunInteraction } from '@/app/interactions/interactions.js'
-import { CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { t } from '@/shared/i18n/i18n.js'
 
 export class InteractionCreate extends BaseDiscordEvent {
@@ -26,7 +26,7 @@ export class InteractionCreate extends BaseDiscordEvent {
     if (!command) {
       await interaction.reply({
         content: 'Comando não encontrado 😓',
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
       return
     }
@@ -44,14 +44,14 @@ export class InteractionCreate extends BaseDiscordEvent {
       } else {
         await interaction.reply({
           content: 'Comando não suportado 😓',
-          flags: ['Ephemeral']
+          flags: ['Ephemeral'],
         })
       }
     } catch (error) {
       this.logger.error(error)
       await interaction.reply({
         content: 'Algo deu errado 😓',
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
   }
@@ -75,7 +75,7 @@ export class InteractionCreate extends BaseDiscordEvent {
       guild,
       channel,
       me,
-      interaction
+      interaction,
     }
   }
 }

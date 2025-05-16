@@ -1,7 +1,7 @@
-import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
+import type { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
 import { LavalinkApi } from './LavalinkApi.js'
-import { LavalinkClient, LavalinkVoiceState } from './LavalinkClient.js'
+import { LavalinkClient, type LavalinkVoiceState } from './LavalinkClient.js'
 import { TextChannel } from 'discord.js'
 
 export type LavalinkPlayerVoice = {
@@ -79,8 +79,8 @@ export class LavalinkPlayer {
       voice: {
         token: null,
         endpoint: null,
-        sessionId: null
-      }
+        sessionId: null,
+      },
     }
   }
 
@@ -161,7 +161,7 @@ export class LavalinkPlayer {
   public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {
     this.state.voice = {
       ...this.state.voice,
-      ...voiceServer
+      ...voiceServer,
     }
   }
 }

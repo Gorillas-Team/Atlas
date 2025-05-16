@@ -4,11 +4,11 @@ import {
   Guild,
   GuildMember,
   SlashCommandBuilder,
-  SlashCommandOptionsOnlyBuilder,
+  type SlashCommandOptionsOnlyBuilder,
   TextChannel,
-  User
+  User,
 } from 'discord.js'
-import { Logger } from 'pino'
+import type { Logger } from 'pino'
 import { LavalinkPlayer } from '../lavalink/LavalinkPlayer.js'
 import { LavalinkClient } from '../lavalink/LavalinkClient.js'
 
@@ -33,7 +33,7 @@ export abstract class BaseDiscordCommand {
     this.client = client
     this.data = data
     this.logger = client.logger.child({
-      name: `Command-${this.constructor.name}`
+      name: `Command-${this.constructor.name}`,
     })
   }
 

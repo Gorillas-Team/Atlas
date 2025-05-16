@@ -1,4 +1,4 @@
-import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { Atlas } from '@/app/Atlas.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { Duration } from 'luxon'
@@ -12,7 +12,7 @@ export class PlayCommand extends BaseDiscordCommand {
         .setName('play')
         .setDescription(t('command.play.description'))
         .addStringOption(option =>
-          option.setName('query').setDescription(t('command.play.options.query')).setRequired(true)
+          option.setName('query').setDescription(t('command.play.options.query')).setRequired(true),
         )
         .addStringOption(option =>
           option
@@ -23,9 +23,9 @@ export class PlayCommand extends BaseDiscordCommand {
               { name: 'youtube music', value: 'ytmsearch' },
               { name: 'spotify', value: 'spsearch' },
               { name: 'youtube', value: 'ytsearch' },
-              { name: 'soundcloud', value: 'scsearch' }
-            )
-        )
+              { name: 'soundcloud', value: 'scsearch' },
+            ),
+        ),
     )
   }
 
@@ -36,7 +36,7 @@ export class PlayCommand extends BaseDiscordCommand {
     if (!guild) {
       return void interaction.reply({
         content: t('command.notInGuild'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
@@ -44,36 +44,45 @@ export class PlayCommand extends BaseDiscordCommand {
     if (!userVoiceState || !userVoiceState.channelId) {
       return void interaction.reply({
         content: t('command.play.missingVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     const player = await this.client.lavalink.spawn(
       {
         guildId: guild.id,
-        voiceChannelId: userVoiceState.channelId
+        voiceChannelId: userVoiceState.channelId,
       },
-      channel
+      channel,
     )
 
     const tracks = await this.client.lavalink.findTracks(query!, source)
     if (tracks.length === 0) {
       return void interaction.reply({
         content: t('command.play.notFound'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     if (tracks.length == 1) {
-      const title = tracks[0].info.title
-      const duration = Duration.fromMillis(tracks[0].info.length).toFormat('mm:ss')
+      const track = tracks[0] ?? null
+
+      if (!track) {
+        return void interaction.reply({
+          content: t('command.play.notFound'),
+          flags: ['Ephemeral'],
+        })
+      }
+
+      const title = track.info.title
+      const duration = Duration.fromMillis(track.info.length).toFormat('mm:ss')
 
       void interaction.reply({
         content: t('command.play.addedToQueue', { title, duration }),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
 
-      player.addTrack([tracks[0]])
+      player.addTrack([track])
     }
 
     if (tracks.length > 1) {
@@ -83,7 +92,7 @@ export class PlayCommand extends BaseDiscordCommand {
       const length = toBeAdded.length
       void interaction.reply({
         content: t('command.play.addedPlaylist', { length }),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 

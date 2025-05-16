@@ -1,4 +1,4 @@
-import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { Atlas } from '@/app/Atlas.js'
 import { SlashCommandBuilder } from 'discord.js'
 import { t } from '@/shared/i18n/i18n.js'
@@ -7,7 +7,7 @@ export class SkipCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
     super(
       client,
-      new SlashCommandBuilder().setName('skip').setDescription(t('command.skip.description'))
+      new SlashCommandBuilder().setName('skip').setDescription(t('command.skip.description')),
     )
   }
 
@@ -19,21 +19,21 @@ export class SkipCommand extends BaseDiscordCommand {
     if (!botVoiceState || !botVoiceState.channelId) {
       return void interaction.reply({
         content: t('command.skip.missingBotVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     if (userVoiceState.channelId !== botVoiceState.channelId) {
       return void interaction.reply({
         content: t('command.skip.notInSameVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     if (!userVoiceState || !userVoiceState.channelId) {
       return void interaction.reply({
         content: t('command.skip.missingUserVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 

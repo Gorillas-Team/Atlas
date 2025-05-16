@@ -1,12 +1,12 @@
 import { Atlas } from '@/app/Atlas.js'
-import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  MessageActionRowComponentBuilder,
+  type MessageActionRowComponentBuilder,
   MessageFlags,
-  SlashCommandBuilder
+  SlashCommandBuilder,
 } from 'discord.js'
 
 export class PingCommand extends BaseDiscordCommand {
@@ -15,7 +15,7 @@ export class PingCommand extends BaseDiscordCommand {
       client,
       new SlashCommandBuilder()
         .setName('ping')
-        .setDescription('Ping the bot to check if it is alive')
+        .setDescription('Ping the bot to check if it is alive'),
     )
   }
 
@@ -33,7 +33,7 @@ export class PingCommand extends BaseDiscordCommand {
       content: 'Ping?',
       flags: MessageFlags.Ephemeral,
 
-      components: [row]
+      components: [row],
     })
   }
 }

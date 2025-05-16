@@ -13,7 +13,7 @@ export function loadCommands(client: Atlas): Map<string, BaseDiscordCommand> {
     new PlayCommand(client),
     new SkipCommand(client),
     new SearchCommand(client),
-    new DisconnectCommand(client)
+    new DisconnectCommand(client),
   ]
 
   for (const command of discordCommands) {

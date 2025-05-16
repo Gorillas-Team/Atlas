@@ -10,7 +10,7 @@ export class PingButtonInteraction extends BaseDiscordInteraction {
   async run(interaction: ButtonInteraction) {
     await interaction.reply({
       content: 'Pong!',
-      flags: MessageFlags.Ephemeral
+      flags: MessageFlags.Ephemeral,
     })
   }
 }

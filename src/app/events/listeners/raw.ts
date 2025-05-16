@@ -4,8 +4,8 @@ import { Events } from 'discord.js'
 
 import {
   GatewayDispatchEvents,
-  GatewayVoiceServerUpdateDispatch,
-  GatewayVoiceStateUpdateDispatch
+  type GatewayVoiceServerUpdateDispatch,
+  type GatewayVoiceStateUpdateDispatch,
 } from 'discord-api-types/v10'
 
 export type RawPacket = (GatewayVoiceStateUpdateDispatch | GatewayVoiceServerUpdateDispatch) & {
@@ -36,7 +36,7 @@ export class Raw extends BaseDiscordEvent {
           sessionId: session_id,
           voiceChannelId: channel_id,
           selfDeaf: self_deaf,
-          selfMute: self_mute
+          selfMute: self_mute,
         })
         break
       }

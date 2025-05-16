@@ -1,11 +1,11 @@
 import { BaseDiscordCommand } from '@/shared/discord/BaseDiscordCommand.js'
 import { Client, Events, REST, Routes } from 'discord.js'
-import { AtlasConfig, AtlasOptions } from './config.js'
+import type { AtlasConfig, AtlasOptions } from './config.js'
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
-import { pino, Logger } from 'pino'
-import { LavalinkClient, LavalinkVoiceState } from '@/shared/lavalink/LavalinkClient.js'
+import { pino, type Logger } from 'pino'
+import { LavalinkClient, type LavalinkVoiceState } from '@/shared/lavalink/LavalinkClient.js'
 import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
-import { InteractionType } from './interactions/interactions.js'
+import { type InteractionType } from './interactions/interactions.js'
 
 export class Atlas extends Client {
   public logger: Logger
@@ -25,16 +25,16 @@ export class Atlas extends Client {
 
     this.logger = pino({
       name: 'Discord-Client',
-      level: config.logLevel
+      level: config.logLevel,
     })
 
     this.lavalink = new LavalinkClient(
       {
         clientId: config.applicationId,
-        logLevel: config.logLevel
+        logLevel: config.logLevel,
       },
       config.lavalinkNodes,
-      this.voiceState.bind(this)
+      this.voiceState.bind(this),
     )
 
     this.gateway = new REST({ version: '10' }).setToken(botToken)
@@ -98,9 +98,9 @@ export class Atlas extends Client {
 
   public findInteraction(id: string, type: InteractionType): BaseDiscordInteraction | null {
     return (
-      this.interactions
-        .values()
-        .find(interaction => interaction.id === id && interaction.type === type) ?? null
+      Array.from(this.interactions.values()).find(
+        (interaction: BaseDiscordInteraction) => interaction.id === id && interaction.type === type,
+      ) ?? null
     )
   }
 
@@ -115,8 +115,8 @@ export class Atlas extends Client {
         guild_id: guildId,
         channel_id: voiceChannelId,
         self_mute: selfMute ?? false,
-        self_deaf: selfDeaf ?? true
-      }
+        self_deaf: selfDeaf ?? true,
+      },
     }
 
     const shard = this.ws.shards.get(shardId)

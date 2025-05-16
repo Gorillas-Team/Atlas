@@ -10,7 +10,7 @@ export function loadEvents(client: Atlas): Map<Events, BaseDiscordEvent> {
   const discordEvents: BaseDiscordEvent[] = [
     new Ready(client),
     new InteractionCreate(client),
-    new Raw(client)
+    new Raw(client),
   ]
 
   for (const event of discordEvents) {

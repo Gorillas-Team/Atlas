@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws'
 import { randomUUID, type UUID } from 'node:crypto'
 import { LavalinkClient } from './LavalinkClient.js'
-import { Logger } from 'pino'
-import { LavalinkPacket, ReadyPacket } from './LavalinkPackets.js'
+import type { Logger } from 'pino'
+import type { LavalinkPacket, ReadyPacket } from './LavalinkPackets.js'
 import { LavalinkApi } from './LavalinkApi.js'
 
 export type LavalinkNodeOptions = {
@@ -48,7 +48,7 @@ export class LavalinkNode {
     this.clientId = lavalink.clientId
     this.maxReconnectAttempts = options.maxReconnectAttempts ?? 5
     this.logger = lavalink.logger.child({
-      name: `${this.constructor.name}/${name}`
+      name: `${this.constructor.name}/${name}`,
     })
   }
 
@@ -61,7 +61,7 @@ export class LavalinkNode {
       'Client-Name': `${CLIENT_NAME}/${CLIENT_VERSION}`,
       'User-Id': clientId,
       'Session-Id': sessionId ?? '',
-      'Session-Resumed': String(resumed)
+      'Session-Resumed': String(resumed),
     }
 
     this.ws = new WebSocket(`ws://${baseUrl}${WEBSOCKET_ENDPOINT}`, { headers })
@@ -128,7 +128,7 @@ export class LavalinkNode {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++
       this.logger.info(
-        `Reconnecting attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts} delayed by ${RETRY_DELAY}ms`
+        `Reconnecting attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts} delayed by ${RETRY_DELAY}ms`,
       )
       this.reconnectTimeout = setTimeout(() => {
         this.connect()
