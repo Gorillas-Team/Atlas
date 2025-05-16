@@ -49,5 +49,7 @@ export const en = {
       },
     },
     notInGuild: 'This command can only be used within a server.',
+    somethingWentWrong: 'Something went wrong 😓',
+    commandNotSupported: 'This command is not supported in this context.',
   },
 } as const

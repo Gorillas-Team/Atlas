@@ -43,14 +43,14 @@ export class InteractionCreate extends BaseDiscordEvent {
         await command.run(context)
       } else {
         await interaction.reply({
-          content: 'Comando não suportado 😓',
+          content: t('command.commandNotSupported'),
           flags: ['Ephemeral'],
         })
       }
     } catch (error) {
       this.logger.error(error)
       await interaction.reply({
-        content: 'Algo deu errado 😓',
+        content: t('command.somethingWentWrong'),
         flags: ['Ephemeral'],
       })
     }
