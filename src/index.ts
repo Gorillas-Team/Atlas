@@ -1,6 +1,6 @@
 import { Atlas } from './app/Atlas.js'
 import { loadCommands } from './app/commands/commands.js'
-import { getEnvJson, getEnvString, getEnvStringArray } from '@/shared/env.js'
+import { getEnvJson, getEnvNumber, getEnvString, getEnvStringArray } from '@/shared/env.js'
 import { loadEvents } from './app/events/events.js'
 import type { Environment, LogLevel } from './app/config.js'
 import { loadInteractions } from './app/interactions/interactions.js'
@@ -15,7 +15,7 @@ const bot = new Atlas({
     logLevel: getEnvString('LOG_LEVEL', 'info') as LogLevel,
     environment: getEnvString('NODE_ENV', 'development') as Environment,
     testGuildId: getEnvString('DISCORD_TEST_GUILD_ID') ?? null,
-    QUEUE_PAGE_SIZE: 9,
+    queuePageSize: getEnvNumber('QUEUE_PAGE_SIZE') ?? 9,
   },
   clientOptions: {
     intents: [

@@ -11,7 +11,7 @@ export type AtlasConfig = {
   logLevel: LogLevel
   environment: Environment
   testGuildId: string | null
-  QUEUE_PAGE_SIZE: number
+  queuePageSize: number
 }
 
 export type AtlasOptions = {

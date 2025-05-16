@@ -34,7 +34,8 @@ export class NextPageInteraction extends BaseDiscordInteraction {
     const messageId = interaction.message.id
     const cache = this.client.cache.queuePageIndex
     const nextPage = cache.getValueOrCreate(messageId, 1) + 1
-    const totalPages = Math.ceil(player.queue.length / this.client.config.QUEUE_PAGE_SIZE)
+    const size = this.client.config.queuePageSize
+    const totalPages = Math.ceil(player.queue.length / size)
     const ensurePage = Math.min(nextPage, totalPages)
     const { embed, row } = queueCommand.createQueue(player, ensurePage)
 

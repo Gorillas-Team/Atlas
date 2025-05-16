@@ -42,7 +42,7 @@ export class QueueCommand extends BaseDiscordCommand {
   }
 
   createQueue(player: LavalinkPlayer, currentPage: number) {
-    const size = this.client.config.QUEUE_PAGE_SIZE
+    const size = this.client.config.queuePageSize
     const totalPages = Math.ceil(player.queue.length / size)
     const ensurePage = Math.min(Math.max(currentPage, 1), totalPages)
     const playlistInfo = this.parseQueueInfo(player.queue)
