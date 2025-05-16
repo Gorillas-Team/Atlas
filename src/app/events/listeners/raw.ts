@@ -28,7 +28,6 @@ export class Raw extends BaseDiscordEvent {
 
         if (channel_id === null && this.hasPlayer(guild_id)) {
           await lavalink.destroy(guild_id)
-          return
         }
 
         await lavalink.updateVoiceState(guild_id, {
