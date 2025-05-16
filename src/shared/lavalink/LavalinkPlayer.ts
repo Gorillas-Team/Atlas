@@ -153,8 +153,14 @@ export class LavalinkPlayer {
   }
 
   public deleteLastNowplayingId() {
-    if (this.lastNowplayingId && this.textChannel) {
-      void this.textChannel.messages.delete(this.lastNowplayingId)
+    try {
+      if (this.lastNowplayingId && this.textChannel) {
+        void this.textChannel.messages.delete(this.lastNowplayingId)
+      }
+    } catch (error) {
+      this.client.logger.error('Error deleting last nowplaying ID', error)
+    } finally {
+      this.lastNowplayingId = null
     }
   }
 
