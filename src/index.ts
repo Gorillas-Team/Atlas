@@ -15,7 +15,7 @@ const bot = new Atlas({
     logLevel: getEnvString('LOG_LEVEL', 'info') as LogLevel,
     environment: getEnvString('NODE_ENV', 'development') as Environment,
     testGuildId: getEnvString('DISCORD_TEST_GUILD_ID') ?? null,
-    queuePageSize: getEnvNumber('QUEUE_PAGE_SIZE') ?? 9,
+    queuePageSize: getEnvNumber('QUEUE_PAGE_SIZE', 9),
   },
   clientOptions: {
     intents: [

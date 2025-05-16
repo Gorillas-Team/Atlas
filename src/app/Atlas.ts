@@ -8,7 +8,7 @@ import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.
 import { type InteractionType } from './interactions/interactions.js'
 import { CacheManager } from '@/shared/Utils/CacheManager.js'
 
-export type CacheMap = {
+type ClientCaches = {
   queuePageIndex: CacheManager<string, number>
 }
 
@@ -18,7 +18,9 @@ export class Atlas extends Client {
   public interactions: Map<string, BaseDiscordInteraction> = new Map()
   public lavalink: LavalinkClient
   public config: AtlasConfig
-  public cache: CacheMap
+  public cache: ClientCaches = {
+    queuePageIndex: new CacheManager(),
+  }
   private events: Map<Events, BaseDiscordEvent> = new Map()
   private gateway: REST
 
@@ -33,10 +35,6 @@ export class Atlas extends Client {
       name: 'Discord-Client',
       level: config.logLevel,
     })
-
-    this.cache = {
-      queuePageIndex: new CacheManager<string, number>(),
-    }
 
     this.lavalink = new LavalinkClient(
       {
