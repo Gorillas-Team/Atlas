@@ -33,7 +33,7 @@ export class InteractionCreate extends BaseDiscordEvent {
 
     try {
       if (interaction.isChatInputCommand()) {
-        const context = await this.generateContext(interaction)
+        const context = await this.newContext(interaction)
 
         if (!context) {
           return void interaction.reply(t('command.notInGuild'))
@@ -49,14 +49,14 @@ export class InteractionCreate extends BaseDiscordEvent {
       }
     } catch (error) {
       this.logger.error(error)
-      await interaction.reply({
+      await interaction.followUp({
         content: t('command.somethingWentWrong'),
         flags: ['Ephemeral'],
       })
     }
   }
 
-  async generateContext(interaction: ChatInputCommandInteraction): Promise<CommandContext | null> {
+  async newContext(interaction: ChatInputCommandInteraction): Promise<CommandContext | null> {
     const guild = interaction.guild
     const channel = interaction.channel
 
