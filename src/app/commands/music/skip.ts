@@ -12,26 +12,26 @@ export class SkipCommand extends BaseDiscordCommand {
   }
 
   async run({ guild, interaction }: CommandContext) {
-    if (!guild) return void interaction.reply(t('command.notInGuild'))
+    if (!guild) return void interaction.followUp(t('command.notInGuild'))
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
     const botVoiceState = await guild.voiceStates.fetch(this.client.user!.id)
     if (!botVoiceState || !botVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.skip.missingBotVoiceChannel'),
         flags: ['Ephemeral'],
       })
     }
 
     if (userVoiceState.channelId !== botVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.skip.notInSameVoiceChannel'),
         flags: ['Ephemeral'],
       })
     }
 
     if (!userVoiceState || !userVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.skip.missingUserVoiceChannel'),
         flags: ['Ephemeral'],
       })
@@ -39,14 +39,14 @@ export class SkipCommand extends BaseDiscordCommand {
 
     const player = this.client.lavalink.players.get(guild.id)
     if (!player) {
-      return void interaction.reply(t('command.skip.playerNotFound'))
+      return void interaction.followUp(t('command.skip.playerNotFound'))
     }
 
     if (player.queue.length === 0) {
-      return void interaction.reply(t('command.skip.noSongsInQueue'))
+      return void interaction.followUp(t('command.skip.noSongsInQueue'))
     }
 
     await player.stop()
-    void interaction.reply(t('command.skip.success'))
+    void interaction.followUp(t('command.skip.success'))
   }
 }

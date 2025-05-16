@@ -24,17 +24,17 @@ export class QueueCommand extends BaseDiscordCommand {
 
   run({ interaction, player }: CommandContext) {
     if (!player) {
-      return void interaction.reply(t('command.queue.notPlaying'))
+      return void interaction.followUp(t('command.queue.notPlaying'))
     }
 
     if (!player.queue.length) {
-      return void interaction.reply(t('command.queue.queueEmpty'))
+      return void interaction.followUp(t('command.queue.queueEmpty'))
     }
 
     const currentPage = 1
     const { embed, row } = this.createQueue(player, currentPage)
 
-    void interaction.reply({
+    void interaction.followUp({
       embeds: [embed],
       flags: ['Ephemeral'],
       components: [row],

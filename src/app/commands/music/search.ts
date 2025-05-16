@@ -41,11 +41,11 @@ export class SearchCommand extends BaseDiscordCommand {
     const source = options.getString('source') ?? 'ytsearch'
 
     if (/^https?:\/\//.test(query!)) {
-      return void interaction.reply('Query must not be an URL')
+      return void interaction.followUp('Query must not be an URL')
     }
 
     if (!guild) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.notInGuild'),
         flags: ['Ephemeral'],
       })
@@ -53,7 +53,7 @@ export class SearchCommand extends BaseDiscordCommand {
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
     if (!userVoiceState || !userVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.play.missingVoiceChannel'),
         flags: ['Ephemeral'],
       })
@@ -75,7 +75,7 @@ export class SearchCommand extends BaseDiscordCommand {
 
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(selectMenu)
 
-    void interaction.reply({
+    void interaction.followUp({
       content: `Select a track below from the query: ${query}`,
       flags: ['Ephemeral'],
       components: [row],

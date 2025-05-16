@@ -34,7 +34,7 @@ export class PlayCommand extends BaseDiscordCommand {
     const source = options.getString('source') ?? 'ytsearch'
 
     if (!guild) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.notInGuild'),
         flags: ['Ephemeral'],
       })
@@ -42,7 +42,7 @@ export class PlayCommand extends BaseDiscordCommand {
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
     if (!userVoiceState || !userVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.play.missingVoiceChannel'),
         flags: ['Ephemeral'],
       })
@@ -58,7 +58,7 @@ export class PlayCommand extends BaseDiscordCommand {
 
     const tracks = await this.client.lavalink.findTracks(query!, source)
     if (tracks.length === 0) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.play.notFound'),
         flags: ['Ephemeral'],
       })
@@ -68,7 +68,7 @@ export class PlayCommand extends BaseDiscordCommand {
       const track = tracks[0] ?? null
 
       if (!track) {
-        return void interaction.reply({
+        return void interaction.followUp({
           content: t('command.play.notFound'),
           flags: ['Ephemeral'],
         })
@@ -77,7 +77,7 @@ export class PlayCommand extends BaseDiscordCommand {
       const title = track.info.title
       const duration = Duration.fromMillis(track.info.length).toFormat('mm:ss')
 
-      void interaction.reply({
+      void interaction.followUp({
         content: t('command.play.addedToQueue', { title, duration }),
         flags: ['Ephemeral'],
       })
@@ -90,7 +90,7 @@ export class PlayCommand extends BaseDiscordCommand {
       player.addTrack(toBeAdded)
 
       const length = toBeAdded.length
-      void interaction.reply({
+      void interaction.followUp({
         content: t('command.play.addedPlaylist', { length }),
         flags: ['Ephemeral'],
       })

@@ -6,7 +6,7 @@ export const en = {
       notFound: 'No tracks found.',
       playingNow: 'Now playing: **{{title}}** - **{{duration}}**',
       addedToQueue: 'Added to queue: **{{title}}** - **{{duration}}**',
-      addedPlaylist: '{{length}} tracks were successfully added to the queue',
+      addedPlaylist: '`{{length}}` tracks were successfully added to the queue',
       options: {
         query: 'Song name',
       },

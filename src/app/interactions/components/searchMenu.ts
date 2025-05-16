@@ -31,7 +31,16 @@ export class SearchMenuInteraction extends BaseDiscordInteraction {
     )
 
     const selected = interaction.values[0]
-    const [track] = await this.client.lavalink.findTracks(selected)
+    const search = await this.client.lavalink.findTracks(selected!)
+    const track = search[0]
+
+    if (search.length === 0 || !track) {
+      return void interaction.reply({
+        content: t('command.play.notFound'),
+        flags: ['Ephemeral'],
+      })
+    }
+
     player.addTrack([track])
 
     const title = track.info.title

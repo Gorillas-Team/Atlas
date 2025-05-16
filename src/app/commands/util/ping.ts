@@ -29,7 +29,7 @@ export class PingCommand extends BaseDiscordCommand {
 
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(button)
 
-    await interaction.reply({
+    await interaction.followUp({
       content: 'Ping?',
       flags: MessageFlags.Ephemeral,
 

@@ -26,7 +26,7 @@ export class Raw extends BaseDiscordEvent {
         const { guild_id, channel_id, self_deaf, self_mute, user_id, session_id } = packet.d
         if (!guild_id || !user_id || clientId !== user_id) return
 
-        if (channel_id === null) {
+        if (channel_id === null && this.hasPlayer(guild_id)) {
           await lavalink.destroy(guild_id)
           return
         }
@@ -52,5 +52,9 @@ export class Raw extends BaseDiscordEvent {
       default:
         break
     }
+  }
+
+  private hasPlayer(guildId: string) {
+    return this.client.lavalink.players.has(guildId)
   }
 }

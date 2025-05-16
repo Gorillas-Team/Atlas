@@ -39,6 +39,7 @@ export class InteractionCreate extends BaseDiscordEvent {
           return void interaction.reply(t('command.notInGuild'))
         }
 
+        await interaction.deferReply({ ephemeral: true })
         await command.run(context)
       } else {
         await interaction.reply({
