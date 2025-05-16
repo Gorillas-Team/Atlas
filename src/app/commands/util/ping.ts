@@ -1,5 +1,6 @@
 import { Atlas } from '@/app/Atlas.js'
 import { BaseDiscordCommand, type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { t } from '@/shared/i18n/i18n.js'
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -13,15 +14,11 @@ export class PingCommand extends BaseDiscordCommand {
   constructor(client: Atlas) {
     super(
       client,
-      new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('Ping the bot to check if it is alive'),
+      new SlashCommandBuilder().setName('ping').setDescription(t('command.ping.description')),
     )
   }
 
   async run({ interaction }: CommandContext): Promise<void> {
-    this.logger.info('Ping command executed')
-
     const button = new ButtonBuilder()
       .setCustomId('ping')
       .setEmoji('🏓')
@@ -30,9 +27,8 @@ export class PingCommand extends BaseDiscordCommand {
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(button)
 
     await interaction.followUp({
-      content: 'Ping?',
+      content: t('command.ping.message'),
       flags: MessageFlags.Ephemeral,
-
       components: [row],
     })
   }
