@@ -5,6 +5,7 @@ import { PlayCommand } from '@/app/commands/music/play.js'
 import { SkipCommand } from '@/app/commands/music/skip.js'
 import { DisconnectCommand } from './music/disconnect.js'
 import { SearchCommand } from './music/search.js'
+import { QueueCommand } from './music/queue.js'
 
 export function loadCommands(client: Atlas): Map<string, BaseDiscordCommand> {
   const commands = new Map<string, BaseDiscordCommand>()
@@ -14,6 +15,7 @@ export function loadCommands(client: Atlas): Map<string, BaseDiscordCommand> {
     new SkipCommand(client),
     new SearchCommand(client),
     new DisconnectCommand(client),
+    new QueueCommand(client),
   ]
 
   for (const command of discordCommands) {

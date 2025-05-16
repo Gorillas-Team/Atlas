@@ -30,6 +30,15 @@ export const en = {
         query: 'Song name',
       },
     },
+    queue: {
+      description: 'Display current playlist in queue',
+      notPlaying: 'Not playing',
+      queueEmpty: 'Empty queue',
+      info: '{{position}} [{{duration}}] {{song}}',
+      page: 'Page {{page}}/{{total}}',
+      previous: 'Previous',
+      next: 'Next',
+    },
     notInGuild: 'This command can only be used in a server.',
   },
 } as const

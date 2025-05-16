@@ -36,8 +36,7 @@ export class InteractionCreate extends BaseDiscordEvent {
         const context = await this.generateContext(interaction)
 
         if (!context) {
-          void interaction.reply(t('command.notInGuild'))
-          return
+          return void interaction.reply(t('command.notInGuild'))
         }
 
         await command.run(context)

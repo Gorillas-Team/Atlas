@@ -103,8 +103,8 @@ export class LavalinkClient {
     const player = this.players.get(guildId)
     if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
 
-    this.logger.debug(`Playing track: ${track.info.title}`)
     const { title, length } = track.info
+    this.logger.debug(`Playing track: ${title}`)
     const duration = Duration.fromMillis(length).toFormat('mm:ss')
 
     if (!player.textChannel) {
