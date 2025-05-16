@@ -13,6 +13,26 @@ export type FlattenKeys<T, Prefix extends string = ''> = {
 
 export type MessageKey = FlattenKeys<MessageTree>
 
+/* eslint-disable prettier/prettier, @typescript-eslint/no-unused-vars */
+type GetTemplateFromPath<Path extends string, T = MessageTree> = 
+  Path extends `${infer Head}.${infer Tail}`
+    ? Head extends keyof T
+      ? GetTemplateFromPath<Tail, T[Head]>
+      : never
+    : Path extends keyof T
+      ? T[Path]
+      : never
+
+type ExtractPlaceholdersFromTemplate<T extends string> = 
+  T extends `${infer _}{{${infer Param}}}${infer Tail}`
+    ? Param | ExtractPlaceholdersFromTemplate<Tail>
+    : never
+
+type TemplateParams<T extends string> = {
+  [K in ExtractPlaceholdersFromTemplate<T>]?: string | number
+}
+/* eslint-enable prettier/prettier, @typescript-eslint/no-unused-vars */
+
 export function getNestedValue<T>(obj: T, path: string): string | undefined {
   const parts = path.split('.')
 
@@ -29,17 +49,21 @@ export function getNestedValue<T>(obj: T, path: string): string | undefined {
   return typeof current === 'string' ? current : undefined
 }
 
-export function t<K extends MessageKey, L extends SupportedLangs = typeof defaultLang>(
-  key: K,
-  vars: Record<string, string | number> = {},
-  lang: L = defaultLang as L
-): string {
-  const catalog = locales[lang] ?? locales[defaultLang]
-  let template = getNestedValue(catalog, key) ?? getNestedValue(locales[defaultLang], key) ?? key
+export function getFixedT<L extends SupportedLangs>(lang = defaultLang as L) {
+  return function t<K extends MessageKey>(
+    ...args: ExtractPlaceholdersFromTemplate<GetTemplateFromPath<K>> extends never
+      ? [key: K]
+      : [key: K, placeholders: TemplateParams<GetTemplateFromPath<K>>]
+  ) {
+    const [key, vars = {}] = args
 
-  for (const [k, v] of Object.entries(vars)) {
-    template = template.replaceAll(`{{${k}}}`, String(v))
+    const catalog = locales[lang] ?? locales[defaultLang]
+    let template = getNestedValue(catalog, key) ?? getNestedValue(locales[defaultLang], key) ?? key
+
+    for (const [k, v] of Object.entries(vars)) {
+      template = template.replaceAll(`{{${k}}}`, String(v))
+    }
+
+    return template
   }
-
-  return template
 }
