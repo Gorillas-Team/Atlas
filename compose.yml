@@ -1,0 +1,55 @@
+services:
+  main:
+    image: ghcr.io/gorillas-team/atlas:main
+    restart: always
+    container_name: atlas-main
+    env_file:
+      - path: ./.env.main
+    environment:
+      - LAVALINK_NODES=[{"name":"Docker","host":"lavalink","port":2333,"password":"youshallnotpass","maxReconnectAttempts":10}]
+    networks:
+      - lavalink
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+  canary:
+    image: ghcr.io/gorillas-team/atlas:canary
+    restart: always
+    container_name: atlas-canary
+    env_file:
+      - path: ./.env.canary
+    environment:
+      - LAVALINK_NODES=[{"name":"Docker","host":"lavalink","port":2333,"password":"youshallnotpass","maxReconnectAttempts":10}]
+    networks:
+      - lavalink
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+  lavalink:
+    hostname: lavalink
+    image: ghcr.io/lavalink-devs/lavalink:efed40d-alpine # aways use sha tag
+    restart: always
+    container_name: atlas-lavalink
+    environment:
+      - _JAVA_OPTIONS=-Xmx6G
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
+    networks:
+      - lavalink
+    expose:
+      - 2333
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    container_name: eery-watchtower
+    environment:
+      WATCHTOWER_NOTIFICATION_URL: >
+        discord://${DEPLOY_WEBHOOK_TOKEN}@${DEPLOY_WEBHOOK_ID}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60 --cleanup --label-enable
+
+networks:
+  lavalink:
+    name: lavalink
