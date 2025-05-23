@@ -75,7 +75,13 @@ export class LavalinkPlayer {
       position: 0,
       volume: 100,
       paused: true,
-      filters: {},
+      filters: {
+        timescale: {
+          speed: 1.0,
+          pitch: 1.0,
+          rate: 1.0,
+        },
+      },
       voice: {
         token: null,
         endpoint: null,
