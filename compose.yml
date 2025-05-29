@@ -42,7 +42,7 @@ services:
   watchtower:
     image: containrrr/watchtower
     restart: always
-    container_name: eery-watchtower
+    container_name: atlas-watchtower
     environment:
       WATCHTOWER_NOTIFICATION_URL: >
         discord://${DEPLOY_WEBHOOK_TOKEN}@${DEPLOY_WEBHOOK_ID}
