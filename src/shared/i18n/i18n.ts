@@ -29,7 +29,7 @@ type ExtractPlaceholdersFromTemplate<T extends string> =
     : never
 
 type TemplateParams<T extends string> = {
-  [K in ExtractPlaceholdersFromTemplate<T>]?: string | number
+  [K in ExtractPlaceholdersFromTemplate<T>]: string | number
 }
 /* eslint-enable prettier/prettier, @typescript-eslint/no-unused-vars */
 
