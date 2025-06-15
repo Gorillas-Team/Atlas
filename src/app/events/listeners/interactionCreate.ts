@@ -4,11 +4,11 @@ import {
   ChatInputCommandInteraction,
   Events,
   GuildMember,
-  Interaction,
-  TextChannel
+  type Interaction,
+  TextChannel,
 } from 'discord.js'
 import { findAndRunInteraction } from '@/app/interactions/interactions.js'
-import { CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { t } from '@/shared/i18n/i18n.js'
 
 export class InteractionCreate extends BaseDiscordEvent {
@@ -26,37 +26,37 @@ export class InteractionCreate extends BaseDiscordEvent {
     if (!command) {
       await interaction.reply({
         content: 'Comando não encontrado 😓',
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
       return
     }
 
     try {
       if (interaction.isChatInputCommand()) {
-        const context = await this.generateContext(interaction)
+        const context = await this.newContext(interaction)
 
         if (!context) {
-          void interaction.reply(t('command.notInGuild'))
-          return
+          return void interaction.reply(t('command.notInGuild'))
         }
 
+        await interaction.deferReply({ ephemeral: true })
         await command.run(context)
       } else {
         await interaction.reply({
-          content: 'Comando não suportado 😓',
-          flags: ['Ephemeral']
+          content: t('command.commandNotSupported'),
+          flags: ['Ephemeral'],
         })
       }
     } catch (error) {
       this.logger.error(error)
-      await interaction.reply({
-        content: 'Algo deu errado 😓',
-        flags: ['Ephemeral']
+      await interaction.followUp({
+        content: t('command.somethingWentWrong'),
+        flags: ['Ephemeral'],
       })
     }
   }
 
-  async generateContext(interaction: ChatInputCommandInteraction): Promise<CommandContext | null> {
+  async newContext(interaction: ChatInputCommandInteraction): Promise<CommandContext | null> {
     const guild = interaction.guild
     const channel = interaction.channel
 
@@ -75,7 +75,7 @@ export class InteractionCreate extends BaseDiscordEvent {
       guild,
       channel,
       me,
-      interaction
+      interaction,
     }
   }
 }

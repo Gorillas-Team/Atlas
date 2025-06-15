@@ -1,6 +1,6 @@
 import { Atlas } from '@/app/Atlas.js'
-import { InteractionType } from '@/app/interactions/interactions.js'
-import { Interaction } from 'discord.js'
+import type { InteractionType } from '@/app/interactions/interactions.js'
+import type { Interaction } from 'discord.js'
 
 export abstract class BaseDiscordInteraction {
   client: Atlas

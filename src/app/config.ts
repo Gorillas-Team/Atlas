@@ -1,5 +1,5 @@
-import { LavalinkNodeOptions } from '@/shared/lavalink/LavalinkNode.js'
-import { ClientOptions } from 'discord.js'
+import type { LavalinkNodeOptions } from '@/shared/lavalink/LavalinkNode.js'
+import type { ClientOptions } from 'discord.js'
 
 export type LogLevel = 'info' | 'debug' | 'warn' | 'error'
 export type Environment = 'development' | 'production'
@@ -11,6 +11,7 @@ export type AtlasConfig = {
   logLevel: LogLevel
   environment: Environment
   testGuildId: string | null
+  queuePageSize: number
 }
 
 export type AtlasOptions = {

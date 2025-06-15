@@ -1,12 +1,12 @@
 import { Atlas } from '@/app/Atlas.js'
-import { BaseDiscordCommand, CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
+import { BaseDiscordCommand, type CommandContext } from '@/shared/discord/BaseDiscordCommand.js'
 import { t } from '@/shared/i18n/i18n.js'
 import {
   ActionRowBuilder,
-  MessageActionRowComponentBuilder,
+  type MessageActionRowComponentBuilder,
   SlashCommandBuilder,
   StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder
+  StringSelectMenuOptionBuilder,
 } from 'discord.js'
 
 export class SearchCommand extends BaseDiscordCommand {
@@ -20,7 +20,7 @@ export class SearchCommand extends BaseDiscordCommand {
           option
             .setName('query')
             .setDescription(t('command.search.options.query'))
-            .setRequired(true)
+            .setRequired(true),
         )
         .addStringOption(option =>
           option
@@ -30,9 +30,9 @@ export class SearchCommand extends BaseDiscordCommand {
             .addChoices(
               { name: 'youtube music', value: 'ytmsearch' },
               { name: 'youtube', value: 'ytsearch' },
-              { name: 'soundcloud', value: 'scsearch' }
-            )
-        )
+              { name: 'soundcloud', value: 'scsearch' },
+            ),
+        ),
     )
   }
 
@@ -41,28 +41,30 @@ export class SearchCommand extends BaseDiscordCommand {
     const source = options.getString('source') ?? 'ytsearch'
 
     if (/^https?:\/\//.test(query!)) {
-      return void interaction.reply('Query must not be an URL')
+      return void interaction.followUp('Query must not be an URL')
     }
 
     if (!guild) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.notInGuild'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     const userVoiceState = await guild.voiceStates.fetch(interaction.user.id)
     if (!userVoiceState || !userVoiceState.channelId) {
-      return void interaction.reply({
+      return void interaction.followUp({
         content: t('command.play.missingVoiceChannel'),
-        flags: ['Ephemeral']
+        flags: ['Ephemeral'],
       })
     }
 
     const search = (await this.client.lavalink.findTracks(query!, source, true)).slice(0, 9)
 
     const tracks = search.map(track =>
-      new StringSelectMenuOptionBuilder().setLabel(track.info.title).setValue(track.info.identifier)
+      new StringSelectMenuOptionBuilder()
+        .setLabel(track.info.title)
+        .setValue(track.info.identifier),
     )
 
     const selectMenu = new StringSelectMenuBuilder()
@@ -73,10 +75,10 @@ export class SearchCommand extends BaseDiscordCommand {
 
     const row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(selectMenu)
 
-    void interaction.reply({
+    void interaction.followUp({
       content: `Select a track below from the query: ${query}`,
       flags: ['Ephemeral'],
-      components: [row]
+      components: [row],
     })
   }
 }

@@ -1,6 +1,6 @@
 import axios, { Axios } from 'axios'
-import { LavalinkPlayer, LavalinkPlayerState } from './LavalinkPlayer.js'
-import { LoadTracksResponse } from '@/shared/lavalink/LavalinkPackets.js'
+import { LavalinkPlayer, type LavalinkPlayerState } from './LavalinkPlayer.js'
+import { type LoadTracksResponse } from '@/shared/lavalink/LavalinkPackets.js'
 
 export class LavalinkApi {
   private client: Axios
@@ -11,8 +11,8 @@ export class LavalinkApi {
       headers: {
         Authorization: authentication,
         'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
+        Accept: 'application/json',
+      },
     })
   }
 
@@ -26,7 +26,7 @@ export class LavalinkApi {
       return response.data
     } catch (error) {
       throw new Error(
-        `Failed to get player: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to get player: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
   }
@@ -35,7 +35,7 @@ export class LavalinkApi {
     sessionId: string,
     guildId: string,
     player: LavalinkPlayerState,
-    noReplace: boolean = true
+    noReplace: boolean = true,
   ): Promise<LavalinkPlayer> {
     if (!sessionId || !guildId) {
       throw new Error('Session ID and Guild ID are required to get player.')
@@ -47,14 +47,14 @@ export class LavalinkApi {
         player,
         {
           params: {
-            noReplace
-          }
-        }
+            noReplace,
+          },
+        },
       )
       return response.data
     } catch (error) {
       throw new Error(
-        `Failed to update player: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to update player: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
   }
@@ -68,7 +68,7 @@ export class LavalinkApi {
       await this.client.delete(`sessions/${sessionId}/players/${guildId}`)
     } catch (error) {
       throw new Error(
-        `Failed to destroy player: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to destroy player: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
   }
@@ -82,13 +82,13 @@ export class LavalinkApi {
       }
 
       const response = await this.client.get<LoadTracksResponse>(
-        `loadtracks?identifier=${identifier}`
+        `loadtracks?identifier=${identifier}`,
       )
 
       return response.data
     } catch (error) {
       throw new Error(
-        `Failed to find tracks: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to find tracks: ${error instanceof Error ? error.message : String(error)}`,
       )
     }
   }

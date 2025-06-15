@@ -1,8 +1,10 @@
-import { Interaction } from 'discord.js'
+import type { Interaction } from 'discord.js'
 import { Atlas } from '../Atlas.js'
 import { BaseDiscordInteraction } from '@/shared/discord/BaseDiscordInteraction.js'
 import { PingButtonInteraction } from './components/pingButton.js'
 import { SearchMenuInteraction } from './components/searchMenu.js'
+import { PreviousPageInteraction } from './components/previousPage.js'
+import { NextPageInteraction } from './components/nextPage.js'
 
 export type InteractionType = 'button' | 'menu'
 
@@ -10,7 +12,9 @@ export function loadInteractions(client: Atlas): Map<string, BaseDiscordInteract
   const interactions = new Map<string, BaseDiscordInteraction>()
   const interactionFiles: BaseDiscordInteraction[] = [
     new PingButtonInteraction(client),
-    new SearchMenuInteraction(client)
+    new SearchMenuInteraction(client),
+    new PreviousPageInteraction(client),
+    new NextPageInteraction(client),
   ]
 
   for (const interaction of interactionFiles) {

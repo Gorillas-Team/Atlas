@@ -1,13 +1,13 @@
-import { LavalinkNode, LavalinkNodeOptions } from './LavalinkNode.js'
-import { pino, Logger } from 'pino'
-import { LavalinkPlayer, LavalinkPlayerVoice } from './LavalinkPlayer.js'
-import {
+import { LavalinkNode, type LavalinkNodeOptions } from './LavalinkNode.js'
+import { pino, type Logger } from 'pino'
+import { LavalinkPlayer, type LavalinkPlayerVoice } from './LavalinkPlayer.js'
+import type {
   LavalinkTrack,
   LoadTracksResponse,
   PlayerState,
-  TrackEndReason
+  TrackEndReason,
 } from './LavalinkPackets.js'
-import { UUID } from 'node:crypto'
+import type { UUID } from 'node:crypto'
 import { t } from '../i18n/i18n.js'
 import { Duration } from 'luxon'
 import { TextChannel } from 'discord.js'
@@ -43,11 +43,11 @@ export class LavalinkClient {
   constructor(
     options: LavalinkOptions,
     nodes: LavalinkNodeOptions[],
-    voiceState: (voiceState: LavalinkVoiceState) => void
+    voiceState: (voiceState: LavalinkVoiceState) => void,
   ) {
     this.logger = pino({
       level: options.logLevel,
-      name: 'Lavalink-Client'
+      name: 'Lavalink-Client',
     })
 
     this.clientId = options.clientId
@@ -91,7 +91,7 @@ export class LavalinkClient {
 
   public updatePlayer(guildId: string, state: PlayerState) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+    if (!player) return this.logger.warn(`UpdatePlayer=Player not found for guild ID: ${guildId}`)
 
     player.state.position = state.position
     player.connected = state.connected
@@ -101,19 +101,19 @@ export class LavalinkClient {
 
   public async trackStart(guildId: string, track: LavalinkTrack) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+    if (!player) return this.logger.warn(`StarkTrack=Player not found for guild ID: ${guildId}`)
 
-    this.logger.debug(`Playing track: ${track.info.title}`)
     const { title, length } = track.info
+    this.logger.debug(`Playing track: ${title}`)
     const duration = Duration.fromMillis(length).toFormat('mm:ss')
 
     if (!player.textChannel) {
-      return this.logger.warn('No text channel available')
+      return this.logger.warn('StarkTrack=No text channel available')
     }
 
     const msg = await player.textChannel.send({
       content: t('command.play.playingNow', { title, duration }),
-      flags: ['SuppressNotifications']
+      flags: ['SuppressNotifications'],
     })
 
     player.setLastNowplayingId(msg.id)
@@ -121,7 +121,7 @@ export class LavalinkClient {
 
   public async trackEnd(guildId: string, track: LavalinkTrack, reason: TrackEndReason) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.debug(`Player not found for guild ID: ${guildId}`)
+    if (!player) return this.logger.debug('TrackEnd', `Player not found for guild ID: ${guildId}`)
 
     this.logger.debug(`Track ended, reason={${reason}}; track={${track.info.title}}`)
 
@@ -134,23 +134,22 @@ export class LavalinkClient {
     if (['finished'].includes(reason) && player.queue.length > 1) {
       player.queue.shift()
       await player.play()
-      this.logger.debug(`Playing next track: ${player.queue[0].info.title}`)
+      this.logger.debug(`Playing next track: ${player.queue[0]?.info.title ?? 'Unknown'}`)
       return
     }
   }
 
   async destroy(guildId: string) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+    if (!player) return this.logger.warn(`Destroy=Player not found for guild ID: ${guildId}`)
 
     const node = this.nodes.get(player.node.id)
     if (!node || !node.api || !node.sessionId) {
-      return this.logger.warn(`Node not found for player ID: ${player.node.id}`)
+      return this.logger.warn(`Destroy=Node not found for player ID: ${player.node.id}`)
     }
 
     await node.api.destroyPlayer(node.sessionId, guildId)
     this.voiceState({ voiceChannelId: null, guildId: guildId })
-
     this.players.delete(guildId)
   }
 
@@ -166,11 +165,11 @@ export class LavalinkClient {
     }
 
     if (response.loadType === 'search') {
-      if (search) {
+      if (search && response.data.length > 1) {
         return response.data
       }
 
-      return [response.data[0]]
+      return response.data.slice(0, 1)
     }
 
     if (response.loadType === 'empty' || response.loadType === 'error') {
@@ -183,7 +182,7 @@ export class LavalinkClient {
   public async findTracks(
     query: string,
     source?: string,
-    search = false
+    search = false,
   ): Promise<LavalinkTrack[]> {
     const node = this.getBestNode()
     if (!node || !node.api) {
@@ -202,7 +201,7 @@ export class LavalinkClient {
 
   private async attemptConnect(guildId: string, playerVoice?: Partial<LavalinkPlayerVoice>) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.warn(`Player not found for guild ID: ${guildId}`)
+    if (!player) return this.logger.warn(`AttemptConnect=Player not found for guild ID: ${guildId}`)
 
     // TODO: handle channel switches
     if (player.connected) return
@@ -211,14 +210,14 @@ export class LavalinkClient {
 
     player.setVoice({
       ...playerStateVoice,
-      ...playerVoice
+      ...playerVoice,
     })
 
     this.voiceState({
       guildId: player.guildId,
       voiceChannelId: player.channelId ?? null,
       selfDeaf: player.selfDeaf,
-      selfMute: player.selfMute
+      selfMute: player.selfMute,
     })
 
     await player.connect()
@@ -226,17 +225,25 @@ export class LavalinkClient {
 
   public async updateVoiceState(userId: string, voiceState: LavalinkVoiceState) {
     this.voiceStates.set(userId, voiceState)
-    await this.attemptConnect(voiceState.guildId, {
-      sessionId: voiceState.sessionId
-    })
+
+    const player = this.players.get(voiceState.guildId)
+    if (player && voiceState.voiceChannelId !== null) {
+      await this.attemptConnect(voiceState.guildId, {
+        sessionId: voiceState.sessionId,
+      })
+    }
   }
 
   public async updateVoiceServer(guildId: string, voiceServer: LavalinkVoiceServer) {
     this.voiceServers.set(guildId, voiceServer)
-    await this.attemptConnect(guildId, {
-      token: voiceServer.token,
-      endpoint: voiceServer.endpoint
-    })
+
+    const player = this.players.get(guildId)
+    if (player) {
+      await this.attemptConnect(guildId, {
+        token: voiceServer.token,
+        endpoint: voiceServer.endpoint,
+      })
+    }
   }
 
   public deleteVoiceState(userId: string) {
@@ -255,8 +262,8 @@ export class LavalinkClient {
     return this.voiceServers.get(guildId)
   }
 
-  public getBestNode(): LavalinkNode {
+  public getBestNode(): LavalinkNode | null {
     // TODO: Get best node based on CPU and memory data
-    return Array.from(this.nodes.values())[0]
+    return Array.from(this.nodes.values()).find((node: LavalinkNode) => node.connected) ?? null
   }
 }

@@ -1,7 +1,7 @@
-import { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
+import type { LavalinkTrack } from '@/shared/lavalink/LavalinkPackets.js'
 import { LavalinkNode } from './LavalinkNode.js'
 import { LavalinkApi } from './LavalinkApi.js'
-import { LavalinkClient, LavalinkVoiceState } from './LavalinkClient.js'
+import { LavalinkClient, type LavalinkVoiceState } from './LavalinkClient.js'
 import { TextChannel } from 'discord.js'
 
 export type LavalinkPlayerVoice = {
@@ -75,12 +75,18 @@ export class LavalinkPlayer {
       position: 0,
       volume: 100,
       paused: true,
-      filters: {},
+      filters: {
+        timescale: {
+          speed: 1.0,
+          pitch: 1.0,
+          rate: 1.0,
+        },
+      },
       voice: {
         token: null,
         endpoint: null,
-        sessionId: null
-      }
+        sessionId: null,
+      },
     }
   }
 
@@ -153,15 +159,21 @@ export class LavalinkPlayer {
   }
 
   public deleteLastNowplayingId() {
-    if (this.lastNowplayingId && this.textChannel) {
-      void this.textChannel.messages.delete(this.lastNowplayingId)
+    try {
+      if (this.lastNowplayingId && this.textChannel) {
+        void this.textChannel.messages.delete(this.lastNowplayingId)
+      }
+    } catch (error) {
+      this.client.logger.error('Error deleting last nowplaying ID', error)
+    } finally {
+      this.lastNowplayingId = null
     }
   }
 
   public setVoice(voiceServer: Partial<LavalinkPlayerVoice>) {
     this.state.voice = {
       ...this.state.voice,
-      ...voiceServer
+      ...voiceServer,
     }
   }
 }
