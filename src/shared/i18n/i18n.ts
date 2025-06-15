@@ -67,3 +67,6 @@ export function getFixedT<L extends SupportedLangs>(lang = defaultLang as L) {
     return template
   }
 }
+
+// TODO: Remove this export and use getFixedT in the future
+export const t = getFixedT(defaultLang)
