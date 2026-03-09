@@ -8,6 +8,7 @@ export type LavalinkPlayerVoice = {
   token: string | null
   endpoint: string | null
   sessionId: string | null
+  channelId: string | null
 }
 
 export type LavalinkPlayerState = {
@@ -86,6 +87,7 @@ export class LavalinkPlayer {
         token: null,
         endpoint: null,
         sessionId: null,
+        channelId: options.voiceChannelId,
       },
     }
   }
