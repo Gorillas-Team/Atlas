@@ -148,9 +148,18 @@ export class LavalinkClient {
       return this.logger.warn(`Destroy=Node not found for player ID: ${player.node.id}`)
     }
 
-    await node.api.destroyPlayer(node.sessionId, guildId)
-    this.voiceState({ voiceChannelId: null, guildId: guildId })
-    this.players.delete(guildId)
+    try {
+      await node.api.destroyPlayer(node.sessionId, guildId)
+      this.voiceState({ voiceChannelId: null, guildId: guildId })
+      this.players.delete(guildId)
+      this.logger.debug(`Successfully destroyed player for guild ${guildId}`)
+    } catch (error) {
+      this.logger.error(
+        `Failed to destroy player for guild ${guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      this.players.delete(guildId)
+      throw error
+    }
   }
 
   private loadTracks(response: LoadTracksResponse, search: boolean = false): LavalinkTrack[] {
@@ -201,10 +210,16 @@ export class LavalinkClient {
 
   private async attemptConnect(guildId: string, playerVoice?: Partial<LavalinkPlayerVoice>) {
     const player = this.players.get(guildId)
-    if (!player) return this.logger.warn(`AttemptConnect=Player not found for guild ID: ${guildId}`)
+    if (!player) {
+      this.logger.warn(`AttemptConnect=Player not found for guild ID: ${guildId}`)
+      return
+    }
 
     // TODO: handle channel switches
-    if (player.connected) return
+    if (player.connected) {
+      this.logger.debug(`AttemptConnect=Player already connected for guild ${guildId}`)
+      return
+    }
 
     const playerStateVoice = player.state.voice
 
@@ -220,7 +235,14 @@ export class LavalinkClient {
       selfMute: player.selfMute,
     })
 
-    await player.connect()
+    try {
+      await player.connect()
+    } catch (error) {
+      this.logger.error(
+        `Failed to connect player for guild ${guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      // Don't throw - allow reconnection attempts
+    }
   }
 
   public async updateVoiceState(userId: string, voiceState: LavalinkVoiceState) {
@@ -228,9 +250,15 @@ export class LavalinkClient {
 
     const player = this.players.get(voiceState.guildId)
     if (player && voiceState.voiceChannelId !== null) {
-      await this.attemptConnect(voiceState.guildId, {
-        sessionId: voiceState.sessionId,
-      })
+      try {
+        await this.attemptConnect(voiceState.guildId, {
+          sessionId: voiceState.sessionId,
+        })
+      } catch (error) {
+        this.logger.error(
+          `Failed to update voice state for guild ${voiceState.guildId}: ${error instanceof Error ? error.message : String(error)}`,
+        )
+      }
     }
   }
 
@@ -239,10 +267,16 @@ export class LavalinkClient {
 
     const player = this.players.get(guildId)
     if (player) {
-      await this.attemptConnect(guildId, {
-        token: voiceServer.token,
-        endpoint: voiceServer.endpoint,
-      })
+      try {
+        await this.attemptConnect(guildId, {
+          token: voiceServer.token,
+          endpoint: voiceServer.endpoint,
+        })
+      } catch (error) {
+        this.logger.error(
+          `Failed to update voice server for guild ${guildId}: ${error instanceof Error ? error.message : String(error)}`,
+        )
+      }
     }
   }
 

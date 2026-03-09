@@ -1,6 +1,7 @@
 import { BaseDiscordEvent } from '@/shared/discord/BaseDiscordEvent.js'
 import { Atlas } from '@/app/Atlas.js'
 import { Events } from 'discord.js'
+import { LavalinkVoiceHandler } from '@/app/events/handlers/LavalinkVoiceHandler.js'
 
 import {
   GatewayDispatchEvents,
@@ -13,47 +14,27 @@ export type RawPacket = (GatewayVoiceStateUpdateDispatch | GatewayVoiceServerUpd
 }
 
 export class Raw extends BaseDiscordEvent {
+  private readonly voiceHandler: LavalinkVoiceHandler
+
   constructor(client: Atlas) {
     super(client, Events.Raw)
+    this.voiceHandler = new LavalinkVoiceHandler(client.lavalink, client.logger)
   }
 
   async run(packet: RawPacket) {
-    const lavalink = this.client.lavalink
-    const clientId = this.client.config.applicationId
+    try {
+      switch (packet.t) {
+        case GatewayDispatchEvents.VoiceStateUpdate:
+          await this.voiceHandler.handleVoiceStateUpdate(packet.d, this.client.config.applicationId)
+          break
 
-    switch (packet.t) {
-      case GatewayDispatchEvents.VoiceStateUpdate: {
-        const { guild_id, channel_id, self_deaf, self_mute, user_id, session_id } = packet.d
-        if (!guild_id || !user_id || clientId !== user_id) return
-
-        if (channel_id === null && this.hasPlayer(guild_id)) {
-          await lavalink.destroy(guild_id)
-        }
-
-        await lavalink.updateVoiceState(guild_id, {
-          guildId: guild_id,
-          sessionId: session_id,
-          voiceChannelId: channel_id,
-          selfDeaf: self_deaf,
-          selfMute: self_mute,
-        })
-        break
+        case GatewayDispatchEvents.VoiceServerUpdate:
+          await this.voiceHandler.handleVoiceServerUpdate(packet.d)
+          break
       }
-
-      case GatewayDispatchEvents.VoiceServerUpdate: {
-        const { token, guild_id, endpoint } = packet.d
-        if (!guild_id || !token || !endpoint) return
-
-        await lavalink.updateVoiceServer(guild_id, { token, endpoint })
-        break
-      }
-
-      default:
-        break
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      this.logger.error(`Error handling raw packet ${packet.t}: ${errorMessage}`)
     }
-  }
-
-  private hasPlayer(guildId: string) {
-    return this.client.lavalink.players.has(guildId)
   }
 }

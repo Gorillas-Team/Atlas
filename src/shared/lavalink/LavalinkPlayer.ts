@@ -97,14 +97,36 @@ export class LavalinkPlayer {
       throw new Error('API, session ID, or guild ID is missing')
     }
 
-    await this.api.updatePlayer(this.sessionId, this.guildId, this.state, onReplace)
+    try {
+      await this.api.updatePlayer(this.sessionId, this.guildId, this.state, onReplace)
+    } catch (error) {
+      this.client.logger.error(
+        `Failed to update player state for guild ${this.guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      throw error
+    }
   }
 
   public async connect() {
     const { token, endpoint, sessionId } = this.state.voice
-    if (!token || !endpoint || !sessionId) return
-    this.connected = true
-    await this.updatePlayerState()
+    if (!token || !endpoint || !sessionId) {
+      this.client.logger.warn(
+        `Cannot connect player for guild ${this.guildId}: Missing voice connection details (token: ${!!token}, endpoint: ${!!endpoint}, sessionId: ${!!sessionId})`,
+      )
+      return
+    }
+
+    try {
+      this.connected = true
+      await this.updatePlayerState()
+      this.client.logger.debug(`Successfully connected player for guild ${this.guildId}`)
+    } catch (error) {
+      this.connected = false
+      this.client.logger.error(
+        `Failed to connect player for guild ${this.guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      throw error
+    }
   }
 
   public async play(noReplace: boolean = true) {
@@ -114,24 +136,41 @@ export class LavalinkPlayer {
       throw new Error('No track to play')
     }
 
-    this.state.track = track
-    this.state.position = 0
-    this.state.paused = false
+    try {
+      this.state.track = track
+      this.state.position = 0
+      this.state.paused = false
 
-    await this.updatePlayerState(noReplace)
+      await this.updatePlayerState(noReplace)
+      this.client.logger.debug(
+        `Started playing track: ${track.info.title} for guild ${this.guildId}`,
+      )
+    } catch (error) {
+      this.client.logger.error(
+        `Failed to play track "${track.info.title}" for guild ${this.guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      throw error
+    }
   }
 
   public async stop() {
-    this.state.paused = true
-    this.state.track = undefined
-    this.state.position = 0
+    try {
+      this.state.paused = true
+      this.state.track = undefined
+      this.state.position = 0
 
-    if (this.queue.length > 1) {
-      this.queue.shift()
-      return await this.play(false)
+      if (this.queue.length > 1) {
+        this.queue.shift()
+        return await this.play(false)
+      }
+
+      void this.client.destroy(this.guildId)
+    } catch (error) {
+      this.client.logger.error(
+        `Failed to stop player for guild ${this.guildId}: ${error instanceof Error ? error.message : String(error)}`,
+      )
+      throw error
     }
-
-    void this.client.destroy(this.guildId)
   }
 
   public addTrack(track: LavalinkTrack[]) {
